@@ -18,7 +18,7 @@
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc;
         }
-        /* Cores fiéis ao diagrama original da imagem image_36a3da.png */
+        /* Cores fiéis ao diagrama original da imagem image_420123.png */
         .color-macro-top { background-color: #a4c2f4; color: #1e3a8a; border: 1.5px solid #7fa5e3; } 
         .color-macro-sub { background-color: #ffff00; color: #000000; border: 1.5px solid #e6e600; } 
         .color-process-key { background-color: #f4cccc; color: #5c2626; border: 1.5px solid #e0b3b3; } 
@@ -30,6 +30,7 @@
         .node-card {
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
+            user-select: none;
         }
         .node-card:hover {
             transform: translateY(-2px);
@@ -42,12 +43,84 @@
             box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3) !important;
         }
 
-        /* Conectores visuais verticais e horizontais */
-        .connector-line-v {
-            width: 2px;
-            background-color: #cbd5e1;
-            margin: 0 auto;
-            height: 18px;
+        /* Estrutura de Árvore Organizacional Limpa e Responsiva */
+        .tree ul {
+            padding-top: 15px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            margin: 0;
+            padding-left: 0;
+        }
+        .tree li {
+            position: relative;
+            padding: 15px 5px 0 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        /* Linhas horizontais de divisão */
+        .tree li::before, .tree li::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 50%;
+            border-top: 2px solid #cbd5e1;
+            width: 50%;
+            height: 15px;
+        }
+        .tree li::after {
+            right: auto;
+            left: 50%;
+            border-left: 2px solid #cbd5e1;
+        }
+        /* Configurações para filhos únicos, primeiros e últimos */
+        .tree li:only-child::after, .tree li:only-child::before {
+            display: none;
+        }
+        .tree li:only-child {
+            padding-top: 15px;
+        }
+        .tree li:only-child::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            border-left: 2px solid #cbd5e1;
+            width: 0;
+            height: 15px;
+            transform: translateX(-50%);
+            border-top: 0 none;
+        }
+        .tree li:first-child::before, .tree li:last-child::after {
+            border: 0 none;
+        }
+        .tree li:last-child::before {
+            border-right: 2px solid #cbd5e1;
+            border-radius: 0 6px 0 0;
+        }
+        .tree li:first-child::after {
+            border-radius: 6px 0 0 0;
+        }
+
+        /* Conectores verticais partindo debaixo de cada nó pai */
+        .tree-node-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .tree-node-wrapper.has-children::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            border-left: 2px solid #cbd5e1;
+            width: 0;
+            height: 15px;
+            transform: translateX(-50%);
+            z-index: 10;
         }
         
         /* Custom scrollbar para visual limpo */
@@ -69,8 +142,27 @@
 </head>
 <body class="h-screen flex flex-col overflow-hidden select-none">
 
-    <!-- Notificações Customizadas (Substitutos seguros do alert) -->
+    <!-- Notificações Customizadas -->
     <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Modal de Confirmação Customizado (Substitui o 'confirm' nativo do navegador) -->
+    <div id="confirm-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl w-full max-w-sm shadow-2xl overflow-hidden border border-slate-100 p-5 flex flex-col gap-4">
+            <div class="flex items-start gap-3">
+                <div class="bg-amber-100 text-amber-700 p-2 rounded-lg shrink-0">
+                    <i class="fa-solid fa-triangle-exclamation text-lg"></i>
+                </div>
+                <div>
+                    <h3 id="confirm-title" class="font-bold text-sm text-slate-800">Confirmar Ação</h3>
+                    <p id="confirm-message" class="text-xs text-slate-500 mt-1">Deseja realmente prosseguir?</p>
+                </div>
+            </div>
+            <div class="flex justify-end gap-2 mt-2">
+                <button id="btn-confirm-cancel" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-4 py-2 rounded-lg transition-all">Cancelar</button>
+                <button id="btn-confirm-action" class="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-all">Confirmar</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Topbar / Cabeçalho -->
     <header class="bg-slate-900 text-white px-6 py-3 flex items-center justify-between shadow-md shrink-0 border-b border-slate-800">
@@ -133,237 +225,309 @@
                 </div>
             </div>
 
-            <!-- Canvas do Diagrama com suporte a Zoom -->
+            <!-- Canvas do Diagrama com suporte a Zoom e Árvore Conectora Fidedigna -->
             <div class="flex-grow bg-slate-50 rounded-xl border border-slate-200 overflow-auto relative p-6">
                 
-                <div id="diagram-scale-container" class="origin-top-left transition-transform duration-100 ease-out min-w-[1720px] py-2">
+                <div id="diagram-scale-container" class="origin-top-left transition-transform duration-100 ease-out min-w-[2100px] py-4">
                     
-                    <!-- Nível 1: OPERAÇÃO -->
-                    <div class="w-full flex justify-center mb-1">
-                        <div id="node-operacao" onclick="handleNodeClick('operacao', event)" class="node-card cursor-pointer shadow-sm rounded-lg p-3.5 text-center font-extrabold text-base color-macro-top w-full max-w-6xl relative select-none">
-                            <span class="node-text">OPERAÇÃO</span>
-                            <span class="link-badge absolute right-3 top-3.5 hidden text-blue-700 bg-white/90 px-1.5 py-0.5 rounded text-[10px] font-bold shadow-sm"><i class="fa-solid fa-link"></i> Linked</span>
-                        </div>
-                    </div>
-
-                    <div class="connector-line-v"></div>
-
-                    <!-- Nível 2: GESTÃO DA FROTA -->
-                    <div class="w-full flex justify-center mb-1">
-                        <div id="node-gestao_frota" onclick="handleNodeClick('gestao_frota', event)" class="node-card cursor-pointer shadow-sm rounded-md py-2 px-12 text-center font-bold text-sm color-macro-sub w-full max-w-sm relative">
-                            <span class="node-text">GESTÃO DA FROTA</span>
-                            <span class="link-badge absolute right-2.5 top-2 hidden text-slate-800 bg-white/90 px-1 py-0.5 rounded text-[9px] font-bold shadow-sm"><i class="fa-solid fa-link"></i></span>
-                        </div>
-                    </div>
-
-                    <div class="connector-line-v"></div>
-
-                    <!-- Nível 3: Processos Chave e seus Subprocessos / Indicadores (Estrutura em Colunas) -->
-                    <div class="w-full grid grid-cols-5 gap-3 px-2 relative">
-                        
-                        <!-- Coluna 1: Programação de Veículos -->
-                        <div class="flex flex-col items-center">
-                            <div id="node-prog_veiculos" onclick="handleNodeClick('prog_veiculos', event)" class="w-full text-center p-2.5 font-bold text-xs rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
-                                <span class="node-text">PROGRAMAÇÃO DE VEÍCULOS</span>
-                                <span class="link-badge absolute right-1.5 top-1.5 hidden text-red-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                            </div>
-                            <div class="connector-line-v"></div>
-                            
-                            <!-- Subprocessos e filhos -->
-                            <div class="w-full flex flex-col gap-3">
-                                <div class="bg-slate-100 p-2 rounded-lg border border-slate-200">
-                                    <div id="node-disp_recursos" onclick="handleNodeClick('disp_recursos', event)" class="sub-process-card text-center p-2 text-[10px] font-semibold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer relative node-card">
-                                        <span class="node-text">GESTÃO DE DISP. RECURSOS</span>
-                                        <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                                    </div>
-                                    <div class="connector-line-v h-2.5"></div>
-                                    <div id="node-disp_frota" onclick="handleNodeClick('disp_frota', event)" class="text-center p-2 text-[10px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer relative node-card">
-                                        <span class="node-text">Disponibilidade da frota</span>
-                                        <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
+                    <div class="tree">
+                        <ul>
+                            <li>
+                                <!-- Nível 1: OPERAÇÃO (Macro Top) -->
+                                <div class="tree-node-wrapper has-children">
+                                    <div id="node-operacao" onclick="handleNodeClick('operacao', event)" class="node-card cursor-pointer shadow-sm rounded-lg p-3.5 text-center font-extrabold text-base color-macro-top w-[95vw] max-w-[2000px] relative">
+                                        <span class="node-text">OPERAÇÃO</span>
+                                        <span class="link-badge absolute right-3 top-3.5 hidden text-blue-700 bg-white/90 px-1.5 py-0.5 rounded text-[10px] font-bold shadow-sm"><i class="fa-solid fa-link"></i> Linked</span>
                                     </div>
                                 </div>
-
-                                <div class="bg-slate-100 p-2 rounded-lg border border-slate-200">
-                                    <div id="node-prog_folgas" onclick="handleNodeClick('prog_folgas', event)" class="sub-process-card text-center p-2 text-[10px] font-semibold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer relative node-card">
-                                        <span class="node-text">PROGRAMAÇÃO DE FOLGAS</span>
-                                        <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                                    </div>
-                                    <div class="connector-line-v h-2.5"></div>
-                                    <div id="node-alinhamento_folgas" onclick="handleNodeClick('alinhamento_folgas', event)" class="text-center p-2 text-[10px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer relative node-card">
-                                        <span class="node-text">Alinhamento de início e retorno das folgas x Manutenção durante o período</span>
-                                        <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                                    </div>
-                                </div>
-
-                                <div class="bg-slate-100 p-2 rounded-lg border border-slate-200">
-                                    <div id="node-gestao_clientes" onclick="handleNodeClick('gestao_clientes', event)" class="sub-process-card text-center p-2 text-[10px] font-semibold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer relative node-card">
-                                        <span class="node-text">GESTÃO DE CLIENTES</span>
-                                        <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                                    </div>
-                                    <div class="connector-line-v h-2.5"></div>
-                                    <div id="node-objetivos_rotas" onclick="handleNodeClick('objetivos_rotas', event)" class="text-center p-2 text-[10px] font-semibold rounded color-to-develop shadow-sm hover:brightness-95 cursor-pointer relative node-card">
-                                        <span class="node-text">OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES.</span>
-                                        <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Coluna 2: Acompanhamento de Jornada -->
-                        <div class="flex flex-col items-center">
-                            <div id="node-acomp_jornada" onclick="handleNodeClick('acomp_jornada', event)" class="w-full text-center p-2.5 font-bold text-xs rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
-                                <span class="node-text">ACOMPANHAMENTO DE JORNADA</span>
-                                <span class="link-badge absolute right-1.5 top-1.5 hidden text-red-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                            </div>
-                            <div class="connector-line-v"></div>
-
-                            <!-- Subprocessos e filhos -->
-                            <div class="w-full flex flex-col gap-3">
-                                <div class="bg-slate-100 p-2 rounded-lg border border-slate-200">
-                                    <div id="node-acomp_motorista" onclick="handleNodeClick('acomp_motorista', event)" class="sub-process-card text-center p-2 text-[10px] font-semibold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer relative node-card">
-                                        <span class="node-text">ACOMPANHAMENTO DE MOTORISTA</span>
-                                        <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                                    </div>
-                                    <div class="connector-line-v h-2.5"></div>
-                                    <div id="node-sat_motorista" onclick="handleNodeClick('sat_motorista', event)" class="text-center p-2 text-[10px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer relative node-card">
-                                        <span class="node-text">Satisfação do motorista</span>
-                                        <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                                    </div>
-                                </div>
-
-                                <div class="bg-slate-100 p-2 rounded-lg border border-slate-200">
-                                    <div id="node-controle_combustivel" onclick="handleNodeClick('controle_combustivel', event)" class="sub-process-card text-center p-2 text-[10px] font-semibold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer relative node-card">
-                                        <span class="node-text">CONTROLE DE COMBUSTÍVEL</span>
-                                        <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                                    </div>
-                                    <div class="connector-line-v h-2.5"></div>
-                                    <div id="node-perc_combustivel" onclick="handleNodeClick('perc_combustivel', event)" class="text-center p-2 text-[10px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer relative node-card">
-                                        <span class="node-text">Percentual Combustível x Faturamento Líquido</span>
-                                        <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                                    </div>
-                                    <div class="connector-line-v h-2.5"></div>
-                                    
-                                    <!-- Nós extras integrados e alinhados -->
-                                    <div class="grid grid-cols-2 gap-1.5 bg-slate-200/60 p-1.5 rounded-md">
-                                        <div id="node-preco_l" onclick="handleNodeClick('preco_l', event)" class="text-center p-1.5 text-[9px] font-bold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer relative node-card">
-                                            <span class="node-text">Preço/L</span>
-                                            <span class="link-badge absolute right-0.5 top-0.5 hidden text-white bg-slate-900/40 p-0.5 rounded text-[6px]"><i class="fa-solid fa-link"></i></span>
+                                
+                                <ul>
+                                    <!-- LADO ESQUERDO: GESTÃO DA FROTA E SUAS 5 COLUNAS -->
+                                    <li>
+                                        <div class="tree-node-wrapper has-children">
+                                            <div id="node-gestao_frota" onclick="handleNodeClick('gestao_frota', event)" class="node-card cursor-pointer shadow-sm rounded-md py-2 w-[320px] text-center font-bold text-sm color-macro-sub relative">
+                                                <span class="node-text">GESTÃO DA FROTA</span>
+                                                <span class="link-badge absolute right-2.5 top-2 hidden text-slate-800 bg-white/90 px-1 py-0.5 rounded text-[9px] font-bold shadow-sm"><i class="fa-solid fa-link"></i></span>
+                                            </div>
                                         </div>
-                                        <div id="node-consumo_medio" onclick="handleNodeClick('consumo_medio', event)" class="text-center p-1.5 text-[9px] font-bold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer relative node-card">
-                                            <span class="node-text">Consumo médio</span>
-                                            <span class="link-badge absolute right-0.5 top-0.5 hidden text-white bg-slate-900/40 p-0.5 rounded text-[6px]"><i class="fa-solid fa-link"></i></span>
+
+                                        <!-- Sub-árvore de 5 Colunas Principais -->
+                                        <ul>
+                                            <!-- Coluna 1: Programação de Veículos (3 subcolunas) -->
+                                            <li>
+                                                <div class="tree-node-wrapper has-children">
+                                                    <div id="node-prog_veiculos" onclick="handleNodeClick('prog_veiculos', event)" class="w-[160px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
+                                                        <span class="node-text">PROGRAMAÇÃO DE VEÍCULOS</span>
+                                                        <span class="link-badge absolute right-1.5 top-1.5 hidden text-red-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
+                                                    </div>
+                                                </div>
+                                                <ul>
+                                                    <!-- Sub 1.1: GESTÃO DE DISP. RECURSOS -->
+                                                    <li>
+                                                        <div class="tree-node-wrapper has-children">
+                                                            <div id="node-disp_recursos" onclick="handleNodeClick('disp_recursos', event)" class="w-[125px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                <span class="node-text">GESTÃO DE DISP. RECURSOS</span>
+                                                                <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <ul>
+                                                            <li>
+                                                                <div id="node-disp_frota" onclick="handleNodeClick('disp_frota', event)" class="w-[125px] text-center p-2 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                    <span class="node-text">Disponibilidade da frota</span>
+                                                                    <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <!-- Sub 1.2: PROGRAMAÇÃO DE FOLGAS -->
+                                                    <li>
+                                                        <div class="tree-node-wrapper has-children">
+                                                            <div id="node-prog_folgas" onclick="handleNodeClick('prog_folgas', event)" class="w-[125px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                <span class="node-text">PROGRAMAÇÃO DE FOLGAS</span>
+                                                                <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <ul>
+                                                            <li>
+                                                                <div id="node-alinhamento_folgas" onclick="handleNodeClick('alinhamento_folgas', event)" class="w-[125px] text-center p-1.5 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-snug">
+                                                                    <span class="node-text">Alinhamento de início e retorno das folgas x Manutenção no período</span>
+                                                                    <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <!-- Sub 1.3: GESTÃO DE CLIENTES -->
+                                                    <li>
+                                                        <div class="tree-node-wrapper has-children">
+                                                            <div id="node-gestao_clientes" onclick="handleNodeClick('gestao_clientes', event)" class="w-[125px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                <span class="node-text">GESTÃO DE CLIENTES</span>
+                                                                <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <ul>
+                                                            <li>
+                                                                <div id="node-objetivos_rotas" onclick="handleNodeClick('objetivos_rotas', event)" class="w-[125px] text-center p-1.5 text-[8px] font-semibold rounded color-to-develop shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-snug">
+                                                                    <span class="node-text">OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADOS.</span>
+                                                                    <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+
+                                            <!-- Coluna 2: Acompanhamento de Jornada (2 subcolunas) -->
+                                            <li>
+                                                <div class="tree-node-wrapper has-children">
+                                                    <div id="node-acomp_jornada" onclick="handleNodeClick('acomp_jornada', event)" class="w-[160px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
+                                                        <span class="node-text">ACOMPANHAMENTO DE JORNADA</span>
+                                                        <span class="link-badge absolute right-1.5 top-1.5 hidden text-red-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
+                                                    </div>
+                                                </div>
+                                                <ul>
+                                                    <!-- Sub 2.1: ACOMPANHAMENTO DE MOTORISTA -->
+                                                    <li>
+                                                        <div class="tree-node-wrapper has-children">
+                                                            <div id="node-acomp_motorista" onclick="handleNodeClick('acomp_motorista', event)" class="w-[125px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                <span class="node-text">ACOMPANHAMENTO DE MOTORISTA</span>
+                                                                <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <ul>
+                                                            <li>
+                                                                <div id="node-sat_motorista" onclick="handleNodeClick('sat_motorista', event)" class="w-[125px] text-center p-2 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                    <span class="node-text">Satisfação do motorista</span>
+                                                                    <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <!-- Sub 2.2: CONTROLE DE COMBUSTÍVEL -->
+                                                    <li>
+                                                        <div class="tree-node-wrapper has-children">
+                                                            <div id="node-controle_combustivel" onclick="handleNodeClick('controle_combustivel', event)" class="w-[125px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                <span class="node-text">CONTROLE DE COMBUSTÍVEL</span>
+                                                                <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <ul>
+                                                            <li>
+                                                                <div class="tree-node-wrapper has-children">
+                                                                    <div id="node-perc_combustivel" onclick="handleNodeClick('perc_combustivel', event)" class="w-[125px] text-center p-1.5 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                        <span class="node-text">Percentual Combustível x Faturamento Líquido</span>
+                                                                        <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Divisão para os indicadores inferiores de Combustível -->
+                                                                <ul>
+                                                                    <li>
+                                                                        <div id="node-preco_l" onclick="handleNodeClick('preco_l', event)" class="w-[65px] text-center p-1 text-[8px] font-bold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer relative node-card leading-tight">
+                                                                            <span class="node-text">Preço/L</span>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li>
+                                                                        <div id="node-consumo_medio" onclick="handleNodeClick('consumo_medio', event)" class="w-[65px] text-center p-1 text-[8px] font-bold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer relative node-card leading-tight">
+                                                                            <span class="node-text">Consumo médio</span>
+                                                                        </div>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+
+                                            <!-- Coluna 3: Fechamento de Resultados (3 subcolunas) -->
+                                            <li>
+                                                <div class="tree-node-wrapper has-children">
+                                                    <div id="node-fech_resultados" onclick="handleNodeClick('fech_resultados', event)" class="w-[160px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
+                                                        <span class="node-text">FECHAMENTO DE RESULTADOS</span>
+                                                        <span class="link-badge absolute right-1.5 top-1.5 hidden text-red-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
+                                                    </div>
+                                                </div>
+                                                <ul>
+                                                    <!-- Sub 3.1: FECHAMENTO JORNADA MOTORISTA -->
+                                                    <li>
+                                                        <div class="tree-node-wrapper has-children">
+                                                            <div id="node-fech_jornada" onclick="handleNodeClick('fech_jornada', event)" class="w-[120px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                <span class="node-text">FECHAMENTO JORNADA MOTORISTA</span>
+                                                                <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <ul>
+                                                            <li>
+                                                                <div id="node-perf_motorista" onclick="handleNodeClick('perf_motorista', event)" class="w-[120px] text-center p-2 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                    <span class="node-text">Performance motorista</span>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <!-- Sub 3.2: FECHAMENTO MENSAL FROTA -->
+                                                    <li>
+                                                        <div class="tree-node-wrapper has-children">
+                                                            <div id="node-fech_mensal_frota" onclick="handleNodeClick('fech_mensal_frota', event)" class="w-[120px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                <span class="node-text">FECHAMENTO MENSAL FROTA</span>
+                                                                <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <ul>
+                                                            <li>
+                                                                <div id="node-res_liquido" onclick="handleNodeClick('res_liquido', event)" class="w-[120px] text-center p-2 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                    <span class="node-text">Resultado líquido</span>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <!-- Sub 3.3: FECHAMENTO MENSAL CLIENTES/FROTA -->
+                                                    <li>
+                                                        <div class="tree-node-wrapper has-children">
+                                                            <div id="node-fech_clientes_frota" onclick="handleNodeClick('fech_clientes_frota', event)" class="w-[120px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                <span class="node-text">FECHAMENTO MENSAL CLIENTES/FROTA</span>
+                                                                <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <ul>
+                                                            <li>
+                                                                <div id="node-ineficiencias_carga" onclick="handleNodeClick('ineficiencias_carga', event)" class="w-[120px] text-center p-1.5 text-[8px] font-semibold rounded color-to-develop shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                    <span class="node-text">Ineficiências de carga e descarga e diárias</span>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+
+                                            <!-- Coluna 4: Planejamento / Desenvolvimento (Largura Ampliada para evitar vazamento de Título) -->
+                                            <li>
+                                                <div class="tree-node-wrapper has-children">
+                                                    <!-- Resolvido: w-[210px] garante que o título longo não ultrapasse as bordas -->
+                                                    <div id="node-planejamento_frota" onclick="handleNodeClick('planejamento_frota', event)" class="w-[210px] text-center p-2 font-bold text-[10px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card leading-tight">
+                                                        <span class="node-text">PLANEJAMENTO/DESENVOLVIMENTO - FROTA</span>
+                                                        <span class="link-badge absolute right-1.5 top-1.5 hidden text-red-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
+                                                    </div>
+                                                </div>
+                                                <ul>
+                                                    <li>
+                                                        <div class="tree-node-wrapper has-children">
+                                                            <div id="node-gestao_eficiencia" onclick="handleNodeClick('gestao_eficiencia', event)" class="w-[120px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                <span class="node-text">GESTÃO DE EFICIÊNCIA E PROCESSO</span>
+                                                            </div>
+                                                        </div>
+                                                        <ul>
+                                                            <li>
+                                                                <div id="node-definir_cronograma" onclick="handleNodeClick('definir_cronograma', event)" class="w-[120px] text-center p-1 text-[8px] font-semibold rounded color-to-develop shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-snug">
+                                                                    <span class="node-text">DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO...</span>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+
+                                            <!-- Coluna 5: Regularização Frota (2 subcolunas) -->
+                                            <li>
+                                                <div class="tree-node-wrapper has-children">
+                                                    <div id="node-regularizacao_frota" onclick="handleNodeClick('regularizacao_frota', event)" class="w-[160px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
+                                                        <span class="node-text">REGULARIZAÇÃO FROTA</span>
+                                                        <span class="link-badge absolute right-1.5 top-1.5 hidden text-red-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
+                                                    </div>
+                                                </div>
+                                                <ul>
+                                                    <!-- Sub 5.1: LICENCIAMENTO E ADEQUAÇÕES -->
+                                                    <li>
+                                                        <div id="node-licenciamento" onclick="handleNodeClick('licenciamento', event)" class="w-[120px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                            <span class="node-text">LICENCIAMENTO E ADEQUAÇÕES FROTA</span>
+                                                        </div>
+                                                    </li>
+                                                    <!-- Sub 5.2: ADEQUAÇÕES ADMINISTRATIVAS -->
+                                                    <li>
+                                                        <div id="node-adeq_admin" onclick="handleNodeClick('adeq_admin', event)" class="w-[120px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                            <span class="node-text">ADEQUAÇÕES ADMINISTRATIVAS</span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <!-- LADO DIREITO: GESTÃO DE AGREGADOS (Fidelidade estrita a image_420123.png) -->
+                                    <li>
+                                        <div class="tree-node-wrapper has-children">
+                                            <div id="node-gestao_agregados" onclick="handleNodeClick('gestao_agregados', event)" class="node-card cursor-pointer shadow-sm rounded-md py-2 w-[150px] text-center font-bold text-xs color-macro-sub relative">
+                                                <span class="node-text">GESTÃO DE AGREGADOS</span>
+                                                <span class="link-badge absolute right-1.5 top-1 hidden text-slate-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Coluna 3: Fechamento de Resultados -->
-                        <div class="flex flex-col items-center">
-                            <div id="node-fech_resultados" onclick="handleNodeClick('fech_resultados', event)" class="w-full text-center p-2.5 font-bold text-xs rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
-                                <span class="node-text">FECHAMENTO DE RESULTADOS</span>
-                                <span class="link-badge absolute right-1.5 top-1.5 hidden text-red-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                            </div>
-                            <div class="connector-line-v"></div>
-
-                            <!-- Subprocessos e filhos -->
-                            <div class="w-full flex flex-col gap-3">
-                                <div class="bg-slate-100 p-2 rounded-lg border border-slate-200">
-                                    <div id="node-fech_jornada" onclick="handleNodeClick('fech_jornada', event)" class="sub-process-card text-center p-2 text-[10px] font-semibold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer relative node-card">
-                                        <span class="node-text">FECHAMENTO JORNADA MOTORISTA</span>
-                                        <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                                    </div>
-                                    <div class="connector-line-v h-2.5"></div>
-                                    <div id="node-perf_motorista" onclick="handleNodeClick('perf_motorista', event)" class="text-center p-2 text-[10px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer relative node-card">
-                                        <span class="node-text">Performance motorista</span>
-                                        <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                                    </div>
-                                </div>
-
-                                <div class="bg-slate-100 p-2 rounded-lg border border-slate-200">
-                                    <div id="node-fech_mensal_frota" onclick="handleNodeClick('fech_mensal_frota', event)" class="sub-process-card text-center p-2 text-[10px] font-semibold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer relative node-card">
-                                        <span class="node-text">FECHAMENTO MENSAL FROTA</span>
-                                        <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                                    </div>
-                                    <div class="connector-line-v h-2.5"></div>
-                                    <div id="node-res_liquido" onclick="handleNodeClick('res_liquido', event)" class="text-center p-2 text-[10px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer relative node-card">
-                                        <span class="node-text">Resultado líquido</span>
-                                        <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                                    </div>
-                                </div>
-
-                                <div class="bg-slate-100 p-2 rounded-lg border border-slate-200">
-                                    <div id="node-fech_clientes_frota" onclick="handleNodeClick('fech_clientes_frota', event)" class="sub-process-card text-center p-2 text-[10px] font-semibold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer relative node-card">
-                                        <span class="node-text">FECHAMENTO MENSAL CLIENTES/FROTA</span>
-                                        <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                                    </div>
-                                    <div class="connector-line-v h-2.5"></div>
-                                    <div id="node-ineficiencias_carga" onclick="handleNodeClick('ineficiencias_carga', event)" class="text-center p-2 text-[10px] font-semibold rounded color-to-develop shadow-sm hover:brightness-95 cursor-pointer relative node-card">
-                                        <span class="node-text">Ineficiências de carga e descarga e diárias</span>
-                                        <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Coluna 4: Planejamento / Desenvolvimento -->
-                        <div class="flex flex-col items-center">
-                            <div id="node-planejamento_frota" onclick="handleNodeClick('planejamento_frota', event)" class="w-full text-center p-2.5 font-bold text-xs rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
-                                <span class="node-text">PLANEJAMENTO/DESENVOLVIMENTO - FROTA</span>
-                                <span class="link-badge absolute right-1.5 top-1.5 hidden text-red-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                            </div>
-                            <div class="connector-line-v"></div>
-
-                            <!-- Subprocessos e filhos -->
-                            <div class="w-full flex flex-col gap-3">
-                                <div class="bg-slate-100 p-2 rounded-lg border border-slate-200">
-                                    <div id="node-gestao_eficiencia" onclick="handleNodeClick('gestao_eficiencia', event)" class="sub-process-card text-center p-2 text-[10px] font-semibold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer relative node-card">
-                                        <span class="node-text">GESTÃO DE EFICIÊNCIA E PROCESSO</span>
-                                        <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                                    </div>
-                                    <div class="connector-line-v h-2.5"></div>
-                                    <div id="node-definir_cronograma" onclick="handleNodeClick('definir_cronograma', event)" class="text-center p-2 text-[10px] font-semibold rounded color-to-develop shadow-sm hover:brightness-95 cursor-pointer relative node-card">
-                                        <span class="node-text">DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO...</span>
-                                        <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Coluna 5: Regularização Frota -->
-                        <div class="flex flex-col items-center">
-                            <div id="node-regularizacao_frota" onclick="handleNodeClick('regularizacao_frota', event)" class="w-full text-center p-2.5 font-bold text-xs rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
-                                <span class="node-text">REGULARIZAÇÃO FROTA</span>
-                                <span class="link-badge absolute right-1.5 top-1.5 hidden text-red-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                            </div>
-                            <div class="connector-line-v"></div>
-
-                            <!-- Subprocessos e filhos -->
-                            <div class="w-full flex flex-col gap-3">
-                                <div class="bg-slate-100 p-2 rounded-lg border border-slate-200">
-                                    <div id="node-licenciamento" onclick="handleNodeClick('licenciamento', event)" class="sub-process-card text-center p-2 text-[10px] font-semibold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer relative node-card">
-                                        <span class="node-text">LICENCIAMENTO E ADEQUAÇÕES FROTA</span>
-                                        <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                                    </div>
-                                </div>
-
-                                <div class="bg-slate-100 p-2 rounded-lg border border-slate-200">
-                                    <div id="node-adeq_admin" onclick="handleNodeClick('adeq_admin', event)" class="sub-process-card text-center p-2 text-[10px] font-semibold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer relative node-card">
-                                        <span class="node-text">ADEQUAÇÕES ADMINISTRATIVAS</span>
-                                        <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
+                                        <ul>
+                                            <li>
+                                                <div class="tree-node-wrapper has-children">
+                                                    <!-- Processo Chave (Vazio/Rosa) -->
+                                                    <div id="node-agregados_vazio" onclick="handleNodeClick('agregados_vazio', event)" class="node-card cursor-pointer shadow-sm rounded-md p-2.5 text-center font-bold text-xs color-process-key w-[150px] h-[50px] relative flex items-center justify-center">
+                                                        <span class="node-text"></span>
+                                                    </div>
+                                                </div>
+                                                <ul>
+                                                    <li>
+                                                        <!-- Subprocesso Estoque Ferramentas Matriz -->
+                                                        <div id="node-estoque_ferramentas" onclick="handleNodeClick('estoque_ferramentas', event)" class="node-card cursor-pointer shadow-sm rounded-md p-2 text-center font-semibold text-[9px] color-sub-process w-[150px] min-h-[48px] flex items-center justify-center relative">
+                                                            <span class="node-text">ESTOQUE FERRAMENTAS MATRIZ</span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
                     </div>
 
                 </div>
 
-                <!-- POPUP DE LINK FLUTUANTE (Réplica de alta fidelidade ao Google Desenhos/Drive da imagem image_36a3da.png) -->
-                <div id="link-preview-bubble" class="absolute bg-white shadow-2xl border border-slate-300 rounded-lg p-3 hidden z-30 w-[350px] transition-all duration-150 animate-fade-in text-slate-800 font-sans">
+                <!-- POPUP DE LINK FLUTUANTE (Réplica exata da imagem original) -->
+                <div id="link-preview-bubble" class="absolute bg-white shadow-2xl border border-slate-300 rounded-lg p-3 hidden z-30 w-[350px] transition-all duration-150 text-slate-800 font-sans">
                     <div class="flex items-start gap-3">
-                        <!-- Ícone do Documento (Verde Planilhas ou Azul Links) -->
+                        <!-- Ícone do Documento -->
                         <div id="bubble-doc-icon-wrapper" class="bg-emerald-100 text-emerald-700 p-2 rounded-lg shrink-0 flex items-center justify-center">
                             <i id="bubble-doc-icon" class="fa-solid fa-file-excel text-lg"></i>
                         </div>
@@ -384,7 +548,7 @@
                         </div>
                     </div>
 
-                    <!-- Pré-visualização Real da Planilha (Mimetizando a imagem do Google Drive do usuário) -->
+                    <!-- Pré-visualização Real da Planilha -->
                     <div id="bubble-preview-table-container" class="mt-2.5 border border-slate-200 rounded overflow-hidden">
                         <table class="w-full text-[9px] text-left border-collapse bg-slate-50">
                             <thead>
@@ -495,7 +659,7 @@
 
                 <div class="mt-8 pt-5 border-t border-slate-100 flex justify-between items-center text-[10px] text-slate-400">
                     <span>* Os dados estão protegidos e salvos de forma persistente no seu navegador de forma automática.</span>
-                    <button onclick="resetAllToDefault()" class="text-red-500 hover:text-red-700 font-semibold"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Resetar para Padrão</button>
+                    <button onclick="triggerResetDefault()" class="text-red-500 hover:text-red-700 font-semibold"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Resetar para Padrão</button>
                 </div>
             </div>
         </div>
@@ -552,7 +716,7 @@
                         <textarea id="config-node-desc" rows="3" placeholder="Insira instruções de apoio ou finalidade deste indicador..." class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700 leading-relaxed"></textarea>
                     </div>
 
-                    <!-- Salvar/Deletar -->
+                    <!-- Salvar -->
                     <div class="flex gap-2.5 mt-1.5">
                         <button type="submit" class="flex-grow bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-lg text-xs transition-all shadow-sm">
                             Salvar Alterações
@@ -568,19 +732,21 @@
     <!-- Overlay de Fundo para popups -->
     <div id="sidebar-overlay" onclick="closeAllModals()" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-20 hidden"></div>
 
-    <!-- JS de Controle, Manipulação e Persistência do Fluxo -->
     <script>
-        // Dados Iniciais e Estrutura dos Nós (Fiel à imagem image_36a3da.png)
+        // Dados Iniciais e Estrutura dos Nós (Idêntico ao organograma original)
         const DEFAULT_NODES_DATA = {
             "operacao": { name: "OPERAÇÃO", type: "color-macro-top", linkType: "none", url: "", tabId: "", desc: "Fluxo Geral de Processos e Indicadores de Operação." },
             "gestao_frota": { name: "GESTÃO DA FROTA", type: "color-macro-sub", linkType: "none", url: "", tabId: "", desc: "Gestão macro da frota." },
+            "gestao_agregados": { name: "GESTÃO DE AGREGADOS", type: "color-macro-sub", linkType: "none", url: "", tabId: "", desc: "Gestão e controle de agregados." },
+            "agregados_vazio": { name: "", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
+            "estoque_ferramentas": { name: "ESTOQUE FERRAMENTAS MATRIZ", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "Controle de estoque de ferramentas matriz." },
             
             "prog_veiculos": { name: "PROGRAMAÇÃO DE VEÍCULOS", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
             "disp_recursos": { name: "GESTÃO DE DISP. RECURSOS", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "disp_frota": { name: "Disponibilidade da frota", type: "color-indicator", linkType: "none", url: "", tabId: "", desc: "Painel de percentual de carros prontos para escala." },
             
             "prog_folgas": { name: "PROGRAMAÇÃO DE FOLGAS", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
-            "alinhamento_folgas": { name: "Alinhamento de início e retorno das folgas x Manutenção durante o período", type: "color-indicator", linkType: "internal", url: "", tabId: "internal-tab-folgas", desc: "Planilha interna de organização de escalas." },
+            "alinhamento_folgas": { name: "Alinhamento de início e retorno das folgas x Manutenção no período", type: "color-indicator", linkType: "internal", url: "", tabId: "internal-tab-folgas", desc: "Planilha interna de organização de escalas." },
             
             "gestao_clientes": { name: "GESTÃO DE CLIENTES", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "objetivos_rotas": { name: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES.", type: "color-to-develop", linkType: "none", url: "", tabId: "", desc: "" },
@@ -633,10 +799,10 @@
             tabs: JSON.parse(JSON.stringify(DEFAULT_TABS_DATA))
         };
 
-        // Zoom atual do diagrama
         let currentZoom = 1.0;
         let activeNodeId = "";
         let selectedLinkType = "none";
+        let confirmCallback = null;
 
         // Inicialização
         window.onload = function() {
@@ -644,9 +810,30 @@
             applyNodeStylingAndData();
             renderCustomTabsList();
             renderDynamicTabsMenu();
+            initCustomConfirm();
         };
 
-        // Função de notificações customizadas
+        // Inicialização do Modal de Confirmação customizado
+        function initCustomConfirm() {
+            document.getElementById("btn-confirm-cancel").onclick = closeConfirmModal;
+            document.getElementById("btn-confirm-action").onclick = () => {
+                if (confirmCallback) confirmCallback();
+                closeConfirmModal();
+            };
+        }
+
+        function showCustomConfirm(title, message, callback) {
+            document.getElementById("confirm-title").innerText = title;
+            document.getElementById("confirm-message").innerText = message;
+            confirmCallback = callback;
+            document.getElementById("confirm-modal").classList.remove("hidden");
+        }
+
+        function closeConfirmModal() {
+            document.getElementById("confirm-modal").classList.add("hidden");
+            confirmCallback = null;
+        }
+
         function showToast(message, type = 'success') {
             const container = document.getElementById("toast-container");
             const toast = document.createElement("div");
@@ -681,7 +868,6 @@
             }
         }
 
-        // Aplica textos, cores e badges de link nos blocos do fluxo
         function applyNodeStylingAndData() {
             Object.keys(systemData.nodes).forEach(nodeId => {
                 const nodeEl = document.getElementById(`node-${nodeId}`);
@@ -691,9 +877,9 @@
 
                 // Atualizar texto
                 const textEl = nodeEl.querySelector('.node-text');
-                if (textEl) textEl.innerText = data.name;
+                if (textEl && data.name) textEl.innerText = data.name;
 
-                // Configurar badge indicadora de link
+                // Configurar badge de link
                 const badgeEl = nodeEl.querySelector('.link-badge');
                 if (badgeEl) {
                     if (data.linkType !== "none") {
@@ -710,9 +896,8 @@
             });
         }
 
-        // Ajustes de Zoom do Diagrama
         function adjustZoom(factor) {
-            currentZoom = Math.max(0.5, Math.min(1.5, currentZoom + factor));
+            currentZoom = Math.max(0.4, Math.min(1.5, currentZoom + factor));
             applyZoom();
         }
 
@@ -727,7 +912,6 @@
             document.getElementById("zoom-indicator").innerText = `${Math.round(currentZoom * 100)}%`;
         }
 
-        // Gerenciador de Abas de Navegação Superiores
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('flex'));
@@ -742,7 +926,6 @@
                 }
             }
 
-            // Atualiza visual dos botões
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('bg-blue-600', 'text-white', 'shadow-sm');
                 btn.classList.add('text-slate-400', 'hover:bg-slate-900', 'hover:text-white');
@@ -756,26 +939,22 @@
             closePreviewBubble();
         }
 
-        // Evento ao Clicar em qualquer Caixa do Diagrama
         function handleNodeClick(nodeId, event) {
             event.stopPropagation();
             activeNodeId = nodeId;
 
-            // Remover destaque de outros nós e destacar o selecionado
             document.querySelectorAll('.node-card').forEach(n => n.classList.remove('node-selected'));
             const targetEl = document.getElementById(`node-${nodeId}`);
             if (targetEl) targetEl.classList.add('node-selected');
 
-            // Abrir pop-up flutuante
             showPreviewBubble(nodeId, targetEl);
         }
 
-        // Posiciona e Exibe o Balão de Atalho do Link (estilo Google Desenhos)
         function showPreviewBubble(nodeId, element) {
             const nodeData = systemData.nodes[nodeId];
             const bubble = document.getElementById("link-preview-bubble");
 
-            document.getElementById("bubble-node-title").innerText = nodeData.name;
+            document.getElementById("bubble-node-title").innerText = nodeData.name || "Sem Nome";
 
             const iconWrapper = document.getElementById("bubble-doc-icon-wrapper");
             const iconEl = document.getElementById("bubble-doc-icon");
@@ -783,7 +962,6 @@
             const btnAction = document.getElementById("bubble-btn-action");
             const tableContainer = document.getElementById("bubble-preview-table-container");
 
-            // Configuração visual de acordo com o vínculo do link
             if (nodeData.linkType === 'none') {
                 iconWrapper.className = "bg-slate-100 text-slate-600 p-2 rounded-lg shrink-0 flex items-center justify-center";
                 iconEl.className = "fa-solid fa-file-lines text-lg";
@@ -805,7 +983,6 @@
                 iconEl.className = "fa-solid fa-table text-lg";
                 subTypeEl.innerText = "Página & Planilha Interna";
                 
-                // Exibe os dados de pré-visualização reais da planilha criada!
                 const linkedTab = systemData.tabs.find(t => t.id === nodeData.tabId);
                 if (linkedTab) {
                     tableContainer.classList.remove('hidden');
@@ -819,12 +996,10 @@
                 }
             }
 
-            // Posicionamento absoluto do balão flutuante em relação ao card clicado
             const rect = element.getBoundingClientRect();
             const canvasContainer = element.closest('.bg-slate-50');
             const canvasRect = canvasContainer.getBoundingClientRect();
 
-            // Cálculo relativo ao container rolável
             const topPosition = (rect.bottom - canvasRect.top) + canvasContainer.scrollTop + 8;
             const leftPosition = (rect.left - canvasRect.left) + canvasContainer.scrollLeft + (rect.width / 2) - 175;
 
@@ -833,7 +1008,6 @@
             bubble.classList.remove('hidden');
         }
 
-        // Desenha a mini-tabela com as 3 primeiras linhas da planilha vinculada
         function renderMiniPreviewTable(tab) {
             const tbody = document.getElementById("bubble-preview-table-body");
             tbody.innerHTML = "";
@@ -843,7 +1017,7 @@
                 return;
             }
 
-            const rows = tab.tableData.slice(0, 3); // Apenas as primeiras 3 linhas
+            const rows = tab.tableData.slice(0, 3);
             rows.forEach(row => {
                 const keys = Object.keys(row);
                 tbody.innerHTML += `
@@ -882,32 +1056,28 @@
             document.querySelectorAll('.node-card').forEach(n => n.classList.remove('node-selected'));
         }
 
-        // Fecha o balão de atalho ao clicar fora do diagrama ou balão
         document.addEventListener('click', (e) => {
             if (!e.target.closest('#link-preview-bubble') && !e.target.closest('.node-card')) {
                 closePreviewBubble();
             }
         });
 
-        // Configuração de Modais e Edição do Quadrado
         function openConfigModal() {
             const data = systemData.nodes[activeNodeId];
             if (!data) return;
 
-            document.getElementById("modal-node-title").innerText = data.name;
-            document.getElementById("config-node-name").value = data.name;
+            document.getElementById("modal-node-title").innerText = data.name || "Configurações";
+            document.getElementById("config-node-name").value = data.name || "";
             document.getElementById("config-node-desc").value = data.desc || "";
 
-            // Popular select de abas internas
             const tabSelect = document.getElementById("config-node-tab");
             tabSelect.innerHTML = systemData.tabs.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
 
-            // Selecionar o tipo de link e configurar valores
             selectLinkType(data.linkType);
             if (data.linkType === 'external') {
-                document.getElementById("config-node-url").value = data.url;
+                document.getElementById("config-node-url").value = data.url || "";
             } else if (data.linkType === 'internal') {
-                document.getElementById("config-node-tab").value = data.tabId;
+                document.getElementById("config-node-tab").value = data.tabId || "";
             }
 
             document.getElementById("config-modal").classList.remove('hidden');
@@ -932,7 +1102,6 @@
                 activeBtn.classList.remove('text-slate-600');
             }
 
-            // Ocultar e exibir inputs apropriados
             document.getElementById("link-input-external").classList.add('hidden');
             document.getElementById("link-input-internal").classList.add('hidden');
 
@@ -943,7 +1112,6 @@
             }
         }
 
-        // Salvar as edições do nó/quadrado do diagrama
         function saveNodeConfig(event) {
             event.preventDefault();
             const data = systemData.nodes[activeNodeId];
@@ -966,7 +1134,6 @@
             showToast("Configuração salva com sucesso!");
         }
 
-        // Gerenciamento de Abas Internas / Páginas
         function createCustomTab(event) {
             event.preventDefault();
             const name = document.getElementById("new-tab-name").value.trim();
@@ -992,7 +1159,6 @@
             showToast(`Aba "${name}" criada com sucesso!`);
         }
 
-        // Lista as abas na aba de Gerenciamento
         function renderCustomTabsList() {
             const container = document.getElementById("custom-tabs-list");
             if (systemData.tabs.length === 0) {
@@ -1011,24 +1177,20 @@
                     </div>
                     <div class="flex gap-1.5">
                         <button onclick="switchTab('${tab.id}')" class="bg-blue-50 hover:bg-blue-100 text-blue-600 px-3 py-1.5 rounded-md text-[10px] font-bold transition-all"><i class="fa-solid fa-eye mr-1"></i> Ver Aba</button>
-                        <button onclick="deleteCustomTab('${tab.id}')" class="text-slate-400 hover:text-red-600 p-2 text-xs transition-colors"><i class="fa-solid fa-trash-can"></i></button>
+                        <button onclick="triggerDeleteCustomTab('${tab.id}')" class="text-slate-400 hover:text-red-600 p-2 text-xs transition-colors"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
                 </div>
             `).join('');
         }
 
-        // Atualiza a navegação superior principal e cria as páginas reais em HTML no container
         function renderDynamicTabsMenu() {
-            // Remover botões dinâmicos antigos do header
             document.querySelectorAll(".dynamic-header-tab").forEach(tab => tab.remove());
-            // Remover seções de conteúdo dinâmico antigas da main
             document.querySelectorAll(".dynamic-tab-section").forEach(sec => sec.remove());
 
             const nav = document.querySelector("nav");
             const main = document.querySelector("main");
 
             systemData.tabs.forEach(tab => {
-                // Adicionar botão no header
                 const btn = document.createElement("button");
                 btn.id = `btn-${tab.id}`;
                 btn.className = "tab-btn dynamic-header-tab px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all";
@@ -1036,7 +1198,6 @@
                 btn.innerHTML = `<i class="fa-solid ${tab.icon} mr-1.5"></i>${tab.name}`;
                 nav.appendChild(btn);
 
-                // Criar seção de conteúdo da página (Contendo mini-tabelas editáveis)
                 const section = document.createElement("div");
                 section.id = `tab-${tab.id}`;
                 section.className = "tab-content dynamic-tab-section flex-grow hidden flex-col overflow-auto p-5";
@@ -1054,14 +1215,12 @@
                         </div>
                         
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 flex-grow overflow-auto min-h-0">
-                            <!-- Bloco de Texto / Procedimento -->
                             <div class="bg-slate-50 p-4 rounded-lg border flex flex-col gap-2 min-h-[220px]">
                                 <label class="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Anotações & Manual do Processo</label>
                                 <textarea id="custom-notes-${tab.id}" class="flex-grow w-full text-xs bg-white border border-slate-200 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700 leading-relaxed resize-none" placeholder="Escreva aqui procedimentos padrões do processo...">${tab.notes || ""}</textarea>
-                                <button onclick="saveCustomTabNotes('${tab.id}')" class="bg-slate-850 hover:bg-slate-900 bg-slate-800 text-white text-[10px] font-bold py-2 rounded-lg transition-all w-full">Salvar Procedimentos</button>
+                                <button onclick="saveCustomTabNotes('${tab.id}')" class="bg-slate-800 hover:bg-slate-900 text-white text-[10px] font-bold py-2 rounded-lg transition-all w-full">Salvar Procedimentos</button>
                             </div>
 
-                            <!-- Lançamentos da Tabela -->
                             <div class="lg:col-span-2 flex flex-col gap-3 min-h-0">
                                 <div class="bg-slate-50 p-3.5 rounded-lg border">
                                     <label class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-2">Lançamento de Indicadores</label>
@@ -1075,7 +1234,7 @@
 
                                 <div class="border rounded-lg overflow-hidden flex-grow overflow-auto bg-slate-50/50">
                                     <table class="w-full text-[11px] text-left border-collapse" id="table-custom-${tab.id}">
-                                        <!-- Populada via JS -->
+                                        <!-- Tabelas internas -->
                                     </table>
                                 </div>
                             </div>
@@ -1087,7 +1246,6 @@
             });
         }
 
-        // Salva as notas de uma aba customizada
         function saveCustomTabNotes(tabId) {
             const tab = systemData.tabs.find(t => t.id === tabId);
             if (tab) {
@@ -1097,28 +1255,32 @@
             }
         }
 
-        // Deleta uma aba/página inteira
-        function deleteCustomTab(tabId) {
-            if (confirm("Deseja realmente remover esta página interna? Todas as associações com os blocos do diagrama serão desfeitas.")) {
-                // Limpar associações no diagrama
-                Object.keys(systemData.nodes).forEach(key => {
-                    if (systemData.nodes[key].tabId === tabId) {
-                        systemData.nodes[key].linkType = 'none';
-                        systemData.nodes[key].tabId = '';
-                    }
-                });
-
-                systemData.tabs = systemData.tabs.filter(t => t.id !== tabId);
-                saveToLocalStorage();
-                renderCustomTabsList();
-                renderDynamicTabsMenu();
-                applyNodeStylingAndData();
-                switchTab('diagram-view');
-                showToast("Página excluída.", "success");
-            }
+        // Resolvido: substituído o confirm() nativo pelo modal customizado para deletar abas
+        function triggerDeleteCustomTab(tabId) {
+            showCustomConfirm(
+                "Remover Página Interna?", 
+                "Isso removerá permanentemente esta página e todos os seus históricos de dados lançados. Deseja prosseguir?", 
+                () => deleteCustomTab(tabId)
+            );
         }
 
-        // Lançamento de dados na tabela da aba dinâmica
+        function deleteCustomTab(tabId) {
+            Object.keys(systemData.nodes).forEach(key => {
+                if (systemData.nodes[key].tabId === tabId) {
+                    systemData.nodes[key].linkType = 'none';
+                    systemData.nodes[key].tabId = '';
+                }
+            });
+
+            systemData.tabs = systemData.tabs.filter(t => t.id !== tabId);
+            saveToLocalStorage();
+            renderCustomTabsList();
+            renderDynamicTabsMenu();
+            applyNodeStylingAndData();
+            switchTab('diagram-view');
+            showToast("Página excluída.", "success");
+        }
+
         function addTableRow(event, tabId) {
             event.preventDefault();
             const form = event.target;
@@ -1139,7 +1301,6 @@
             showToast("Registro lançado!");
         }
 
-        // Renderização da tabela interna
         function renderCustomTabTable(tabId) {
             const table = document.getElementById(`table-custom-${tabId}`);
             const tab = systemData.tabs.find(t => t.id === tabId);
@@ -1182,7 +1343,6 @@
             }
         }
 
-        // Importação e Exportação de Configurações do Sistema
         function exportDiagramData() {
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(systemData, null, 2));
             const dlAnchorElem = document.createElement('a');
@@ -1219,15 +1379,23 @@
             reader.readAsText(file);
         }
 
+        // Resolvido: substituído o confirm() nativo pelo modal customizado para redefinir dados de fábrica
+        function triggerResetDefault() {
+            showCustomConfirm(
+                "Redefinir Configurações?", 
+                "Isso apagará permanentemente todos os seus dados personalizados, links e novas abas do navegador. Deseja redefinir?", 
+                resetAllToDefault
+            );
+        }
+
         function resetAllToDefault() {
-            if (confirm("Isso excluirá permanentemente todos os links, páginas internas e histórico de dados cadastrados. Deseja redefinir?")) {
-                localStorage.removeItem("ProMap_Indicadores_DB_v2");
-                location.reload();
-            }
+            localStorage.removeItem("ProMap_Indicadores_DB_v2");
+            location.reload();
         }
 
         function closeAllModals() {
             closeConfigModal();
+            closeConfirmModal();
         }
     </script>
 </body>
