@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-PT">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,7 +18,7 @@
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc;
         }
-        /* Cores fiéis ao diagrama original da imagem image_420123.png */
+        /* Cores fiéis ao diagrama original da imagem */
         .color-macro-top { background-color: #a4c2f4; color: #1e3a8a; border: 1.5px solid #7fa5e3; } 
         .color-macro-sub { background-color: #ffff00; color: #000000; border: 1.5px solid #e6e600; } 
         .color-process-key { background-color: #f4cccc; color: #5c2626; border: 1.5px solid #e0b3b3; } 
@@ -75,6 +75,7 @@
             left: 50%;
             border-left: 2px solid #cbd5e1;
         }
+        
         /* Configurações para filhos únicos, primeiros e últimos */
         .tree li:only-child::after, .tree li:only-child::before {
             display: none;
@@ -82,8 +83,10 @@
         .tree li:only-child {
             padding-top: 15px;
         }
+        /* Correção para renderizar corretamente a linha vertical nos filhos únicos */
         .tree li:only-child::before {
             content: '';
+            display: block !important; 
             position: absolute;
             top: 0;
             left: 50%;
@@ -123,7 +126,7 @@
             z-index: 10;
         }
         
-        /* Custom scrollbar para visual limpo */
+        /* Barra de rolagem personalizada */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -154,7 +157,7 @@
                 </div>
                 <div>
                     <h3 id="confirm-title" class="font-bold text-sm text-slate-800">Confirmar Ação</h3>
-                    <p id="confirm-message" class="text-xs text-slate-500 mt-1">Deseja realmente prosseguir?</p>
+                    <p id="confirm-message" class="text-xs text-slate-500 mt-1">Tem a certeza de que deseja continuar?</p>
                 </div>
             </div>
             <div class="flex justify-end gap-2 mt-2">
@@ -164,7 +167,7 @@
         </div>
     </div>
 
-    <!-- Topbar / Cabeçalho -->
+    <!-- Cabeçalho Principal -->
     <header class="bg-slate-900 text-white px-6 py-3 flex items-center justify-between shadow-md shrink-0 border-b border-slate-800">
         <div class="flex items-center gap-3">
             <div class="bg-gradient-to-tr from-blue-600 to-indigo-600 text-white p-2 rounded-xl shadow-inner font-bold flex items-center justify-center">
@@ -172,25 +175,25 @@
             </div>
             <div>
                 <h1 class="text-base font-bold tracking-tight">ProMap Studio</h1>
-                <p class="text-[11px] text-slate-400">Fluxograma de Operações & Indicadores Integrados</p>
+                <p class="text-[11px] text-slate-400">Fluxograma de Operações e Indicadores Integrados</p>
             </div>
         </div>
 
-        <!-- Menu de Abas Globais -->
+        <!-- Menu de Navegação Global -->
         <nav class="flex gap-1.5 bg-slate-950 p-1.5 rounded-xl border border-slate-800/80">
             <button onclick="switchTab('diagram-view')" id="btn-diagram-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold transition-all bg-blue-600 text-white shadow-sm">
                 <i class="fa-solid fa-network-wired mr-1.5"></i>Fluxograma do Processo
             </button>
             <button onclick="switchTab('custom-tabs-view')" id="btn-custom-tabs-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all">
-                <i class="fa-solid fa-folder-plus mr-1.5"></i>Gerenciar Páginas / Abas
+                <i class="fa-solid fa-folder-plus mr-1.5"></i>Gerir Páginas e Separadores
             </button>
             <button onclick="switchTab('backup-view')" id="btn-backup-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all">
-                <i class="fa-solid fa-file-export mr-1.5"></i>Backup & Dados
+                <i class="fa-solid fa-file-export mr-1.5"></i>Cópia de Segurança e Dados
             </button>
         </nav>
 
         <div class="text-xs text-slate-400 flex items-center gap-3">
-            <!-- Botões Rápidos de Zoom -->
+            <!-- Controlos de Zoom -->
             <div class="flex items-center bg-slate-950 border border-slate-800 rounded-lg p-0.5">
                 <button onclick="adjustZoom(-0.1)" class="px-2 py-1 hover:text-white transition-colors" title="Diminuir Zoom"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
                 <span id="zoom-indicator" class="text-[10px] font-mono px-1 min-w-[35px] text-center">100%</span>
@@ -198,51 +201,55 @@
                 <button onclick="resetZoom()" class="px-2 py-1 hover:text-white transition-colors border-l border-slate-800 ml-0.5" title="Resetar"><i class="fa-solid fa-arrows-to-eye"></i></button>
             </div>
             <span class="bg-emerald-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-emerald-400 border border-emerald-500/20">
-                <i class="fa-solid fa-cloud-arrow-up mr-1 animate-pulse"></i>Autosave Ativo
+                <i class="fa-solid fa-cloud-arrow-up mr-1 animate-pulse"></i>Gravação Automática Ativa
             </span>
         </div>
     </header>
 
-    <!-- Main Content Area -->
+    <!-- Área de Conteúdo Principal -->
     <main class="flex-grow flex overflow-hidden relative bg-slate-100">
 
-        <!-- ABA 1: DIAGRAMA INTERATIVO -->
+        <!-- SEPARADOR 1: DIAGRAMA INTERATIVO -->
         <div id="tab-diagram-view" class="tab-content flex-grow flex flex-col overflow-auto p-4 w-full h-full">
             
-            <!-- Barra informativa com legenda rápida -->
+            <!-- Barra Informativa com Legenda Integrada e Horizontal -->
             <div class="mb-3 shrink-0 flex flex-wrap gap-4 justify-between items-center bg-white p-3 rounded-xl shadow-sm border border-slate-200">
-                <div>
+                <div class="max-w-xl">
                     <h2 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Mapeador Operacional Interativo</h2>
-                    <p class="text-[11px] text-slate-500 mt-0.5">Clique em qualquer bloco para adicionar anotações, criar formulários, definir links externos ou vincular planilhas internas.</p>
+                    <p class="text-[11px] text-slate-500 mt-0.5">Clique em qualquer bloco para adicionar anotações, criar formulários, definir hiperligações externas ou associar tabelas de dados.</p>
                 </div>
-                <!-- Legendas baseadas no original -->
-                <div class="flex flex-wrap gap-2.5 text-[10px] font-bold">
-                    <span class="flex items-center gap-1"><span class="w-3 h-3 rounded color-macro-sub inline-block"></span> MACRO GESTÃO</span>
-                    <span class="flex items-center gap-1"><span class="w-3 h-3 rounded color-process-key inline-block"></span> PROCESSOS CHAVE</span>
-                    <span class="flex items-center gap-1"><span class="w-3 h-3 rounded color-sub-process inline-block"></span> SUB PROCESSOS</span>
-                    <span class="flex items-center gap-1"><span class="w-3 h-3 rounded color-indicator inline-block"></span> INDICADORES</span>
-                    <span class="flex items-center gap-1"><span class="w-3 h-3 rounded color-to-develop inline-block"></span> PROCESSOS A DESENVOLVER</span>
+                
+                <!-- Legenda Compacta e Horizontal no Topo -->
+                <div class="flex flex-wrap gap-x-4 gap-y-1.5 items-center text-[10px] font-bold text-slate-700 bg-slate-50/80 px-3 py-2 rounded-lg border border-slate-100 shadow-2xs">
+                    <span class="flex items-center gap-1.5 text-slate-500 uppercase tracking-wider text-[9px] border-r pr-3 border-slate-200">
+                        <i class="fa-solid fa-tags"></i> Legenda
+                    </span>
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm color-macro-sub inline-block shrink-0"></span> GESTÃO MACRO</span>
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm color-process-key inline-block shrink-0"></span> PROCESSOS-CHAVE</span>
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm color-sub-process inline-block shrink-0"></span> SUBPROCESSOS</span>
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm color-indicator inline-block shrink-0"></span> INDICADORES</span>
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm color-to-develop inline-block shrink-0"></span> PROCESSOS A DESENVOLVER</span>
                 </div>
             </div>
 
-            <!-- Canvas do Diagrama com suporte a Zoom e Árvore Conectora Fidedigna -->
+            <!-- Canvas do Diagrama -->
             <div class="flex-grow bg-slate-50 rounded-xl border border-slate-200 overflow-auto relative p-6">
                 
-                <div id="diagram-scale-container" class="origin-top-left transition-transform duration-100 ease-out min-w-[2100px] py-4">
+                <div id="diagram-scale-container" class="origin-top-left transition-transform duration-100 ease-out min-w-[1750px] py-4">
                     
                     <div class="tree">
                         <ul>
                             <li>
-                                <!-- Nível 1: OPERAÇÃO (Macro Top) -->
+                                <!-- Nível 1: OPERAÇÃO -->
                                 <div class="tree-node-wrapper has-children">
-                                    <div id="node-operacao" onclick="handleNodeClick('operacao', event)" class="node-card cursor-pointer shadow-sm rounded-lg p-3.5 text-center font-extrabold text-base color-macro-top w-[95vw] max-w-[2000px] relative">
+                                    <div id="node-operacao" onclick="handleNodeClick('operacao', event)" class="node-card cursor-pointer shadow-sm rounded-lg p-3.5 text-center font-extrabold text-base color-macro-top w-[95vw] max-w-[1650px] relative">
                                         <span class="node-text">OPERAÇÃO</span>
-                                        <span class="link-badge absolute right-3 top-3.5 hidden text-blue-700 bg-white/90 px-1.5 py-0.5 rounded text-[10px] font-bold shadow-sm"><i class="fa-solid fa-link"></i> Linked</span>
+                                        <span class="link-badge absolute right-3 top-3.5 hidden text-blue-700 bg-white/90 px-1.5 py-0.5 rounded text-[10px] font-bold shadow-sm"><i class="fa-solid fa-link"></i> Associado</span>
                                     </div>
                                 </div>
                                 
                                 <ul>
-                                    <!-- LADO ESQUERDO: GESTÃO DA FROTA E SUAS 5 COLUNAS -->
+                                    <!-- ÚNICA COLUNA PRINCIPAL: GESTÃO DA FROTA -->
                                     <li>
                                         <div class="tree-node-wrapper has-children">
                                             <div id="node-gestao_frota" onclick="handleNodeClick('gestao_frota', event)" class="node-card cursor-pointer shadow-sm rounded-md py-2 w-[320px] text-center font-bold text-sm color-macro-sub relative">
@@ -251,9 +258,9 @@
                                             </div>
                                         </div>
 
-                                        <!-- Sub-árvore de 5 Colunas Principais -->
+                                        <!-- Sub-árvore de 5 Colunas -->
                                         <ul>
-                                            <!-- Coluna 1: Programação de Veículos (3 subcolunas) -->
+                                            <!-- Coluna 1: Programação de Veículos -->
                                             <li>
                                                 <div class="tree-node-wrapper has-children">
                                                     <div id="node-prog_veiculos" onclick="handleNodeClick('prog_veiculos', event)" class="w-[160px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
@@ -307,7 +314,7 @@
                                                         <ul>
                                                             <li>
                                                                 <div id="node-objetivos_rotas" onclick="handleNodeClick('objetivos_rotas', event)" class="w-[125px] text-center p-1.5 text-[8px] font-semibold rounded color-to-develop shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-snug">
-                                                                    <span class="node-text">OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADOS.</span>
+                                                                    <span class="node-text">OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES.</span>
                                                                     <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                                 </div>
                                                             </li>
@@ -316,7 +323,7 @@
                                                 </ul>
                                             </li>
 
-                                            <!-- Coluna 2: Acompanhamento de Jornada (2 subcolunas) -->
+                                            <!-- Coluna 2: Acompanhamento de Jornada -->
                                             <li>
                                                 <div class="tree-node-wrapper has-children">
                                                     <div id="node-acomp_jornada" onclick="handleNodeClick('acomp_jornada', event)" class="w-[160px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
@@ -342,11 +349,11 @@
                                                             </li>
                                                         </ul>
                                                     </li>
-                                                    <!-- Sub 2.2: CONTROLE DE COMBUSTÍVEL -->
+                                                    <!-- Sub 2.2: CONTROLO DE COMBUSTÍVEL -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
                                                             <div id="node-controle_combustivel" onclick="handleNodeClick('controle_combustivel', event)" class="w-[125px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
-                                                                <span class="node-text">CONTROLE DE COMBUSTÍVEL</span>
+                                                                <span class="node-text">CONTROLO DE COMBUSTÍVEL</span>
                                                                 <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                             </div>
                                                         </div>
@@ -354,11 +361,10 @@
                                                             <li>
                                                                 <div class="tree-node-wrapper has-children">
                                                                     <div id="node-perc_combustivel" onclick="handleNodeClick('perc_combustivel', event)" class="w-[125px] text-center p-1.5 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
-                                                                        <span class="node-text">Percentual Combustível x Faturamento Líquido</span>
+                                                                        <span class="node-text">Percentagem Combustível x Faturação Líquida</span>
                                                                         <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                                     </div>
                                                                 </div>
-                                                                <!-- Divisão para os indicadores inferiores de Combustível -->
                                                                 <ul>
                                                                     <li>
                                                                         <div id="node-preco_l" onclick="handleNodeClick('preco_l', event)" class="w-[65px] text-center p-1 text-[8px] font-bold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer relative node-card leading-tight">
@@ -377,20 +383,20 @@
                                                 </ul>
                                             </li>
 
-                                            <!-- Coluna 3: Fechamento de Resultados (3 subcolunas) -->
+                                            <!-- Coluna 3: Fecho de Resultados -->
                                             <li>
                                                 <div class="tree-node-wrapper has-children">
                                                     <div id="node-fech_resultados" onclick="handleNodeClick('fech_resultados', event)" class="w-[160px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
-                                                        <span class="node-text">FECHAMENTO DE RESULTADOS</span>
+                                                        <span class="node-text">FECHO DE RESULTADOS</span>
                                                         <span class="link-badge absolute right-1.5 top-1.5 hidden text-red-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                     </div>
                                                 </div>
                                                 <ul>
-                                                    <!-- Sub 3.1: FECHAMENTO JORNADA MOTORISTA -->
+                                                    <!-- Sub 3.1: FECHO JORNADA MOTORISTA -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
                                                             <div id="node-fech_jornada" onclick="handleNodeClick('fech_jornada', event)" class="w-[120px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
-                                                                <span class="node-text">FECHAMENTO JORNADA MOTORISTA</span>
+                                                                <span class="node-text">FECHO JORNADA MOTORISTA</span>
                                                                 <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                             </div>
                                                         </div>
@@ -402,11 +408,11 @@
                                                             </li>
                                                         </ul>
                                                     </li>
-                                                    <!-- Sub 3.2: FECHAMENTO MENSAL FROTA -->
+                                                    <!-- Sub 3.2: FECHO MENSAL FROTA -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
                                                             <div id="node-fech_mensal_frota" onclick="handleNodeClick('fech_mensal_frota', event)" class="w-[120px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
-                                                                <span class="node-text">FECHAMENTO MENSAL FROTA</span>
+                                                                <span class="node-text">FECHO MENSAL FROTA</span>
                                                                 <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                             </div>
                                                         </div>
@@ -418,11 +424,11 @@
                                                             </li>
                                                         </ul>
                                                     </li>
-                                                    <!-- Sub 3.3: FECHAMENTO MENSAL CLIENTES/FROTA -->
+                                                    <!-- Sub 3.3: FECHO MENSAL CLIENTES/FROTA -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
                                                             <div id="node-fech_clientes_frota" onclick="handleNodeClick('fech_clientes_frota', event)" class="w-[120px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
-                                                                <span class="node-text">FECHAMENTO MENSAL CLIENTES/FROTA</span>
+                                                                <span class="node-text">FECHO MENSAL CLIENTES/FROTA</span>
                                                                 <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                             </div>
                                                         </div>
@@ -437,12 +443,11 @@
                                                 </ul>
                                             </li>
 
-                                            <!-- Coluna 4: Planejamento / Desenvolvimento (Largura Ampliada para evitar vazamento de Título) -->
+                                            <!-- Coluna 4: Planeamento / Desenvolvimento - Frota -->
                                             <li>
                                                 <div class="tree-node-wrapper has-children">
-                                                    <!-- Resolvido: w-[210px] garante que o título longo não ultrapasse as bordas -->
                                                     <div id="node-planejamento_frota" onclick="handleNodeClick('planejamento_frota', event)" class="w-[210px] text-center p-2 font-bold text-[10px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card leading-tight">
-                                                        <span class="node-text">PLANEJAMENTO/DESENVOLVIMENTO - FROTA</span>
+                                                        <span class="node-text">PLANEAMENTO/DESENVOLVIMENTO - FROTA</span>
                                                         <span class="link-badge absolute right-1.5 top-1.5 hidden text-red-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                     </div>
                                                 </div>
@@ -464,7 +469,7 @@
                                                 </ul>
                                             </li>
 
-                                            <!-- Coluna 5: Regularização Frota (2 subcolunas) -->
+                                            <!-- Coluna 5: Regularização Frota -->
                                             <li>
                                                 <div class="tree-node-wrapper has-children">
                                                     <div id="node-regularizacao_frota" onclick="handleNodeClick('regularizacao_frota', event)" class="w-[160px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
@@ -489,34 +494,6 @@
                                             </li>
                                         </ul>
                                     </li>
-
-                                    <!-- LADO DIREITO: GESTÃO DE AGREGADOS (Fidelidade estrita a image_420123.png) -->
-                                    <li>
-                                        <div class="tree-node-wrapper has-children">
-                                            <div id="node-gestao_agregados" onclick="handleNodeClick('gestao_agregados', event)" class="node-card cursor-pointer shadow-sm rounded-md py-2 w-[150px] text-center font-bold text-xs color-macro-sub relative">
-                                                <span class="node-text">GESTÃO DE AGREGADOS</span>
-                                                <span class="link-badge absolute right-1.5 top-1 hidden text-slate-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                                            </div>
-                                        </div>
-                                        <ul>
-                                            <li>
-                                                <div class="tree-node-wrapper has-children">
-                                                    <!-- Processo Chave (Vazio/Rosa) -->
-                                                    <div id="node-agregados_vazio" onclick="handleNodeClick('agregados_vazio', event)" class="node-card cursor-pointer shadow-sm rounded-md p-2.5 text-center font-bold text-xs color-process-key w-[150px] h-[50px] relative flex items-center justify-center">
-                                                        <span class="node-text"></span>
-                                                    </div>
-                                                </div>
-                                                <ul>
-                                                    <li>
-                                                        <!-- Subprocesso Estoque Ferramentas Matriz -->
-                                                        <div id="node-estoque_ferramentas" onclick="handleNodeClick('estoque_ferramentas', event)" class="node-card cursor-pointer shadow-sm rounded-md p-2 text-center font-semibold text-[9px] color-sub-process w-[150px] min-h-[48px] flex items-center justify-center relative">
-                                                            <span class="node-text">ESTOQUE FERRAMENTAS MATRIZ</span>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
                                 </ul>
                             </li>
                         </ul>
@@ -524,51 +501,45 @@
 
                 </div>
 
-                <!-- POPUP DE LINK FLUTUANTE (Réplica exata da imagem original) -->
+                <!-- BALÃO FLUTUANTE DE PRÉ-VISUALIZAÇÃO -->
                 <div id="link-preview-bubble" class="absolute bg-white shadow-2xl border border-slate-300 rounded-lg p-3 hidden z-30 w-[350px] transition-all duration-150 text-slate-800 font-sans">
                     <div class="flex items-start gap-3">
-                        <!-- Ícone do Documento -->
                         <div id="bubble-doc-icon-wrapper" class="bg-emerald-100 text-emerald-700 p-2 rounded-lg shrink-0 flex items-center justify-center">
                             <i id="bubble-doc-icon" class="fa-solid fa-file-excel text-lg"></i>
                         </div>
                         
                         <div class="flex-grow min-w-0">
-                            <!-- Título do Documento/Aba e Ações Rápidas -->
                             <div class="flex items-center justify-between gap-2">
                                 <span id="bubble-node-title" class="font-bold text-sm text-slate-800 truncate hover:underline cursor-pointer">Indicadores Frota</span>
                                 <div class="flex items-center gap-1.5 text-slate-500 shrink-0">
                                     <button onclick="copyCurrentLink()" class="hover:text-slate-800 p-1 rounded hover:bg-slate-100 text-xs" title="Copiar Link"><i class="fa-solid fa-copy"></i></button>
-                                    <button onclick="openConfigModal()" class="hover:text-slate-800 p-1 rounded hover:bg-slate-100 text-xs" title="Editar Configuração"><i class="fa-solid fa-pen"></i></button>
+                                    <button onclick="openConfigModal()" class="hover:text-slate-800 p-1 rounded hover:bg-slate-100 text-xs" title="Editar Configurações"><i class="fa-solid fa-pen"></i></button>
                                     <button onclick="closePreviewBubble()" class="hover:text-red-500 p-1 rounded hover:bg-slate-100 text-xs"><i class="fa-solid fa-xmark"></i></button>
                                 </div>
                             </div>
-                            
-                            <!-- Link formatado ou Tipo de Vinculação -->
-                            <p id="bubble-sub-type" class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider mt-0.5">Planilha Interna de Dados</p>
+                            <p id="bubble-sub-type" class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider mt-0.5">Tabela de Dados Interna</p>
                         </div>
                     </div>
 
-                    <!-- Pré-visualização Real da Planilha -->
+                    <!-- Pré-visualização da Tabela -->
                     <div id="bubble-preview-table-container" class="mt-2.5 border border-slate-200 rounded overflow-hidden">
                         <table class="w-full text-[9px] text-left border-collapse bg-slate-50">
                             <thead>
                                 <tr class="bg-slate-100 font-bold border-b text-slate-600">
-                                    <th class="p-1.5 border-r border-slate-200">Col 1</th>
-                                    <th class="p-1.5 border-r border-slate-200">Col 2</th>
-                                    <th class="p-1.5">Col 3</th>
+                                    <th class="p-1.5 border-r border-slate-200">Ref</th>
+                                    <th class="p-1.5 border-r border-slate-200">Métrica</th>
+                                    <th class="p-1.5">Estado</th>
                                 </tr>
                             </thead>
-                            <tbody id="bubble-preview-table-body">
-                                <!-- Preenchido dinamicamente se linkado a aba interna -->
-                            </tbody>
+                            <tbody id="bubble-preview-table-body"></tbody>
                         </table>
                     </div>
 
-                    <!-- Rodapé do Pop-up -->
+                    <!-- Rodapé do Balão -->
                     <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between">
-                        <span class="text-[9px] text-slate-400 italic font-medium">Clique no quadrado para gerenciar anotações</span>
+                        <span class="text-[9px] text-slate-400 italic font-medium">Clique no bloco para gerir anotações</span>
                         <button id="bubble-btn-action" class="bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold px-2.5 py-1 rounded transition-colors flex items-center gap-1">
-                            Acessar Planilha <i class="fa-solid fa-up-right-from-square text-[8px]"></i>
+                            Aceder <i class="fa-solid fa-up-right-from-square text-[8px]"></i>
                         </button>
                     </div>
                 </div>
@@ -576,18 +547,18 @@
             </div>
         </div>
 
-        <!-- ABA 2: GERENCIADOR DE PÁGINAS / ABAS INTERNAS -->
+        <!-- SEPARADOR 2: GERIDOR DE PÁGINAS E SEPARADORES -->
         <div id="tab-custom-tabs-view" class="tab-content flex-grow hidden flex-col overflow-auto p-6">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto w-full">
                 
-                <!-- Card de Criação de nova Aba Interna -->
+                <!-- Criador de Separador -->
                 <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex flex-col gap-4">
                     <div class="bg-blue-50 text-blue-600 w-11 h-11 rounded-xl flex items-center justify-center text-lg">
                         <i class="fa-solid fa-folder-plus"></i>
                     </div>
                     <div>
-                        <h3 class="text-sm font-bold text-slate-800">Criar Nova Página / Aba</h3>
-                        <p class="text-[11px] text-slate-500 mt-1">Gere páginas de suporte (com anotações e planilhas integradas) e anexe-as às caixas do seu diagrama.</p>
+                        <h3 class="text-sm font-bold text-slate-800">Criar Nova Página / Separador</h3>
+                        <p class="text-[11px] text-slate-500 mt-1">Crie páginas internas de trabalho (com anotações de processos e tabelas integradas) e associe-as aos blocos do fluxo.</p>
                     </div>
                     <hr class="border-slate-100">
                     <form onsubmit="createCustomTab(event)" class="flex flex-col gap-3">
@@ -599,7 +570,7 @@
                             <label class="block text-[10px] font-semibold text-slate-500 uppercase mb-1">Ícone de Identificação</label>
                             <select id="new-tab-icon" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 <option value="fa-chart-pie">📊 Indicadores / Gráficos</option>
-                                <option value="fa-gas-pump">⛽ Controle de Combustível</option>
+                                <option value="fa-gas-pump">⛽ Controlo de Combustível</option>
                                 <option value="fa-calendar-days">📅 Escala e Folgas</option>
                                 <option value="fa-list-check">✅ Checklists de Manutenção</option>
                                 <option value="fa-file-signature">📝 Relatórios e Notas</option>
@@ -607,119 +578,108 @@
                             </select>
                         </div>
                         <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold py-2.5 rounded-lg shadow-sm transition-all mt-1">
-                            Criar Nova Aba
+                            Criar Separador
                         </button>
                     </form>
                 </div>
 
-                <!-- Lista de Abas Criadas -->
+                <!-- Lista de Separadores Ativos -->
                 <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex flex-col gap-4 col-span-2">
                     <div>
-                        <h3 class="text-sm font-bold text-slate-800">Páginas & Abas Internas Ativas</h3>
-                        <p class="text-[11px] text-slate-500 mt-1">Estas são as abas ativas e que podem ser linkadas diretamente em qualquer caixa de processo.</p>
+                        <h3 class="text-sm font-bold text-slate-800">Páginas e Separadores Ativos</h3>
+                        <p class="text-[11px] text-slate-500 mt-1">Estas são as páginas operacionais internas que podem ser vinculadas a qualquer nó do diagrama.</p>
                     </div>
                     <hr class="border-slate-100">
-                    <div id="custom-tabs-list" class="flex flex-col gap-2 max-h-[350px] overflow-auto pr-1">
-                        <!-- Populado via JS -->
-                    </div>
+                    <div id="custom-tabs-list" class="flex flex-col gap-2 max-h-[350px] overflow-auto pr-1"></div>
                 </div>
 
             </div>
         </div>
 
-        <!-- ABA 3: EXPORTAÇÃO / IMPORTAÇÃO DE BACKUPS -->
+        <!-- SEPARADOR 3: CÓPIA DE SEGURANÇA E DADOS -->
         <div id="tab-backup-view" class="tab-content flex-grow hidden flex-col overflow-auto p-6">
             <div class="max-w-4xl mx-auto w-full bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                 <div class="flex items-center gap-4 mb-6">
                     <div class="bg-blue-50 text-blue-600 p-3 rounded-xl"><i class="fa-solid fa-cloud-arrow-down text-xl"></i></div>
                     <div>
-                        <h2 class="text-base font-bold text-slate-800">Gerenciador de Backup & Portabilidade</h2>
-                        <p class="text-[11px] text-slate-500">Salve seus links, anotações de processo e novas páginas criadas em um arquivo local para compartilhar com a sua equipe.</p>
+                        <h2 class="text-base font-bold text-slate-800">Gestor de Cópia de Segurança e Portabilidade</h2>
+                        <p class="text-[11px] text-slate-500">Transfira as suas configurações, tabelas de indicadores e anotações para um ficheiro local para partilhar com a equipa ou guardar como backup.</p>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="p-4 border border-slate-100 rounded-xl bg-slate-50/50">
-                        <h3 class="font-bold text-slate-800 text-xs mb-1"><i class="fa-solid fa-download mr-1.5 text-blue-600"></i>Exportar Dados de Operação</h3>
-                        <p class="text-[11px] text-slate-500 mb-4">Gere um arquivo `.json` com todo o mapeamento feito, notas, links e dados inseridos em tabelas.</p>
+                        <h3 class="font-bold text-slate-800 text-xs mb-1"><i class="fa-solid fa-download mr-1.5 text-blue-600"></i>Exportar Dados Operacionais</h3>
+                        <p class="text-[11px] text-slate-500 mb-4">Gere um ficheiro `.json` contendo todos os dados inseridos, configurações de links e notas.</p>
                         <button onclick="exportDiagramData()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg text-xs shadow-sm transition-all">
-                            Baixar Configurações (JSON)
+                            Descarregar Configurações (JSON)
                         </button>
                     </div>
 
                     <div class="p-4 border border-slate-100 rounded-xl bg-slate-50/50">
-                        <h3 class="font-bold text-slate-800 text-xs mb-1"><i class="fa-solid fa-upload mr-1.5 text-emerald-600"></i>Importar Configurações</h3>
-                        <p class="text-[11px] text-slate-500 mb-4">Selecione um arquivo `.json` exportado anteriormente para recarregar o diagrama e as planilhas criadas.</p>
+                        <h3 class="font-bold text-slate-800 text-xs mb-1"><i class="fa-solid fa-upload mr-1.5 text-emerald-600"></i>Importar Cópia de Segurança</h3>
+                        <p class="text-[11px] text-slate-500 mb-4">Carregue um ficheiro de backup `.json` existente para atualizar todo o ecossistema local do navegador.</p>
                         <input type="file" id="import-file-input" class="hidden" accept=".json" onchange="importDiagramData(event)">
                         <button onclick="document.getElementById('import-file-input').click()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-4 rounded-lg text-xs shadow-sm transition-all">
-                            Carregar Backup (.json)
+                            Carregar Cópia (.json)
                         </button>
                     </div>
                 </div>
 
                 <div class="mt-8 pt-5 border-t border-slate-100 flex justify-between items-center text-[10px] text-slate-400">
-                    <span>* Os dados estão protegidos e salvos de forma persistente no seu navegador de forma automática.</span>
-                    <button onclick="triggerResetDefault()" class="text-red-500 hover:text-red-700 font-semibold"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Resetar para Padrão</button>
+                    <span>* Os dados são armazenados de forma persistente no ecossistema local do seu navegador web atual.</span>
+                    <button onclick="triggerResetDefault()" class="text-red-500 hover:text-red-700 font-semibold"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Repor Definições de Fábrica</button>
                 </div>
             </div>
         </div>
 
-        <!-- MODAL DE CONFIGURAÇÃO DE LINKS E INFORMAÇÕES DO NÓ -->
+        <!-- MODAL DE CONFIGURAÇÃO DO BLOCO -->
         <div id="config-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
             <div class="bg-white rounded-xl w-full max-w-md shadow-2xl overflow-hidden flex flex-col border border-slate-100 animate-zoom-in">
                 
-                <!-- Cabeçalho do Modal -->
                 <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
                     <div>
-                        <span id="modal-node-type-label" class="text-[9px] font-bold uppercase tracking-wider bg-blue-100 text-blue-700 px-2 py-0.5 rounded">Configuração</span>
-                        <h3 id="modal-node-title" class="text-sm font-bold text-slate-800 mt-1">Nome do Bloco</h3>
+                        <span id="modal-node-type-label" class="text-[9px] font-bold uppercase tracking-wider bg-blue-100 text-blue-700 px-2 py-0.5 rounded">Painel de Controlo</span>
+                        <h3 id="modal-node-title" class="text-sm font-bold text-slate-800 mt-1">Título do Bloco</h3>
                     </div>
                     <button onclick="closeConfigModal()" class="text-slate-400 hover:text-slate-600 bg-white p-1 rounded-full border shadow-sm transition-transform hover:scale-110">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
 
-                <!-- Formulário do Modal -->
                 <form onsubmit="saveNodeConfig(event)" class="p-5 flex flex-col gap-4 overflow-auto max-h-[70vh]">
-                    <!-- Editar Nome -->
                     <div>
                         <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Título do Bloco</label>
                         <input type="text" id="config-node-name" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-800 font-semibold">
                     </div>
 
-                    <!-- Configurar Ação de Link -->
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Vincular Link ou Página</label>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Tipo de Ligação</label>
                         <div class="grid grid-cols-3 gap-1.5 p-1 bg-slate-100 rounded-lg">
                             <button type="button" onclick="selectLinkType('none')" id="btn-link-none" class="link-type-btn text-[10px] font-bold py-1.5 px-3 rounded text-center transition-all bg-white shadow-sm text-slate-800">Sem Link</button>
-                            <button type="button" onclick="selectLinkType('external')" id="btn-link-external" class="link-type-btn text-[10px] font-bold py-1.5 px-3 rounded text-center transition-all text-slate-600">Site Externo</button>
-                            <button type="button" onclick="selectLinkType('internal')" id="btn-link-internal" class="link-type-btn text-[10px] font-bold py-1.5 px-3 rounded text-center transition-all text-slate-600">Aba Interna</button>
+                            <button type="button" onclick="selectLinkType('external')" id="btn-link-external" class="link-type-btn text-[10px] font-bold py-1.5 px-3 rounded text-center transition-all text-slate-600">Sítio Web</button>
+                            <button type="button" onclick="selectLinkType('internal')" id="btn-link-internal" class="link-type-btn text-[10px] font-bold py-1.5 px-3 rounded text-center transition-all text-slate-600">Separador</button>
                         </div>
                     </div>
 
-                    <!-- Inputs de Link Baseados no Tipo -->
                     <div id="link-input-external" class="hidden">
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">URL Externa (Google Drive, Trello, etc.)</label>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">URL Externa (Google Sheets, Docs, Trello, etc.)</label>
                         <input type="url" id="config-node-url" placeholder="https://docs.google.com/..." class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-800">
                     </div>
 
                     <div id="link-input-internal" class="hidden">
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Vincular a uma Página Criada</label>
-                        <select id="config-node-tab" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <!-- Populado via JS -->
-                        </select>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Associar a uma Página Criada</label>
+                        <select id="config-node-tab" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"></select>
                     </div>
 
-                    <!-- Descrição/Notas de Apoio -->
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Notas Rápidas do Processo</label>
-                        <textarea id="config-node-desc" rows="3" placeholder="Insira instruções de apoio ou finalidade deste indicador..." class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700 leading-relaxed"></textarea>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Instruções e Notas Operacionais</label>
+                        <textarea id="config-node-desc" rows="3" placeholder="Insira o guia passo a passo, diretrizes de segurança ou finalidade operacional deste bloco..." class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700 leading-relaxed"></textarea>
                     </div>
 
-                    <!-- Salvar -->
                     <div class="flex gap-2.5 mt-1.5">
                         <button type="submit" class="flex-grow bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-lg text-xs transition-all shadow-sm">
-                            Salvar Alterações
+                            Guardar Alterações
                         </button>
                     </div>
                 </form>
@@ -729,24 +689,21 @@
 
     </main>
 
-    <!-- Overlay de Fundo para popups -->
+    <!-- Overlay de Fundo -->
     <div id="sidebar-overlay" onclick="closeAllModals()" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-20 hidden"></div>
 
     <script>
-        // Dados Iniciais e Estrutura dos Nós (Idêntico ao organograma original)
+        // Dados Iniciais e Estrutura Hierárquica dos Nós
         const DEFAULT_NODES_DATA = {
             "operacao": { name: "OPERAÇÃO", type: "color-macro-top", linkType: "none", url: "", tabId: "", desc: "Fluxo Geral de Processos e Indicadores de Operação." },
             "gestao_frota": { name: "GESTÃO DA FROTA", type: "color-macro-sub", linkType: "none", url: "", tabId: "", desc: "Gestão macro da frota." },
-            "gestao_agregados": { name: "GESTÃO DE AGREGADOS", type: "color-macro-sub", linkType: "none", url: "", tabId: "", desc: "Gestão e controle de agregados." },
-            "agregados_vazio": { name: "", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
-            "estoque_ferramentas": { name: "ESTOQUE FERRAMENTAS MATRIZ", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "Controle de estoque de ferramentas matriz." },
             
             "prog_veiculos": { name: "PROGRAMAÇÃO DE VEÍCULOS", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
             "disp_recursos": { name: "GESTÃO DE DISP. RECURSOS", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
-            "disp_frota": { name: "Disponibilidade da frota", type: "color-indicator", linkType: "none", url: "", tabId: "", desc: "Painel de percentual de carros prontos para escala." },
+            "disp_frota": { name: "Disponibilidade da frota", type: "color-indicator", linkType: "none", url: "", tabId: "", desc: "Acompanhamento da taxa de prontidão de veículos." },
             
             "prog_folgas": { name: "PROGRAMAÇÃO DE FOLGAS", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
-            "alinhamento_folgas": { name: "Alinhamento de início e retorno das folgas x Manutenção no período", type: "color-indicator", linkType: "internal", url: "", tabId: "internal-tab-folgas", desc: "Planilha interna de organização de escalas." },
+            "alinhamento_folgas": { name: "Alinhamento de início e retorno das folgas x Manutenção no período", type: "color-indicator", linkType: "internal", url: "", tabId: "internal-tab-folgas", desc: "Planilha de organização de folgas e conciliação com a oficina." },
             
             "gestao_clientes": { name: "GESTÃO DE CLIENTES", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "objetivos_rotas": { name: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES.", type: "color-to-develop", linkType: "none", url: "", tabId: "", desc: "" },
@@ -755,24 +712,24 @@
             "acomp_motorista": { name: "ACOMPANHAMENTO DE MOTORISTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "sat_motorista": { name: "Satisfação do motorista", type: "color-indicator", linkType: "none", url: "", tabId: "", desc: "" },
             
-            "controle_combustivel": { name: "CONTROLE DE COMBUSTÍVEL", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
-            "perc_combustivel": { name: "Percentual Combustível x Faturamento Líquido", type: "color-indicator", linkType: "none", url: "", tabId: "", desc: "" },
+            "controle_combustivel": { name: "CONTROLO DE COMBUSTÍVEL", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "perc_combustivel": { name: "Percentagem Combustível x Faturação Líquida", type: "color-indicator", linkType: "none", url: "", tabId: "", desc: "" },
             "preco_l": { name: "Preço/L", type: "color-indicator", linkType: "none", url: "", tabId: "", desc: "" },
             "consumo_medio": { name: "Consumo médio", type: "color-indicator", linkType: "none", url: "", tabId: "", desc: "" },
             
-            "fech_resultados": { name: "FECHAMENTO DE RESULTADOS", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
-            "fech_jornada": { name: "FECHAMENTO JORNADA MOTORISTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "fech_resultados": { name: "FECHO DE RESULTADOS", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
+            "fech_jornada": { name: "FECHO JORNADA MOTORISTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "perf_motorista": { name: "Performance motorista", type: "color-indicator", linkType: "none", url: "", tabId: "", desc: "" },
             
-            "fech_mensal_frota": { name: "FECHAMENTO MENSAL FROTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "fech_mensal_frota": { name: "FECHO MENSAL FROTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "res_liquido": { name: "Resultado líquido", type: "color-indicator", linkType: "none", url: "", tabId: "", desc: "" },
             
-            "fech_clientes_frota": { name: "FECHAMENTO MENSAL CLIENTES/FROTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "fech_clientes_frota": { name: "FECHO MENSAL CLIENTES/FROTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "ineficiencias_carga": { name: "Ineficiências de carga e descarga e diárias", type: "color-to-develop", linkType: "none", url: "", tabId: "", desc: "" },
             
-            "planejamento_frota": { name: "PLANEJAMENTO/DESENVOLVIMENTO - FROTA", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
+            "planejamento_frota": { name: "PLANEAMENTO/DESENVOLVIMENTO - FROTA", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
             "gestao_eficiencia": { name: "GESTÃO DE EFICIÊNCIA E PROCESSO", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
-            "definir_cronograma": { name: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO DE MANTER ATUALIZADO OS PLANOS DE AÇÃO", type: "color-to-develop", linkType: "none", url: "", tabId: "", desc: "" },
+            "definir_cronograma": { name: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO...", type: "color-to-develop", linkType: "none", url: "", tabId: "", desc: "" },
             
             "regularizacao_frota": { name: "REGULARIZAÇÃO FROTA", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
             "licenciamento": { name: "LICENCIAMENTO E ADEQUAÇÕES FROTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
@@ -784,16 +741,16 @@
                 id: "internal-tab-folgas",
                 name: "Indicadores Frota",
                 icon: "fa-chart-pie",
-                notes: "Planilha de acompanhamento e alinhamento de início/retorno das folgas x manutenção no período.",
+                notes: "Tabela de acompanhamento operacional das escalas das folgas integradas com o cronograma de manutenção de equipamentos da oficina.",
                 tableData: [
-                    { "Mês": "Janeiro", "Folgas Alinhadas": "18", "Retornos OK": "16", "Manutenção Atendida": "14" },
-                    { "Mês": "Fevereiro", "Folgas Alinhadas": "22", "Retornos OK": "21", "Manutenção Atendida": "19" },
-                    { "Mês": "Março", "Folgas Alinhadas": "25", "Retornos OK": "24", "Manutenção Atendida": "22" }
+                    { "Mês": "Janeiro", "Folgas Alinhadas": "18", "Retornos Confirmados": "16", "Manutenção Efetuada": "14" },
+                    { "Mês": "Fevereiro", "Folgas Alinhadas": "22", "Retornos Confirmados": "21", "Manutenção Efetuada": "19" },
+                    { "Mês": "Março", "Folgas Alinhadas": "25", "Retornos Confirmados": "24", "Manutenção Efetuada": "22" }
                 ]
             }
         ];
 
-        // Estado Global da Aplicação
+        // Estado do Sistema
         let systemData = {
             nodes: JSON.parse(JSON.stringify(DEFAULT_NODES_DATA)),
             tabs: JSON.parse(JSON.stringify(DEFAULT_TABS_DATA))
@@ -804,7 +761,7 @@
         let selectedLinkType = "none";
         let confirmCallback = null;
 
-        // Inicialização
+        // Inicializador
         window.onload = function() {
             loadFromLocalStorage();
             applyNodeStylingAndData();
@@ -813,7 +770,7 @@
             initCustomConfirm();
         };
 
-        // Inicialização do Modal de Confirmação customizado
+        // Registo de Confirmação customizado
         function initCustomConfirm() {
             document.getElementById("btn-confirm-cancel").onclick = closeConfirmModal;
             document.getElementById("btn-confirm-action").onclick = () => {
@@ -834,6 +791,7 @@
             confirmCallback = null;
         }
 
+        // Toasts Rápidos
         function showToast(message, type = 'success') {
             const container = document.getElementById("toast-container");
             const toast = document.createElement("div");
@@ -853,21 +811,24 @@
             }, 3000);
         }
 
+        // Persistência local no Navegador
         function saveToLocalStorage() {
             localStorage.setItem("ProMap_Indicadores_DB_v2", JSON.stringify(systemData));
         }
 
+        // Carregar do Local Storage
         function loadFromLocalStorage() {
             const saved = localStorage.getItem("ProMap_Indicadores_DB_v2");
             if (saved) {
                 try {
                     systemData = JSON.parse(saved);
                 } catch(e) {
-                    console.error("Erro ao carregar dados salvos. Usando padrão.");
+                    console.error("Erro ao carregar dados locais. Usando definições padrão.");
                 }
             }
         }
 
+        // Atualização Dinâmica das Caixas no Ecrã
         function applyNodeStylingAndData() {
             Object.keys(systemData.nodes).forEach(nodeId => {
                 const nodeEl = document.getElementById(`node-${nodeId}`);
@@ -877,9 +838,9 @@
 
                 // Atualizar texto
                 const textEl = nodeEl.querySelector('.node-text');
-                if (textEl && data.name) textEl.innerText = data.name;
+                if (textEl && data.name !== undefined) textEl.innerText = data.name;
 
-                // Configurar badge de link
+                // Gerir ícones/badges de ligação ativa
                 const badgeEl = nodeEl.querySelector('.link-badge');
                 if (badgeEl) {
                     if (data.linkType !== "none") {
@@ -896,22 +857,26 @@
             });
         }
 
+        // Controlos Dinâmicos de Zoom
         function adjustZoom(factor) {
             currentZoom = Math.max(0.4, Math.min(1.5, currentZoom + factor));
             applyZoom();
         }
 
+        // Resetar o zoom
         function resetZoom() {
             currentZoom = 1.0;
             applyZoom();
         }
 
+        // Aplicar escala de zoom
         function applyZoom() {
             const container = document.getElementById("diagram-scale-container");
             container.style.transform = `scale(${currentZoom})`;
             document.getElementById("zoom-indicator").innerText = `${Math.round(currentZoom * 100)}%`;
         }
 
+        // Gestão de Ecrãs/Abas do Menu
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('flex'));
@@ -939,6 +904,7 @@
             closePreviewBubble();
         }
 
+        // Clique nas Caixas do Diagrama
         function handleNodeClick(nodeId, event) {
             event.stopPropagation();
             activeNodeId = nodeId;
@@ -950,6 +916,7 @@
             showPreviewBubble(nodeId, targetEl);
         }
 
+        // Mostra o Balão Flutuante de Informações / Links
         function showPreviewBubble(nodeId, element) {
             const nodeData = systemData.nodes[nodeId];
             const bubble = document.getElementById("link-preview-bubble");
@@ -965,15 +932,15 @@
             if (nodeData.linkType === 'none') {
                 iconWrapper.className = "bg-slate-100 text-slate-600 p-2 rounded-lg shrink-0 flex items-center justify-center";
                 iconEl.className = "fa-solid fa-file-lines text-lg";
-                subTypeEl.innerText = "Anotação Simples de Operação";
+                subTypeEl.innerText = "Anotação Simples do Processo";
                 tableContainer.classList.add('hidden');
                 btnAction.className = "bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold px-2.5 py-1 rounded transition-colors flex items-center gap-1";
-                btnAction.innerHTML = `Editar Config <i class="fa-solid fa-pen text-[8px]"></i>`;
+                btnAction.innerHTML = `Configurar <i class="fa-solid fa-pen text-[8px]"></i>`;
                 btnAction.onclick = () => openConfigModal();
             } else if (nodeData.linkType === 'external') {
                 iconWrapper.className = "bg-blue-100 text-blue-700 p-2 rounded-lg shrink-0 flex items-center justify-center";
                 iconEl.className = "fa-solid fa-earth-americas text-lg";
-                subTypeEl.innerText = "Link Externo Compartilhado";
+                subTypeEl.innerText = "Sítio Web Externo Associado";
                 tableContainer.classList.add('hidden');
                 btnAction.className = "bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold px-2.5 py-1 rounded transition-colors flex items-center gap-1";
                 btnAction.innerHTML = `Ir para Link <i class="fa-solid fa-up-right-from-square text-[8px]"></i>`;
@@ -981,18 +948,18 @@
             } else if (nodeData.linkType === 'internal') {
                 iconWrapper.className = "bg-emerald-100 text-emerald-700 p-2 rounded-lg shrink-0 flex items-center justify-center";
                 iconEl.className = "fa-solid fa-table text-lg";
-                subTypeEl.innerText = "Página & Planilha Interna";
+                subTypeEl.innerText = "Página Operacional Interna";
                 
                 const linkedTab = systemData.tabs.find(t => t.id === nodeData.tabId);
                 if (linkedTab) {
                     tableContainer.classList.remove('hidden');
                     renderMiniPreviewTable(linkedTab);
                     btnAction.className = "bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold px-2.5 py-1 rounded transition-colors flex items-center gap-1";
-                    btnAction.innerHTML = `Abrir Planilha <i class="fa-solid fa-table text-[8px]"></i>`;
+                    btnAction.innerHTML = `Ver Separador <i class="fa-solid fa-table text-[8px]"></i>`;
                     btnAction.onclick = () => switchTab(linkedTab.id);
                 } else {
                     tableContainer.classList.add('hidden');
-                    subTypeEl.innerText = "Página de dados não encontrada";
+                    subTypeEl.innerText = "Aba de dados não encontrada";
                 }
             }
 
@@ -1008,12 +975,13 @@
             bubble.classList.remove('hidden');
         }
 
+        // Renderiza a Pré-visualização Rápida de dados no Balão
         function renderMiniPreviewTable(tab) {
             const tbody = document.getElementById("bubble-preview-table-body");
             tbody.innerHTML = "";
 
             if (!tab.tableData || tab.tableData.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" class="p-2 text-center text-slate-400 italic">Planilha vazia. Insira dados na aba do processo.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="3" class="p-2 text-center text-slate-400 italic">Separador vazio. Insira dados na página interna.</td></tr>`;
                 return;
             }
 
@@ -1030,6 +998,7 @@
             });
         }
 
+        // Copiar o destino do link atual para a Área de Transferência
         function copyCurrentLink() {
             const data = systemData.nodes[activeNodeId];
             if (!data) return;
@@ -1038,7 +1007,7 @@
             if (data.linkType === 'internal') {
                 linkToCopy = `#${data.tabId}`;
             } else if (data.linkType === 'none') {
-                linkToCopy = data.desc || "Sem Link Associado";
+                linkToCopy = data.desc || "Anotação de apoio do fluxo.";
             }
 
             const tempInput = document.createElement("input");
@@ -1048,7 +1017,7 @@
             document.execCommand('copy');
             document.body.removeChild(tempInput);
 
-            showToast("Copiado com sucesso!");
+            showToast("Dados copiados!");
         }
 
         function closePreviewBubble() {
@@ -1062,11 +1031,12 @@
             }
         });
 
+        // Configuração do Bloco
         function openConfigModal() {
             const data = systemData.nodes[activeNodeId];
             if (!data) return;
 
-            document.getElementById("modal-node-title").innerText = data.name || "Configurações";
+            document.getElementById("modal-node-title").innerText = data.name || "Configurar Bloco";
             document.getElementById("config-node-name").value = data.name || "";
             document.getElementById("config-node-desc").value = data.desc || "";
 
@@ -1131,9 +1101,10 @@
             applyNodeStylingAndData();
             closeConfigModal();
             closePreviewBubble();
-            showToast("Configuração salva com sucesso!");
+            showToast("Alterações guardadas com sucesso!");
         }
 
+        // Gestão de Páginas Personalizadas
         function createCustomTab(event) {
             event.preventDefault();
             const name = document.getElementById("new-tab-name").value.trim();
@@ -1146,7 +1117,7 @@
                 id: newId,
                 name: name,
                 icon: icon,
-                notes: `Adicione instruções detalhadas ou procedimentos de suporte sobre o processo de ${name} neste espaço livre.`,
+                notes: `Registe os seus procedimentos e orientações de apoio às operações de ${name} neste espaço de edição livre.`,
                 tableData: []
             };
 
@@ -1156,13 +1127,13 @@
             renderDynamicTabsMenu();
 
             document.getElementById("new-tab-name").value = "";
-            showToast(`Aba "${name}" criada com sucesso!`);
+            showToast(`Separador "${name}" criado com sucesso!`);
         }
 
         function renderCustomTabsList() {
             const container = document.getElementById("custom-tabs-list");
             if (systemData.tabs.length === 0) {
-                container.innerHTML = `<div class="text-slate-400 text-xs text-center py-8">Nenhuma página interna criada. Crie usando o formulário ao lado!</div>`;
+                container.innerHTML = `<div class="text-slate-400 text-xs text-center py-8">Nenhuma página operacional criada. Use o formulário à esquerda!</div>`;
                 return;
             }
 
@@ -1172,11 +1143,11 @@
                         <span class="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm"><i class="fa-solid ${tab.icon}"></i></span>
                         <div>
                             <h4 class="font-bold text-xs text-slate-800">${tab.name}</h4>
-                            <p class="text-[10px] text-slate-500">${tab.tableData.length} registros no histórico</p>
+                            <p class="text-[10px] text-slate-500">${tab.tableData.length} registos na tabela</p>
                         </div>
                     </div>
                     <div class="flex gap-1.5">
-                        <button onclick="switchTab('${tab.id}')" class="bg-blue-50 hover:bg-blue-100 text-blue-600 px-3 py-1.5 rounded-md text-[10px] font-bold transition-all"><i class="fa-solid fa-eye mr-1"></i> Ver Aba</button>
+                        <button onclick="switchTab('${tab.id}')" class="bg-blue-50 hover:bg-blue-100 text-blue-600 px-3 py-1.5 rounded-md text-[10px] font-bold transition-all"><i class="fa-solid fa-eye mr-1"></i> Abrir Aba</button>
                         <button onclick="triggerDeleteCustomTab('${tab.id}')" class="text-slate-400 hover:text-red-600 p-2 text-xs transition-colors"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
                 </div>
@@ -1211,14 +1182,14 @@
                                     <p class="text-[10px] text-slate-500">Planilha de Lançamento e Apoio ao Processo.</p>
                                 </div>
                             </div>
-                            <button onclick="switchTab('diagram-view')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold px-3 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-arrow-left mr-1"></i> Voltar ao Fluxo</button>
+                            <button onclick="switchTab('diagram-view')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold px-3 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-arrow-left mr-1"></i> Voltar ao Fluxograma</button>
                         </div>
                         
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 flex-grow overflow-auto min-h-0">
                             <div class="bg-slate-50 p-4 rounded-lg border flex flex-col gap-2 min-h-[220px]">
-                                <label class="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Anotações & Manual do Processo</label>
+                                <label class="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Anotações e Manual do Processo</label>
                                 <textarea id="custom-notes-${tab.id}" class="flex-grow w-full text-xs bg-white border border-slate-200 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700 leading-relaxed resize-none" placeholder="Escreva aqui procedimentos padrões do processo...">${tab.notes || ""}</textarea>
-                                <button onclick="saveCustomTabNotes('${tab.id}')" class="bg-slate-800 hover:bg-slate-900 text-white text-[10px] font-bold py-2 rounded-lg transition-all w-full">Salvar Procedimentos</button>
+                                <button onclick="saveCustomTabNotes('${tab.id}')" class="bg-slate-800 hover:bg-slate-900 text-white text-[10px] font-bold py-2 rounded-lg transition-all w-full">Guardar Procedimentos</button>
                             </div>
 
                             <div class="lg:col-span-2 flex flex-col gap-3 min-h-0">
@@ -1227,15 +1198,13 @@
                                     <form onsubmit="addTableRow(event, '${tab.id}')" class="grid grid-cols-3 gap-2">
                                         <input type="text" placeholder="Mês / Referência" required name="col1" class="bg-white text-xs border rounded px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500 font-semibold text-slate-700">
                                         <input type="text" placeholder="Resultado / Métrica" required name="col2" class="bg-white text-xs border rounded px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                        <input type="text" placeholder="Status / Meta" required name="col3" class="bg-white text-xs border rounded px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                        <button type="submit" class="col-span-3 bg-blue-600 text-white font-bold py-1.5 rounded text-[10px] hover:bg-blue-700 transition-colors uppercase tracking-wider">Lançar Registro</button>
+                                        <input type="text" placeholder="Estado / Meta" required name="col3" class="bg-white text-xs border rounded px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                        <button type="submit" class="col-span-3 bg-blue-600 text-white font-bold py-1.5 rounded text-[10px] hover:bg-blue-700 transition-colors uppercase tracking-wider">Adicionar Registo</button>
                                     </form>
                                 </div>
 
                                 <div class="border rounded-lg overflow-hidden flex-grow overflow-auto bg-slate-50/50">
-                                    <table class="w-full text-[11px] text-left border-collapse" id="table-custom-${tab.id}">
-                                        <!-- Tabelas internas -->
-                                    </table>
+                                    <table class="w-full text-[11px] text-left border-collapse" id="table-custom-${tab.id}"></table>
                                 </div>
                             </div>
                         </div>
@@ -1251,15 +1220,15 @@
             if (tab) {
                 tab.notes = document.getElementById(`custom-notes-${tabId}`).value;
                 saveToLocalStorage();
-                showToast("Anotações salvas com sucesso!");
+                showToast("Notas operacionais salvas!");
             }
         }
 
-        // Resolvido: substituído o confirm() nativo pelo modal customizado para deletar abas
+        // Confirmação customizada para eliminar
         function triggerDeleteCustomTab(tabId) {
             showCustomConfirm(
-                "Remover Página Interna?", 
-                "Isso removerá permanentemente esta página e todos os seus históricos de dados lançados. Deseja prosseguir?", 
+                "Eliminar Página Interna?", 
+                "Esta ação irá eliminar permanentemente esta página e todos os seus históricos de dados lançados. Deseja prosseguir?", 
                 () => deleteCustomTab(tabId)
             );
         }
@@ -1278,7 +1247,7 @@
             renderDynamicTabsMenu();
             applyNodeStylingAndData();
             switchTab('diagram-view');
-            showToast("Página excluída.", "success");
+            showToast("Aba eliminada permanentemente.", "success");
         }
 
         function addTableRow(event, tabId) {
@@ -1291,14 +1260,14 @@
             const newRow = {
                 "Mês / Referência": formData.get("col1"),
                 "Métrica / Resultado": formData.get("col2"),
-                "Ação / Status": formData.get("col3")
+                "Estado / Meta": formData.get("col3")
             };
 
             tab.tableData.push(newRow);
             saveToLocalStorage();
             form.reset();
             renderCustomTabTable(tabId);
-            showToast("Registro lançado!");
+            showToast("Registo guardado!");
         }
 
         function renderCustomTabTable(tabId) {
@@ -1308,7 +1277,7 @@
 
             const data = tab.tableData;
             if (data.length === 0) {
-                table.innerHTML = `<tr><td class="p-8 text-center text-slate-400 italic text-xs">Nenhum registro no histórico desta tabela.</td></tr>`;
+                table.innerHTML = `<tr><td class="p-8 text-center text-slate-400 italic text-xs">Nenhum registo no histórico desta tabela.</td></tr>`;
                 return;
             }
 
@@ -1338,18 +1307,20 @@
             if (tab) {
                 tab.tableData.splice(index, 1);
                 saveToLocalStorage();
+                removeTableRow(tabId, index);
                 renderCustomTabTable(tabId);
-                showToast("Registro removido.", "success");
+                showToast("Registo removido.", "success");
             }
         }
 
+        // Importação e Exportação de Ficheiros JSON
         function exportDiagramData() {
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(systemData, null, 2));
             const dlAnchorElem = document.createElement('a');
             dlAnchorElem.setAttribute("href", dataStr);
             dlAnchorElem.setAttribute("download", "promap_backup_indicadores.json");
             dlAnchorElem.click();
-            showToast("Download iniciado!");
+            showToast("Download da cópia iniciado!");
         }
 
         function importDiagramData(event) {
@@ -1370,20 +1341,19 @@
                         showToast("Configurações importadas!");
                         switchTab('diagram-view');
                     } else {
-                        showToast("Arquivo de backup inválido.", "error");
+                        showToast("Ficheiro de cópia inválido.", "error");
                     }
                 } catch (e) {
-                    showToast("Erro ao processar JSON.", "error");
+                    showToast("Erro ao ler dados JSON.", "error");
                 }
             };
             reader.readAsText(file);
         }
 
-        // Resolvido: substituído o confirm() nativo pelo modal customizado para redefinir dados de fábrica
         function triggerResetDefault() {
             showCustomConfirm(
-                "Redefinir Configurações?", 
-                "Isso apagará permanentemente todos os seus dados personalizados, links e novas abas do navegador. Deseja redefinir?", 
+                "Repor Configurações?", 
+                "Esta ação irá apagar permanentemente todas as suas configurações, tabelas de dados, links e novos separadores associados. Deseja redefinir?", 
                 resetAllToDefault
             );
         }
