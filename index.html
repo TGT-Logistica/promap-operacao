@@ -148,7 +148,7 @@
     <!-- Notificações Customizadas -->
     <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-    <!-- Modal de Confirmação Customizado -->
+    <!-- Modal de Confirmação Customizado (Substitui o 'confirm' nativo do navegador) -->
     <div id="confirm-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-xl w-full max-w-sm shadow-2xl overflow-hidden border border-slate-100 p-5 flex flex-col gap-4">
             <div class="flex items-start gap-3">
@@ -705,309 +705,309 @@
     <div id="sidebar-overlay" onclick="closeAllModals()" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-20 hidden"></div>
 
     <script>
-        // Dados Iniciais e Estrutura Hierárquica dos Nós (Carregados diretamente do JSON do utilizador)
+        // Dados Iniciais e Estrutura Hierárquica dos Nós (Sincronizado perfeitamente com os dados editados pelo utilizador)
         const DEFAULT_NODES_DATA = {
-            "operacao": {
-                "name": "OPERAÇÃO",
-                "type": "color-macro-top",
-                "linkType": "none",
-                "url": "",
-                "tabId": "",
-                "desc": "Fluxo Geral de Processos e Indicadores de Operação."
-            },
-            "gestao_frota": {
-                "name": "GESTÃO DA FROTA",
-                "type": "color-macro-sub",
-                "linkType": "none",
-                "url": "",
-                "tabId": "",
-                "desc": "Gestão macro da frota."
-            },
-            "prog_veiculos": {
-                "name": "PROGRAMAÇÃO DE VEÍCULOS",
-                "type": "color-process-key",
-                "linkType": "none",
-                "url": "",
-                "tabId": "",
-                "desc": ""
-            },
-            "disp_recursos": {
-                "name": "GESTÃO DE DISP. RECURSOS",
-                "type": "color-sub-process",
-                "linkType": "none",
-                "url": "",
-                "tabId": "",
-                "desc": ""
-            },
-            "disp_frota": {
-                "name": "Disponibilidade da frota",
-                "type": "color-indicator",
-                "linkType": "internal",
-                "url": "",
-                "tabId": "custom-tab-1782246832535",
-                "desc": "Painel de percentual de carros prontos para escala."
-            },
-            "prog_folgas": {
-                "name": "PROGRAMAÇÃO DE FOLGAS",
-                "type": "color-sub-process",
-                "linkType": "none",
-                "url": "",
-                "tabId": "",
-                "desc": ""
-            },
-            "alinhamento_folgas": {
-                "name": "Alinhamento de início e retorno das folgas x Manutenção durante o período",
-                "type": "color-indicator",
-                "linkType": "none",
-                "url": "https://docs.google.com/spreadsheets/d/1lAi0B6JKoeSGPhijXpGq3zJwIJkvIo5-nyQ0tZvXZrk/edit?gid=0#gid=0",
-                "tabId": "",
-                "desc": "Planilha interna de organização de escalas."
-            },
-            "gestao_clientes": {
-                "name": "GESTÃO DE CLIENTES",
-                "type": "color-sub-process",
-                "linkType": "none",
-                "url": "",
-                "tabId": "",
-                "desc": ""
-            },
-            "objetivos_rotas": {
-                "name": "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES.",
-                "type": "color-to-develop",
-                "linkType": "none",
-                "url": "",
-                "tabId": "",
-                "desc": ""
-            },
-            "acomp_jornada": {
-                "name": "ACOMPANHAMENTO DE JORNADA",
-                "type": "color-process-key",
-                "linkType": "none",
-                "url": "",
-                "tabId": "",
-                "desc": ""
-            },
-            "acomp_motorista": {
-                "name": "ACOMPANHAMENTO DE MOTORISTA",
-                "type": "color-sub-process",
-                "linkType": "none",
-                "url": "",
-                "tabId": "",
-                "desc": ""
-            },
-            "sat_motorista": {
-                "name": "Satisfação do motorista",
-                "type": "color-indicator",
-                "linkType": "none",
-                "url": "",
-                "tabId": "",
-                "desc": ""
-            },
-            "controle_combustivel": {
-                "name": "CONTROLE DE COMBUSTÍVEL",
-                "type": "color-sub-process",
-                "linkType": "none",
-                "url": "",
-                "tabId": "",
-                "desc": ""
-            },
-            "perc_combustivel": {
-                "name": "Percentual Combustível x Faturamento Líquido",
-                "type": "color-indicator",
-                "linkType": "none",
-                "url": "",
-                "tabId": "",
-                "desc": ""
-            },
-            "preco_l": {
-                "name": "Preço/L",
-                "type": "color-indicator",
-                "linkType": "internal",
-                "url": "",
-                "tabId": "custom-tab-1782246892300",
-                "desc": "R$ 6,80"
-            },
-            "consumo_medio": {
-                "name": "Consumo médio",
-                "type": "color-indicator",
-                "linkType": "internal",
-                "url": "",
-                "tabId": "custom-tab-1782246908050",
-                "desc": ""
-            },
-            "fech_resultados": {
-                "name": "FECHAMENTO DE RESULTADOS",
-                "type": "color-process-key",
-                "linkType": "none",
-                "url": "",
-                "tabId": "",
-                "desc": ""
-            },
-            "fech_jornada": {
-                "name": "FECHAMENTO JORNADA MOTORISTA",
-                "type": "color-sub-process",
-                "linkType": "none",
-                "url": "",
-                "tabId": "",
-                "desc": ""
-            },
-            "perf_motorista": {
-                "name": "Performance motorista",
-                "type": "color-indicator",
-                "linkType": "none",
-                "url": "",
-                "tabId": "",
-                "desc": ""
-            },
-            "fech_mensal_frota": {
-                "name": "FECHAMENTO MENSAL FROTA",
-                "type": "color-sub-process",
-                "linkType": "none",
-                "url": "",
-                "tabId": "",
-                "desc": ""
-            },
-            "res_liquido": {
-                "name": "Resultado líquido",
-                "type": "color-indicator",
-                "linkType": "internal",
-                "url": "",
-                "tabId": "custom-tab-1782246948856",
-                "desc": ""
-            },
-            "fech_clientes_frota": {
-                "name": "FECHAMENTO MENSAL CLIENTES/FROTA",
-                "type": "color-sub-process",
-                "linkType": "none",
-                "url": "",
-                "tabId": "",
-                "desc": ""
-            },
-            "ineficiencias_carga": {
-                "name": "Ineficiências de carga e descarga e diárias",
-                "type": "color-to-develop",
-                "linkType": "none",
-                "url": "",
-                "tabId": "",
-                "desc": ""
-            },
-            "planejamento_frota": {
-                "name": "PLANEJAMENTO/DESENVOLVIMENTO - FROTA",
-                "type": "color-process-key",
-                "linkType": "none",
-                "url": "",
-                "tabId": "",
-                "desc": ""
-            },
-            "gestao_eficiencia": {
-                "name": "GESTÃO DE EFICIÊNCIA E PROCESSO",
-                "type": "color-sub-process",
-                "linkType": "none",
-                "url": "",
-                "tabId": "",
-                "desc": ""
-            },
-            "definir_cronograma": {
-                "name": "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO DE MANTER ATUALIZADO OS PLANOS DE AÇÃO",
-                "type": "color-to-develop",
-                "linkType": "none",
-                "url": "",
-                "tabId": "",
-                "desc": ""
-            },
-            "regularizacao_frota": {
-                "name": "REGULARIZAÇÃO FROTA",
-                "type": "color-process-key",
-                "linkType": "none",
-                "url": "",
-                "tabId": "",
-                "desc": ""
-            },
-            "licenciamento": {
-                "name": "LICENCIAMENTO E ADEQUAÇÕES FROTA",
-                "type": "color-sub-process",
-                "linkType": "none",
-                "url": "",
-                "tabId": "",
-                "desc": ""
-            },
-            "adeq_admin": {
-                "name": "ADEQUAÇÕES ADMINISTRATIVAS",
-                "type": "color-sub-process",
-                "linkType": "none",
-                "url": "",
-                "tabId": "",
-                "desc": ""
-            }
+          "operacao": {
+            "name": "OPERAÇÃO",
+            "type": "color-macro-top",
+            "linkType": "none",
+            "url": "",
+            "tabId": "",
+            "desc": "Fluxo Geral de Processos e Indicadores de Operação."
+          },
+          "gestao_frota": {
+            "name": "GESTÃO DA FROTA",
+            "type": "color-macro-sub",
+            "linkType": "none",
+            "url": "",
+            "tabId": "",
+            "desc": "Gestão macro da frota."
+          },
+          "prog_veiculos": {
+            "name": "PROGRAMAÇÃO DE VEÍCULOS",
+            "type": "color-process-key",
+            "linkType": "none",
+            "url": "",
+            "tabId": "",
+            "desc": ""
+          },
+          "disp_recursos": {
+            "name": "GESTÃO DE DISP. RECURSOS",
+            "type": "color-sub-process",
+            "linkType": "none",
+            "url": "",
+            "tabId": "",
+            "desc": ""
+          },
+          "disp_frota": {
+            "name": "Disponibilidade da frota",
+            "type": "color-indicator",
+            "linkType": "internal",
+            "url": "",
+            "tabId": "custom-tab-1782246832535",
+            "desc": "Painel de percentual de carros prontos para escala."
+          },
+          "prog_folgas": {
+            "name": "PROGRAMAÇÃO DE FOLGAS",
+            "type": "color-sub-process",
+            "linkType": "none",
+            "url": "",
+            "tabId": "",
+            "desc": ""
+          },
+          "alinhamento_folgas": {
+            "name": "Alinhamento de início e retorno das folgas x Manutenção durante o período",
+            "type": "color-indicator",
+            "linkType": "none",
+            "url": "https://docs.google.com/spreadsheets/d/1lAi0B6JKoeSGPhijXpGq3zJwIJkvIo5-nyQ0tZvXZrk/edit?gid=0#gid=0",
+            "tabId": "",
+            "desc": "Planilha interna de organização de escalas."
+          },
+          "gestao_clientes": {
+            "name": "GESTÃO DE CLIENTES",
+            "type": "color-sub-process",
+            "linkType": "none",
+            "url": "",
+            "tabId": "",
+            "desc": ""
+          },
+          "objetivos_rotas": {
+            "name": "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES.",
+            "type": "color-to-develop",
+            "linkType": "none",
+            "url": "",
+            "tabId": "",
+            "desc": ""
+          },
+          "acomp_jornada": {
+            "name": "ACOMPANHAMENTO DE JORNADA",
+            "type": "color-process-key",
+            "linkType": "none",
+            "url": "",
+            "tabId": "",
+            "desc": ""
+          },
+          "acomp_motorista": {
+            "name": "ACOMPANHAMENTO DE MOTORISTA",
+            "type": "color-sub-process",
+            "linkType": "none",
+            "url": "",
+            "tabId": "",
+            "desc": ""
+          },
+          "sat_motorista": {
+            "name": "Satisfação do motorista",
+            "type": "color-indicator",
+            "linkType": "none",
+            "url": "",
+            "tabId": "",
+            "desc": ""
+          },
+          "controle_combustivel": {
+            "name": "CONTROLE DE COMBUSTÍVEL",
+            "type": "color-sub-process",
+            "linkType": "none",
+            "url": "",
+            "tabId": "",
+            "desc": ""
+          },
+          "perc_combustivel": {
+            "name": "Percentual Combustível x Faturamento Líquido",
+            "type": "color-indicator",
+            "linkType": "none",
+            "url": "",
+            "tabId": "",
+            "desc": ""
+          },
+          "preco_l": {
+            "name": "Preço/L",
+            "type": "color-indicator",
+            "linkType": "internal",
+            "url": "",
+            "tabId": "custom-tab-1782246892300",
+            "desc": "R$ 6,80"
+          },
+          "consumo_medio": {
+            "name": "Consumo médio",
+            "type": "color-indicator",
+            "linkType": "internal",
+            "url": "",
+            "tabId": "custom-tab-1782246908050",
+            "desc": ""
+          },
+          "fech_resultados": {
+            "name": "FECHAMENTO DE RESULTADOS",
+            "type": "color-process-key",
+            "linkType": "none",
+            "url": "",
+            "tabId": "",
+            "desc": ""
+          },
+          "fech_jornada": {
+            "name": "FECHAMENTO JORNADA MOTORISTA",
+            "type": "color-sub-process",
+            "linkType": "none",
+            "url": "",
+            "tabId": "",
+            "desc": ""
+          },
+          "perf_motorista": {
+            "name": "Performance motorista",
+            "type": "color-indicator",
+            "linkType": "none",
+            "url": "",
+            "tabId": "",
+            "desc": ""
+          },
+          "fech_mensal_frota": {
+            "name": "FECHAMENTO MENSAL FROTA",
+            "type": "color-sub-process",
+            "linkType": "none",
+            "url": "",
+            "tabId": "",
+            "desc": ""
+          },
+          "res_liquido": {
+            "name": "Resultado líquido",
+            "type": "color-indicator",
+            "linkType": "internal",
+            "url": "",
+            "tabId": "custom-tab-1782246948856",
+            "desc": ""
+          },
+          "fech_clientes_frota": {
+            "name": "FECHAMENTO MENSAL CLIENTES/FROTA",
+            "type": "color-sub-process",
+            "linkType": "none",
+            "url": "",
+            "tabId": "",
+            "desc": ""
+          },
+          "ineficiencias_carga": {
+            "name": "Ineficiências de carga e descarga e diárias",
+            "type": "color-to-develop",
+            "linkType": "none",
+            "url": "",
+            "tabId": "",
+            "desc": ""
+          },
+          "planejamento_frota": {
+            "name": "PLANEJAMENTO/DESENVOLVIMENTO - FROTA",
+            "type": "color-process-key",
+            "linkType": "none",
+            "url": "",
+            "tabId": "",
+            "desc": ""
+          },
+          "gestao_eficiencia": {
+            "name": "GESTÃO DE EFICIÊNCIA E PROCESSO",
+            "type": "color-sub-process",
+            "linkType": "none",
+            "url": "",
+            "tabId": "",
+            "desc": ""
+          },
+          "definir_cronograma": {
+            "name": "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO DE MANTER ATUALIZADO OS PLANOS DE AÇÃO",
+            "type": "color-to-develop",
+            "linkType": "none",
+            "url": "",
+            "tabId": "",
+            "desc": ""
+          },
+          "regularizacao_frota": {
+            "name": "REGULARIZAÇÃO FROTA",
+            "type": "color-process-key",
+            "linkType": "none",
+            "url": "",
+            "tabId": "",
+            "desc": ""
+          },
+          "licenciamento": {
+            "name": "LICENCIAMENTO E ADEQUAÇÕES FROTA",
+            "type": "color-sub-process",
+            "linkType": "none",
+            "url": "",
+            "tabId": "",
+            "desc": ""
+          },
+          "adeq_admin": {
+            "name": "ADEQUAÇÕES ADMINISTRATIVAS",
+            "type": "color-sub-process",
+            "linkType": "none",
+            "url": "",
+            "tabId": "",
+            "desc": ""
+          }
         };
 
         const DEFAULT_TABS_DATA = [
-            {
-                "id": "custom-tab-1782246832535",
-                "name": "DISPONIBILIDADE",
-                "icon": "fa-chart-pie",
-                "notes": "Registe os seus procedimentos e orientações de apoio às operações de DISPONIBILIDADE neste espaço de edição livre.",
-                "tableData": [
-                    {
-                        "Mês / Referência": "MAIO",
-                        "Métrica / Resultado": "24 DIAS ",
-                        "Estado / Meta": "25 DIAS"
-                    }
-                ]
-            },
-            {
-                "id": "custom-tab-1782246892300",
-                "name": "VALOR COMBUSTÍVEL",
-                "icon": "fa-chart-pie",
-                "notes": "Registe os seus procedimentos e orientações de apoio às operações de VALOR COMBUSTÍVEL neste espaço de edição livre.",
-                "tableData": [
-                    {
-                        "Mês / Referência": "MAIO",
-                        "Métrica / Resultado": "R$ 6,80",
-                        "Estado / Meta": "R$ 5,69"
-                    }
-                ]
-            },
-            {
-                "id": "custom-tab-1782246908050",
-                "name": "CONSUMO MÉDIO",
-                "icon": "fa-chart-pie",
-                "notes": "Registe os seus procedimentos e orientações de apoio às operações de CONSUMO MÉDIO neste espaço de edição livre.",
-                "tableData": [
-                    {
-                        "Mês / Referência": "MAIO ",
-                        "Métrica / Resultado": "1,84",
-                        "Estado / Meta": "1,86"
-                    }
-                ]
-            },
-            {
-                "id": "custom-tab-1782246931765",
-                "name": "SATISFAÇÃO DO MOTORISTA",
-                "icon": "fa-chart-pie",
-                "notes": "Registe os seus procedimentos e orientações de apoio às operações de SATISFAÇÃO DO MOTORISTA neste espaço de edição livre.",
-                "tableData": []
-            },
-            {
-                "id": "custom-tab-1782246941735",
-                "name": "PERFORMANCE DO MOTORISTA",
-                "icon": "fa-chart-pie",
-                "notes": "Registe os seus procedimentos e orientações de apoio às operações de PERFORMANCE DO MOTORISTA neste espaço de edição livre.",
-                "tableData": []
-            },
-            {
-                "id": "custom-tab-1782246948856",
-                "name": "RESULTADO LIQUIDO",
-                "icon": "fa-chart-pie",
-                "notes": "Registe os seus procedimentos e orientações de apoio às operações de RESULTADO LIQUIDO neste espaço de edição livre.",
-                "tableData": [
-                    {
-                        "Mês / Referência": "MAIO ",
-                        "Métrica / Resultado": "119%",
-                        "Estado / Meta": "100%"
-                    }
-                ]
-            }
+          {
+            "id": "custom-tab-1782246832535",
+            "name": "DISPONIBILIDADE",
+            "icon": "fa-chart-pie",
+            "notes": "Registe os seus procedimentos e orientações de apoio às operações de DISPONIBILIDADE neste espaço de edição livre.",
+            "tableData": [
+              {
+                "Mês / Referência": "MAIO",
+                "Métrica / Resultado": "24 DIAS ",
+                "Estado / Meta": "25 DIAS"
+              }
+            ]
+          },
+          {
+            "id": "custom-tab-1782246892300",
+            "name": "VALOR COMBUSTÍVEL",
+            "icon": "fa-chart-pie",
+            "notes": "Registe os seus procedimentos e orientações de apoio às operações de VALOR COMBUSTÍVEL neste espaço de edição livre.",
+            "tableData": [
+              {
+                "Mês / Referência": "MAIO",
+                "Métrica / Resultado": "R$ 6,80",
+                "Estado / Meta": "R$ 5,69"
+              }
+            ]
+          },
+          {
+            "id": "custom-tab-1782246908050",
+            "name": "CONSUMO MÉDIO",
+            "icon": "fa-chart-pie",
+            "notes": "Registe os seus procedimentos e orientações de apoio às operações de CONSUMO MÉDIO neste espaço de edição livre.",
+            "tableData": [
+              {
+                "Mês / Referência": "MAIO ",
+                "Métrica / Resultado": "1,84",
+                "Estado / Meta": "1,86"
+              }
+            ]
+          },
+          {
+            "id": "custom-tab-1782246931765",
+            "name": "SATISFAÇÃO DO MOTORISTA",
+            "icon": "fa-chart-pie",
+            "notes": "Registe os seus procedimentos e orientações de apoio às operações de SATISFAÇÃO DO MOTORISTA neste espaço de edição livre.",
+            "tableData": []
+          },
+          {
+            "id": "custom-tab-1782246941735",
+            "name": "PERFORMANCE DO MOTORISTA",
+            "icon": "fa-chart-pie",
+            "notes": "Registe os seus procedimentos e orientações de apoio às operações de PERFORMANCE DO MOTORISTA neste espaço de edição livre.",
+            "tableData": []
+          },
+          {
+            "id": "custom-tab-1782246948856",
+            "name": "RESULTADO LIQUIDO",
+            "icon": "fa-chart-pie",
+            "notes": "Registe os seus procedimentos e orientações de apoio às operações de RESULTADO LIQUIDO neste espaço de edição livre.",
+            "tableData": [
+              {
+                "Mês / Referência": "MAIO ",
+                "Métrica / Resultado": "119%",
+                "Estado / Meta": "100%"
+              }
+            ]
+          }
         ];
 
         // Estado do Sistema
@@ -1129,7 +1129,6 @@
             applyZoom();
         }
 
-        // Aplicar escala de zoom
         function applyZoom() {
             const container = document.getElementById("diagram-scale-container");
             container.style.transform = `scale(${currentZoom})`;
@@ -1364,7 +1363,7 @@
             showToast("Alterações guardadas com sucesso!");
         }
 
-        // Gestão de Páginas Personalizadas
+        // Gestão de Separadores Personalizados
         function createCustomTab(event) {
             event.preventDefault();
             const name = document.getElementById("new-tab-name").value.trim();
