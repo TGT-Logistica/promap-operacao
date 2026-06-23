@@ -756,7 +756,7 @@
             "desc": ""
           },
           "alinhamento_folgas": {
-            "name": "Alinhamento de início e retorno das folgas x Manutenção durante o período",
+            "name": "Alinhamento de início e retorno das folgas x Manutenção no período",
             "type": "color-indicator",
             "linkType": "none",
             "url": "https://docs.google.com/spreadsheets/d/1lAi0B6JKoeSGPhijXpGq3zJwIJkvIo5-nyQ0tZvXZrk/edit?gid=0#gid=0",
@@ -798,13 +798,13 @@
           "sat_motorista": {
             "name": "Satisfação do motorista",
             "type": "color-indicator",
-            "linkType": "none",
+            "linkType": "internal",
             "url": "",
-            "tabId": "",
+            "tabId": "custom-tab-1782246931765",
             "desc": ""
           },
           "controle_combustivel": {
-            "name": "CONTROLE DE COMBUSTÍVEL",
+            "name": "CONTROLO DE COMBUSTÍVEL",
             "type": "color-sub-process",
             "linkType": "none",
             "url": "",
@@ -812,7 +812,7 @@
             "desc": ""
           },
           "perc_combustivel": {
-            "name": "Percentual Combustível x Faturamento Líquido",
+            "name": "Percentagem Combustível x Faturação Líquida",
             "type": "color-indicator",
             "linkType": "none",
             "url": "",
@@ -836,7 +836,7 @@
             "desc": ""
           },
           "fech_resultados": {
-            "name": "FECHAMENTO DE RESULTADOS",
+            "name": "FECHO DE RESULTADOS",
             "type": "color-process-key",
             "linkType": "none",
             "url": "",
@@ -844,7 +844,7 @@
             "desc": ""
           },
           "fech_jornada": {
-            "name": "FECHAMENTO JORNADA MOTORISTA",
+            "name": "FECHO JORNADA MOTORISTA",
             "type": "color-sub-process",
             "linkType": "none",
             "url": "",
@@ -854,13 +854,13 @@
           "perf_motorista": {
             "name": "Performance motorista",
             "type": "color-indicator",
-            "linkType": "none",
+            "linkType": "internal",
+            "tabId": "custom-tab-1782246941735",
             "url": "",
-            "tabId": "",
             "desc": ""
           },
           "fech_mensal_frota": {
-            "name": "FECHAMENTO MENSAL FROTA",
+            "name": "FECHO MENSAL FROTA",
             "type": "color-sub-process",
             "linkType": "none",
             "url": "",
@@ -876,7 +876,7 @@
             "desc": ""
           },
           "fech_clientes_frota": {
-            "name": "FECHAMENTO MENSAL CLIENTES/FROTA",
+            "name": "FECHO MENSAL CLIENTES/FROTA",
             "type": "color-sub-process",
             "linkType": "none",
             "url": "",
@@ -892,7 +892,7 @@
             "desc": ""
           },
           "planejamento_frota": {
-            "name": "PLANEJAMENTO/DESENVOLVIMENTO - FROTA",
+            "name": "PLANEAMENTO/DESENVOLVIMENTO - FROTA",
             "type": "color-process-key",
             "linkType": "none",
             "url": "",
@@ -1010,7 +1010,7 @@
           }
         ];
 
-        // Estado do Sistema
+        // Estado do Sistema (v3 garante a limpeza de memórias antigas)
         let systemData = {
             nodes: JSON.parse(JSON.stringify(DEFAULT_NODES_DATA)),
             tabs: JSON.parse(JSON.stringify(DEFAULT_TABS_DATA))
@@ -1071,14 +1071,14 @@
             }, 3000);
         }
 
-        // Persistência local no Navegador
+        // Persistência local no Navegador (Nova chave _v3 para forçar limpeza no GitHub)
         function saveToLocalStorage() {
-            localStorage.setItem("ProMap_Indicadores_DB_v2", JSON.stringify(systemData));
+            localStorage.setItem("ProMap_Indicadores_DB_v3", JSON.stringify(systemData));
         }
 
-        // Carregar do Local Storage
+        // Carregar do Local Storage (Chave v3)
         function loadFromLocalStorage() {
-            const saved = localStorage.getItem("ProMap_Indicadores_DB_v2");
+            const saved = localStorage.getItem("ProMap_Indicadores_DB_v3");
             if (saved) {
                 try {
                     systemData = JSON.parse(saved);
@@ -1617,7 +1617,7 @@
         }
 
         function resetAllToDefault() {
-            localStorage.removeItem("ProMap_Indicadores_DB_v2");
+            localStorage.removeItem("ProMap_Indicadores_DB_v3");
             location.reload();
         }
 
