@@ -361,7 +361,7 @@
                                                             </li>
                                                         </ul>
                                                     </li>
-                                                    <!-- Sub 2.2: CONTROLO DE COMBUSTÍVEL -->
+                                                    <!-- Sub 2.2: CONTROLE DE COMBUSTÍVEL -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
                                                             <div id="node-controle_combustivel" onclick="handleNodeClick('controle_combustivel', event)" class="w-[125px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
@@ -631,7 +631,7 @@
                             <label class="block text-[10px] font-semibold text-slate-500 uppercase mb-1">Ícone de Identificação</label>
                             <select id="new-tab-icon" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 <option value="fa-chart-pie">📊 Indicadores / Gráficos</option>
-                                <option value="fa-gas-pump">⛽ Controlo de Combustível</option>
+                                <option value="fa-gas-pump">⛽ Controle de Combustível</option>
                                 <option value="fa-calendar-days">📅 Escala e Folgas</option>
                                 <option value="fa-list-check">✅ Checklists de Manutenção</option>
                                 <option value="fa-file-signature">📝 Relatórios e Notas</option>
@@ -772,8 +772,8 @@
             "acomp_motorista": { name: "ACOMPANHAMENTO DE MOTORISTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "sat_motorista": { name: "Satisfação do motorista", type: "color-indicator", linkType: "internal-master", url: "", tabId: "section-sat_motorista", desc: "Consolidado de satisfação da equipa de motoristas." },
             
-            "controle_combustivel": { name: "CONTROLO DE COMBUSTÍVEL", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
-            "perc_combustivel": { name: "Percentagem Combustível x Faturação Líquida", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-perc_combustivel", desc: "Percentagem do Combustível face à faturação líquida global." },
+            "controle_combustivel": { name: "CONTROLE DE COMBUSTÍVEL", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "perc_combustivel": { name: "Percentual Combustível x Faturamento líquido", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-perc_combustivel", desc: "Porcentagem do Combustível face ao faturamento líquido global." },
             "preco_l": { name: "Preço/L", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-preco_l", desc: "Preço médio por litro de combustível." },
             "consumo_medio": { name: "Consumo médio", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-consumo_medio", desc: "Consumo médio geral da frota." },
             
@@ -831,7 +831,7 @@
                 icon: "fa-chart-pie",
                 notes: "Tabela de acompanhamento operacional das escalas das folgas integradas com o cronograma de manutenção de equipamentos da oficina.",
                 tableData: [
-                    { "Mês": "Janeiro", "Folgas Alinhadas": "18", "Retornos Confirmados": "16", "Manutenção Efetuada": "14" }
+                    { "Mês": "Janeiro", "Resultado": "18", "Meta": "14" }
                 ]
             }
         ];
@@ -857,22 +857,45 @@
             initCustomConfirm();
         };
 
-        // Persistência local no Navegador (Nova chave _v4 para garantir as novidades)
+        // Persistência local no Navegador - Usamos agora _v5 para evitar o cache dos nomes "CONTROLO" e "faturação"
         function saveToLocalStorage() {
-            localStorage.setItem("ProMap_Indicadores_DB_v4", JSON.stringify(systemData));
+            localStorage.setItem("ProMap_Indicadores_DB_v5", JSON.stringify(systemData));
         }
 
         function loadFromLocalStorage() {
-            const saved = localStorage.getItem("ProMap_Indicadores_DB_v4");
+            // Tentamos carregar v5 primeiro
+            let saved = localStorage.getItem("ProMap_Indicadores_DB_v5");
+            let migrated = false;
+
+            if (!saved) {
+                // Se não há v5, migramos os dados salvos em v4 para preservar os lançamentos manuais do utilizador!
+                saved = localStorage.getItem("ProMap_Indicadores_DB_v4");
+                migrated = true;
+            }
+
             if (saved) {
                 try {
                     let parsed = JSON.parse(saved);
-                    if (parsed.nodes) systemData.nodes = parsed.nodes;
+                    
+                    // Carregamos abas e planilha principal para manter os números editados
                     if (parsed.tabs) systemData.tabs = parsed.tabs;
-                    if (parsed.masterSheet) {
-                        systemData.masterSheet = parsed.masterSheet;
-                    } else {
-                        systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
+                    if (parsed.masterSheet) systemData.masterSheet = parsed.masterSheet;
+                    
+                    // Carregamos os nós estruturais
+                    if (parsed.nodes) systemData.nodes = parsed.nodes;
+
+                    // CORREÇÃO FORÇADA DE CACHE (MIGRAÇÃO DE NOMES PT-BR):
+                    // Isto impede que o cache antigo do utilizador volte a reverter "controle" e "faturamento"
+                    if (systemData.nodes["controle_combustivel"]) {
+                        systemData.nodes["controle_combustivel"].name = "CONTROLE DE COMBUSTÍVEL";
+                    }
+                    if (systemData.nodes["perc_combustivel"]) {
+                        systemData.nodes["perc_combustivel"].name = "Porcentagem Combustível x Faturamento líquido";
+                    }
+
+                    // Se foi uma migração do v4, salvamos de imediato no novo espaço v5
+                    if (migrated) {
+                        saveToLocalStorage();
                     }
                 } catch(e) {
                     console.error("Erro ao carregar dados locais. Usando definições padrão.");
@@ -926,11 +949,7 @@
                         if (val < 100) cellClass += " bg-red-100 text-red-800 font-bold";
                     }
 
-                    monthsHtml += `
-                        <td class="${cellClass}" ondblclick="editMasterCell(${rowIndex}, ${i}, this)">
-                            ${displayVal}
-                        </td>
-                    `;
+                    monthsHtml += `<td class="${cellClass}" ondblclick="editMasterCell(${rowIndex}, ${i}, this)">${displayVal}</td>`;
                 }
 
                 // Identificador Meta Row-level
@@ -1100,6 +1119,7 @@
             applyZoom();
         }
 
+        // Resetar zoom
         function resetZoom() {
             currentZoom = 1.0;
             applyZoom();
@@ -1693,7 +1713,7 @@
         }
 
         function resetAllToDefault() {
-            localStorage.removeItem("ProMap_Indicadores_DB_v4");
+            localStorage.removeItem("ProMap_Indicadores_DB_v5");
             location.reload();
         }
 
