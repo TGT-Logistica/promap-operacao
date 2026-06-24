@@ -1087,21 +1087,10 @@
                 const textEl = nodeEl.querySelector('.node-text');
                 if (textEl && data.name !== undefined) textEl.innerText = data.name;
 
-                // Gerir ícones/badges de ligação ativa
+                // Forçar a ocultação de todos os pequenos balões de etiqueta das caixas para limpar o visual do fluxo
                 const badgeEl = nodeEl.querySelector('.link-badge');
                 if (badgeEl) {
-                    if (data.linkType !== "none") {
-                        badgeEl.classList.remove('hidden');
-                        if (data.linkType === 'external') {
-                            badgeEl.innerHTML = `<i class="fa-solid fa-up-right-from-square"></i> Link`;
-                        } else if (data.linkType === 'internal-master') {
-                            badgeEl.innerHTML = `<i class="fa-solid fa-table"></i> Planilha`;
-                        } else {
-                            badgeEl.innerHTML = `<i class="fa-solid fa-file-invoice"></i> Aba`;
-                        }
-                    } else {
-                        badgeEl.classList.add('hidden');
-                    }
+                    badgeEl.classList.add('hidden');
                 }
             });
         }
