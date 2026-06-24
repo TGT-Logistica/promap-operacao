@@ -383,20 +383,20 @@
                                                 </ul>
                                             </li>
 
-                                            <!-- Coluna 3: Fecho de Resultados -->
+                                            <!-- Coluna 3: Fechamento de Resultados -->
                                             <li>
                                                 <div class="tree-node-wrapper has-children">
                                                     <div id="node-fech_resultados" onclick="handleNodeClick('fech_resultados', event)" class="w-[160px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
-                                                        <span class="node-text">FECHO DE RESULTADOS</span>
+                                                        <span class="node-text">FECHAMENTO DE RESULTADOS</span>
                                                         <span class="link-badge absolute right-1.5 top-1.5 hidden text-red-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                     </div>
                                                 </div>
                                                 <ul>
-                                                    <!-- Sub 3.1: FECHO JORNADA MOTORISTA -->
+                                                    <!-- Sub 3.1: FECHAMENTO JORNADA MOTORISTA -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
                                                             <div id="node-fech_jornada" onclick="handleNodeClick('fech_jornada', event)" class="w-[120px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
-                                                                <span class="node-text">FECHO JORNADA MOTORISTA</span>
+                                                                <span class="node-text">FECHAMENTO JORNADA MOTORISTA</span>
                                                                 <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                             </div>
                                                         </div>
@@ -408,7 +408,7 @@
                                                             </li>
                                                         </ul>
                                                     </li>
-                                                    <!-- Sub 3.2: FECHO MENSAL FROTA -->
+                                                    <!-- Sub 3.2: FECHAMENTO MENSAL FROTA -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
                                                             <div id="node-fech_mensal_frota" onclick="handleNodeClick('fech_mensal_frota', event)" class="w-[120px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
@@ -424,7 +424,7 @@
                                                             </li>
                                                         </ul>
                                                     </li>
-                                                    <!-- Sub 3.3: FECHO MENSAL CLIENTES/FROTA -->
+                                                    <!-- Sub 3.3: FECHAMENTO MENSAL CLIENTES/FROTA -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
                                                             <div id="node-fech_clientes_frota" onclick="handleNodeClick('fech_clientes_frota', event)" class="w-[120px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
@@ -693,240 +693,47 @@
     <div id="sidebar-overlay" onclick="closeAllModals()" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-20 hidden"></div>
 
     <script>
-        // Dados Iniciais e Estrutura Hierárquica dos Nós (Sincronizado perfeitamente com os dados editados pelo utilizador)
+        // Dados Iniciais e Estrutura Hierárquica dos Nós
         const DEFAULT_NODES_DATA = {
-          "operacao": {
-            "name": "OPERAÇÃO",
-            "type": "color-macro-top",
-            "linkType": "none",
-            "url": "",
-            "tabId": "",
-            "desc": "Fluxo Geral de Processos e Indicadores de Operação."
-          },
-          "gestao_frota": {
-            "name": "GESTÃO DA FROTA",
-            "type": "color-macro-sub",
-            "linkType": "none",
-            "url": "",
-            "tabId": "",
-            "desc": "Gestão macro da frota."
-          },
-          "prog_veiculos": {
-            "name": "PROGRAMAÇÃO DE VEÍCULOS",
-            "type": "color-process-key",
-            "linkType": "none",
-            "url": "",
-            "tabId": "",
-            "desc": ""
-          },
-          "disp_recursos": {
-            "name": "GESTÃO DE DISP. RECURSOS",
-            "type": "color-sub-process",
-            "linkType": "none",
-            "url": "",
-            "tabId": "",
-            "desc": ""
-          },
-          "disp_frota": {
-            "name": "Disponibilidade da frota",
-            "type": "color-indicator",
-            "linkType": "internal",
-            "url": "",
-            "tabId": "custom-tab-1782246832535",
-            "desc": "Painel de percentual de carros prontos para escala."
-          },
-          "prog_folgas": {
-            "name": "PROGRAMAÇÃO DE FOLGAS",
-            "type": "color-sub-process",
-            "linkType": "none",
-            "url": "",
-            "tabId": "",
-            "desc": ""
-          },
-          "alinhamento_folgas": {
-            "name": "Alinhamento de início e retorno das folgas x Manutenção no período",
-            "type": "color-indicator",
-            "linkType": "none",
-            "url": "https://docs.google.com/spreadsheets/d/1lAi0B6JKoeSGPhijXpGq3zJwIJkvIo5-nyQ0tZvXZrk/edit?gid=0#gid=0",
-            "tabId": "",
-            "desc": "Planilha interna de organização de escalas."
-          },
-          "gestao_clientes": {
-            "name": "GESTÃO DE CLIENTES",
-            "type": "color-sub-process",
-            "linkType": "none",
-            "url": "",
-            "tabId": "",
-            "desc": ""
-          },
-          "objetivos_rotas": {
-            "name": "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES.",
-            "type": "color-to-develop",
-            "linkType": "none",
-            "url": "",
-            "tabId": "",
-            "desc": ""
-          },
-          "acomp_jornada": {
-            "name": "ACOMPANHAMENTO DE JORNADA",
-            "type": "color-process-key",
-            "linkType": "none",
-            "url": "",
-            "tabId": "",
-            "desc": ""
-          },
-          "acomp_motorista": {
-            "name": "ACOMPANHAMENTO DE MOTORISTA",
-            "type": "color-sub-process",
-            "linkType": "none",
-            "url": "",
-            "tabId": "",
-            "desc": ""
-          },
-          "sat_motorista": {
-            "name": "Satisfação do motorista",
-            "type": "color-indicator",
-            "linkType": "internal",
-            "url": "",
-            "tabId": "custom-tab-1782246931765",
-            "desc": ""
-          },
-          "controle_combustivel": {
-            "name": "CONTROLO DE COMBUSTÍVEL",
-            "type": "color-sub-process",
-            "linkType": "none",
-            "url": "",
-            "tabId": "",
-            "desc": ""
-          },
-          "perc_combustivel": {
-            "name": "Percentagem Combustível x Faturação Líquida",
-            "type": "color-indicator",
-            "linkType": "none",
-            "url": "",
-            "tabId": "",
-            "desc": ""
-          },
-          "preco_l": {
-            "name": "Preço/L",
-            "type": "color-indicator",
-            "linkType": "internal",
-            "url": "",
-            "tabId": "custom-tab-1782246892300",
-            "desc": "R$ 6,80"
-          },
-          "consumo_medio": {
-            "name": "Consumo médio",
-            "type": "color-indicator",
-            "linkType": "internal",
-            "url": "",
-            "tabId": "custom-tab-1782246908050",
-            "desc": ""
-          },
-          "fech_resultados": {
-            "name": "FECHO DE RESULTADOS",
-            "type": "color-process-key",
-            "linkType": "none",
-            "url": "",
-            "tabId": "",
-            "desc": ""
-          },
-          "fech_jornada": {
-            "name": "FECHO JORNADA MOTORISTA",
-            "type": "color-sub-process",
-            "linkType": "none",
-            "url": "",
-            "tabId": "",
-            "desc": ""
-          },
-          "perf_motorista": {
-            "name": "Performance motorista",
-            "type": "color-indicator",
-            "linkType": "internal",
-            "tabId": "custom-tab-1782246941735",
-            "url": "",
-            "desc": ""
-          },
-          "fech_mensal_frota": {
-            "name": "FECHO MENSAL FROTA",
-            "type": "color-sub-process",
-            "linkType": "none",
-            "url": "",
-            "tabId": "",
-            "desc": ""
-          },
-          "res_liquido": {
-            "name": "Resultado líquido",
-            "type": "color-indicator",
-            "linkType": "internal",
-            "url": "",
-            "tabId": "custom-tab-1782246948856",
-            "desc": ""
-          },
-          "fech_clientes_frota": {
-            "name": "FECHO MENSAL CLIENTES/FROTA",
-            "type": "color-sub-process",
-            "linkType": "none",
-            "url": "",
-            "tabId": "",
-            "desc": ""
-          },
-          "ineficiencias_carga": {
-            "name": "Ineficiências de carga e descarga e diárias",
-            "type": "color-to-develop",
-            "linkType": "none",
-            "url": "",
-            "tabId": "",
-            "desc": ""
-          },
-          "planejamento_frota": {
-            "name": "PLANEAMENTO/DESENVOLVIMENTO - FROTA",
-            "type": "color-process-key",
-            "linkType": "none",
-            "url": "",
-            "tabId": "",
-            "desc": ""
-          },
-          "gestao_eficiencia": {
-            "name": "GESTÃO DE EFICIÊNCIA E PROCESSO",
-            "type": "color-sub-process",
-            "linkType": "none",
-            "url": "",
-            "tabId": "",
-            "desc": ""
-          },
-          "definir_cronograma": {
-            "name": "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO DE MANTER ATUALIZADO OS PLANOS DE AÇÃO",
-            "type": "color-to-develop",
-            "linkType": "none",
-            "url": "",
-            "tabId": "",
-            "desc": ""
-          },
-          "regularizacao_frota": {
-            "name": "REGULARIZAÇÃO FROTA",
-            "type": "color-process-key",
-            "linkType": "none",
-            "url": "",
-            "tabId": "",
-            "desc": ""
-          },
-          "licenciamento": {
-            "name": "LICENCIAMENTO E ADEQUAÇÕES FROTA",
-            "type": "color-sub-process",
-            "linkType": "none",
-            "url": "",
-            "tabId": "",
-            "desc": ""
-          },
-          "adeq_admin": {
-            "name": "ADEQUAÇÕES ADMINISTRATIVAS",
-            "type": "color-sub-process",
-            "linkType": "none",
-            "url": "",
-            "tabId": "",
-            "desc": ""
-          }
+            "operacao": { name: "OPERAÇÃO", type: "color-macro-top", linkType: "none", url: "", tabId: "", desc: "Fluxo Geral de Processos e Indicadores de Operação." },
+            "gestao_frota": { name: "GESTÃO DA FROTA", type: "color-macro-sub", linkType: "none", url: "", tabId: "", desc: "Gestão macro da frota." },
+            
+            "prog_veiculos": { name: "PROGRAMAÇÃO DE VEÍCULOS", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
+            "disp_recursos": { name: "GESTÃO DE DISP. RECURSOS", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "disp_frota": { name: "Disponibilidade da frota", type: "color-indicator", linkType: "none", url: "", tabId: "", desc: "Acompanhamento da taxa de prontidão de veículos." },
+            
+            "prog_folgas": { name: "PROGRAMAÇÃO DE FOLGAS", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "alinhamento_folgas": { name: "Alinhamento de início e retorno das folgas x Manutenção no período", type: "color-indicator", linkType: "internal", url: "", tabId: "internal-tab-folgas", desc: "Planilha de organização de folgas e conciliação com a oficina." },
+            
+            "gestao_clientes": { name: "GESTÃO DE CLIENTES", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "objetivos_rotas": { name: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES.", type: "color-to-develop", linkType: "none", url: "", tabId: "", desc: "" },
+            
+            "acomp_jornada": { name: "ACOMPANHAMENTO DE JORNADA", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
+            "acomp_motorista": { name: "ACOMPANHAMENTO DE MOTORISTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "sat_motorista": { name: "Satisfação do motorista", type: "color-indicator", linkType: "none", url: "", tabId: "", desc: "" },
+            
+            "controle_combustivel": { name: "CONTROLO DE COMBUSTÍVEL", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "perc_combustivel": { name: "Percentagem Combustível x Faturação Líquida", type: "color-indicator", linkType: "none", url: "", tabId: "", desc: "" },
+            "preco_l": { name: "Preço/L", type: "color-indicator", linkType: "none", url: "", tabId: "", desc: "" },
+            "consumo_medio": { name: "Consumo médio", type: "color-indicator", linkType: "none", url: "", tabId: "", desc: "" },
+            
+            "fech_resultados": { name: "FECHAMENTO DE RESULTADOS", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
+            "fech_jornada": { name: "FECHAMENTO JORNADA MOTORISTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "perf_motorista": { name: "Performance motorista", type: "color-indicator", linkType: "none", url: "", tabId: "", desc: "" },
+            
+            "fech_mensal_frota": { name: "FECHAMENTO MENSAL FROTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "res_liquido": { name: "Resultado líquido", type: "color-indicator", linkType: "none", url: "", tabId: "", desc: "" },
+            
+            "fech_clientes_frota": { name: "FECHAMENTO MENSAL CLIENTES/FROTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "ineficiencias_carga": { name: "Ineficiências de carga e descarga e diárias", type: "color-to-develop", linkType: "none", url: "", tabId: "", desc: "" },
+            
+            "planejamento_frota": { name: "PLANEAMENTO/DESENVOLVIMENTO - FROTA", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
+            "gestao_eficiencia": { name: "GESTÃO DE EFICIÊNCIA E PROCESSO", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "definir_cronograma": { name: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO...", type: "color-to-develop", linkType: "none", url: "", tabId: "", desc: "" },
+            
+            "regularizacao_frota": { name: "REGULARIZAÇÃO FROTA", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
+            "licenciamento": { name: "LICENCIAMENTO E ADEQUAÇÕES FROTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "adeq_admin": { name: "ADEQUAÇÕES ADMINISTRATIVAS", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" }
         };
 
         const DEFAULT_TABS_DATA = [
