@@ -527,8 +527,8 @@
                             <thead>
                                 <tr class="bg-slate-100 font-bold border-b text-slate-600">
                                     <th class="p-1.5 border-r border-slate-200">Ref</th>
-                                    <th class="p-1.5 border-r border-slate-200">Métrica</th>
-                                    <th class="p-1.5">Estado</th>
+                                    <th class="p-1.5 border-r border-slate-200">Resultado</th>
+                                    <th class="p-1.5">Meta</th>
                                 </tr>
                             </thead>
                             <tbody id="bubble-preview-table-body"></tbody>
@@ -938,8 +938,8 @@
             "tableData": [
               {
                 "Mês / Referência": "MAIO",
-                "Métrica / Resultado": "24 DIAS ",
-                "Estado / Meta": "25 DIAS"
+                "Resultado": "24 DIAS ",
+                "Meta": "25 DIAS"
               }
             ]
           },
@@ -951,8 +951,8 @@
             "tableData": [
               {
                 "Mês / Referência": "MAIO",
-                "Métrica / Resultado": "R$ 6,80",
-                "Estado / Meta": "R$ 5,69"
+                "Resultado": "R$ 6,80",
+                "Meta": "R$ 5,69"
               }
             ]
           },
@@ -964,8 +964,8 @@
             "tableData": [
               {
                 "Mês / Referência": "MAIO ",
-                "Métrica / Resultado": "1,84",
-                "Estado / Meta": "1,86"
+                "Resultado": "1,84",
+                "Meta": "1,86"
               }
             ]
           },
@@ -991,14 +991,15 @@
             "tableData": [
               {
                 "Mês / Referência": "MAIO ",
-                "Métrica / Resultado": "119%",
-                "Estado / Meta": "100%"
+                "Resultado": "119%",
+                "Meta": "100%"
               }
             ]
           }
         ];
 
-        // Estado do Sistema (v3 garante a limpeza de memórias antigas)
+
+        // Estado do Systema (v3 garante a limpeza de memórias antigas)
         let systemData = {
             nodes: JSON.parse(JSON.stringify(DEFAULT_NODES_DATA)),
             tabs: JSON.parse(JSON.stringify(DEFAULT_TABS_DATA))
@@ -1070,6 +1071,23 @@
             if (saved) {
                 try {
                     systemData = JSON.parse(saved);
+                    // Migrar dados antigos de "Estado / Meta" para "Meta" e "Métrica" para "Resultado"
+                    if (systemData && systemData.tabs) {
+                        systemData.tabs.forEach(tab => {
+                            if (tab.tableData) {
+                                tab.tableData.forEach(row => {
+                                    if (row["Estado / Meta"] !== undefined) {
+                                        row["Meta"] = row["Estado / Meta"];
+                                        delete row["Estado / Meta"];
+                                    }
+                                    if (row["Métrica / Resultado"] !== undefined) {
+                                        row["Resultado"] = row["Métrica / Resultado"];
+                                        delete row["Métrica / Resultado"];
+                                    }
+                                });
+                            }
+                        });
+                    }
                 } catch(e) {
                     console.error("Erro ao carregar dados locais. Usando definições padrão.");
                 }
@@ -1444,8 +1462,8 @@
                                     <label class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-2">Lançamento de Indicadores</label>
                                     <form onsubmit="addTableRow(event, '${tab.id}')" class="grid grid-cols-3 gap-2">
                                         <input type="text" placeholder="Mês / Referência" required name="col1" class="bg-white text-xs border rounded px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500 font-semibold text-slate-700">
-                                        <input type="text" placeholder="Resultado / Métrica" required name="col2" class="bg-white text-xs border rounded px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                        <input type="text" placeholder="Estado / Meta" required name="col3" class="bg-white text-xs border rounded px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                        <input type="text" placeholder="Resultado" required name="col2" class="bg-white text-xs border rounded px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                        <input type="text" placeholder="Meta" required name="col3" class="bg-white text-xs border rounded px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500">
                                         <button type="submit" class="col-span-3 bg-blue-600 text-white font-bold py-1.5 rounded text-[10px] hover:bg-blue-700 transition-colors uppercase tracking-wider">Adicionar Registo</button>
                                     </form>
                                 </div>
@@ -1506,8 +1524,8 @@
             const formData = new FormData(form);
             const newRow = {
                 "Mês / Referência": formData.get("col1"),
-                "Métrica / Resultado": formData.get("col2"),
-                "Estado / Meta": formData.get("col3")
+                "Resultado": formData.get("col2"),
+                "Meta": formData.get("col3")
             };
 
             tab.tableData.push(newRow);
