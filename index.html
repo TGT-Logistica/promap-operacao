@@ -991,6 +991,21 @@
             return "";
         }
 
+        // Obtém dinamicamente o valor do último mês que possui dados preenchidos na planilha
+        function obterUltimoMesComDados(row) {
+            const mesesNomes = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+            
+            // Percorre os meses de trás para a frente (Dezembro para Janeiro)
+            for (let i = 11; i >= 0; i--) {
+                let val = row.data[i];
+                if (val !== null && val !== undefined && !isNaN(val)) {
+                    // Retorna o valor formatado com a indicação abreviada do respetivo mês
+                    return formatCellValue(val, row.type) + ` (${mesesNomes[i]})`;
+                }
+            }
+            return "Sem dados";
+        }
+
         // Transforma a célula num input editável
         function editMasterCell(rowIndex, monthIndex, element) {
             let row = systemData.masterSheet[rowIndex];
@@ -1235,11 +1250,12 @@
             }
 
             rowsToPreview.slice(0, 3).forEach(row => {
-                let valorAcumulado = calcularAcumulado(row);
+                // Modificado para capturar o último mês preenchido em vez de puxar o cálculo acumulado
+                let valorRecente = obterUltimoMesComDados(row);
                 tbody.innerHTML += `
                     <tr class="border-b border-slate-200">
                         <td class="p-1.5 border-r border-slate-200 font-bold truncate max-w-[130px]">${row.name}</td>
-                        <td class="p-1.5 border-r border-slate-200 text-center font-semibold text-slate-700">${valorAcumulado}</td>
+                        <td class="p-1.5 border-r border-slate-200 text-center font-semibold text-slate-700">${valorRecente}</td>
                         <td class="p-1.5 text-center font-bold text-emerald-600">${row.meta}</td>
                     </tr>
                 `;
