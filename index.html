@@ -4,14 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProMap - Fluxo de Processos & Indicadores</title>
-    <!-- Tailwind CSS para design moderno -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome para ícones robustos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
         body {
@@ -154,10 +151,8 @@
 </head>
 <body class="h-screen flex flex-col overflow-hidden select-none">
 
-    <!-- Notificações Customizadas -->
     <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-    <!-- Modal de Confirmação Customizado (Substitui o 'confirm' nativo do navegador) -->
     <div id="confirm-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-xl w-full max-w-sm shadow-2xl overflow-hidden border border-slate-100 p-5 flex flex-col gap-4">
             <div class="flex items-start gap-3">
@@ -176,7 +171,6 @@
         </div>
     </div>
 
-    <!-- Cabeçalho Principal -->
     <header class="bg-slate-900 text-white px-6 py-3 flex items-center justify-between shadow-md shrink-0 border-b border-slate-800">
         <div class="flex items-center gap-3">
             <div class="bg-gradient-to-tr from-blue-600 to-indigo-600 text-white p-2 rounded-xl shadow-inner font-bold flex items-center justify-center">
@@ -188,7 +182,6 @@
             </div>
         </div>
 
-        <!-- Menu de Navegação Global -->
         <nav class="flex gap-1.5 bg-slate-950 p-1.5 rounded-xl border border-slate-800/80">
             <button onclick="switchTab('diagram-view')" id="btn-diagram-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold transition-all bg-blue-600 text-white shadow-sm">
                 <i class="fa-solid fa-network-wired mr-1.5"></i>Fluxograma do Processo
@@ -205,34 +198,28 @@
         </nav>
 
         <div class="text-xs text-slate-400 flex items-center gap-3">
-            <!-- Controlos de Zoom -->
             <div class="flex items-center bg-slate-950 border border-slate-800 rounded-lg p-0.5">
                 <button onclick="adjustZoom(-0.1)" class="px-2 py-1 hover:text-white transition-colors" title="Diminuir Zoom"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
                 <span id="zoom-indicator" class="text-[10px] font-mono px-1 min-w-[35px] text-center">100%</span>
                 <button onclick="adjustZoom(0.1)" class="px-2 py-1 hover:text-white transition-colors" title="Aumentar Zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
                 <button onclick="resetZoom()" class="px-2 py-1 hover:text-white transition-colors border-l border-slate-800 ml-0.5" title="Resetar"><i class="fa-solid fa-arrows-to-eye"></i></button>
             </div>
-            <!-- Indicador de Status com Cloud Sync -->
             <span id="sync-status-indicator" class="bg-amber-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-amber-500 border border-amber-500/20 animate-pulse">
                 <i class="fa-solid fa-spinner animate-spin mr-1"></i>Conectando Nuvem...
             </span>
         </div>
     </header>
 
-    <!-- Área de Conteúdo Principal -->
     <main class="flex-grow flex overflow-hidden relative bg-slate-100">
 
-        <!-- SEPARADOR 1: DIAGRAMA INTERATIVO -->
         <div id="tab-diagram-view" class="tab-content flex-grow flex flex-col overflow-auto p-4 w-full h-full">
             
-            <!-- Barra Informativa com Legenda Integrada e Horizontal -->
             <div class="mb-3 shrink-0 flex flex-wrap gap-4 justify-between items-center bg-white p-3 rounded-xl shadow-sm border border-slate-200">
                 <div class="max-w-xl">
                     <h2 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Mapeador Operacional Interativo</h2>
                     <p class="text-[11px] text-slate-500 mt-0.5">Clique em qualquer bloco para adicionar anotações, criar formulários, definir hiperligações externas ou associar tabelas de dados.</p>
                 </div>
                 
-                <!-- Legenda Compacta e Horizontal no Topo -->
                 <div class="flex flex-wrap gap-x-4 gap-y-1.5 items-center text-[10px] font-bold text-slate-700 bg-slate-50/80 px-3 py-2 rounded-lg border border-slate-100 shadow-2xs">
                     <span class="flex items-center gap-1.5 text-slate-500 uppercase tracking-wider text-[9px] border-r pr-3 border-slate-200">
                         <i class="fa-solid fa-tags"></i> Legenda
@@ -245,16 +232,13 @@
                 </div>
             </div>
 
-            <!-- Canvas do Diagrama -->
             <div class="flex-grow bg-slate-50 rounded-xl border border-slate-200 overflow-auto relative p-6">
                 
-                <!-- Margens horizontais expandidas (min-w-[2450px]) para que todo o fluxo respire e não corte as laterais de nenhuma coluna -->
                 <div id="diagram-scale-container" class="origin-top-left transition-transform duration-100 ease-out min-w-[2450px] py-6 px-16">
                     
                     <div class="tree">
                         <ul>
                             <li>
-                                <!-- Nível 1: OPERAÇÃO (Largura ampliada w-[98%] max-w-[2300px] e título aumentado com destaque premium) -->
                                 <div class="tree-node-wrapper has-children">
                                     <div id="node-operacao" onclick="handleNodeClick('operacao', event)" class="node-card cursor-pointer shadow-sm rounded-xl p-5 text-center color-macro-top w-[98%] max-w-[2300px] relative">
                                         <span class="node-text text-3xl font-black tracking-widest uppercase block">OPERAÇÃO</span>
@@ -263,7 +247,6 @@
                                 </div>
                                 
                                 <ul>
-                                    <!-- ÚNICA COLUNA PRINCIPAL: GESTÃO DA FROTA -->
                                     <li>
                                         <div class="tree-node-wrapper has-children">
                                             <div id="node-gestao_frota" onclick="handleNodeClick('gestao_frota', event)" class="node-card cursor-pointer shadow-sm rounded-md py-2 w-[320px] text-center font-bold text-sm color-macro-sub relative">
@@ -272,9 +255,7 @@
                                             </div>
                                         </div>
 
-                                        <!-- Sub-árvore de 5 Colunas -->
                                         <ul>
-                                            <!-- Coluna 1: Programação de Veículos -->
                                             <li>
                                                 <div class="tree-node-wrapper has-children">
                                                     <div id="node-prog_veiculos" onclick="handleNodeClick('prog_veiculos', event)" class="w-[175px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
@@ -283,7 +264,6 @@
                                                     </div>
                                                 </div>
                                                 <ul>
-                                                    <!-- Sub 1.1: GESTÃO DE DISP. RECURSOS -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
                                                             <div id="node-disp_recursos" onclick="handleNodeClick('disp_recursos', event)" class="w-[140px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
@@ -300,7 +280,6 @@
                                                             </li>
                                                         </ul>
                                                     </li>
-                                                    <!-- Sub 1.2: PROGRAMAÇÃO DE FOLGAS -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
                                                             <div id="node-prog_folgas" onclick="handleNodeClick('prog_folgas', event)" class="w-[140px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
@@ -317,7 +296,6 @@
                                                             </li>
                                                         </ul>
                                                     </li>
-                                                    <!-- Sub 1.3: GESTÃO DE CLIENTES -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
                                                             <div id="node-gestao_clientes" onclick="handleNodeClick('gestao_clientes', event)" class="w-[140px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
@@ -337,7 +315,6 @@
                                                 </ul>
                                             </li>
 
-                                            <!-- Coluna 2: Acompanhamento de Jornada -->
                                             <li>
                                                 <div class="tree-node-wrapper has-children">
                                                     <div id="node-acomp_jornada" onclick="handleNodeClick('acomp_jornada', event)" class="w-[175px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
@@ -346,7 +323,6 @@
                                                     </div>
                                                 </div>
                                                 <ul>
-                                                    <!-- Sub 2.1: ACOMPANHAMENTO DE MOTORISTA -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
                                                             <div id="node-acomp_motorista" onclick="handleNodeClick('acomp_motorista', event)" class="w-[140px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
@@ -363,7 +339,6 @@
                                                             </li>
                                                         </ul>
                                                     </li>
-                                                    <!-- Sub 2.2: CONTROLE DE COMBUSTÍVEL -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
                                                             <div id="node-controle_combustivel" onclick="handleNodeClick('controle_combustivel', event)" class="w-[140px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
@@ -383,18 +358,19 @@
                                                                     <li>
                                                                         <div id="node-preco_l" onclick="handleNodeClick('preco_l', event)" class="w-[75px] text-center p-1 text-[8px] font-bold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer relative node-card leading-tight">
                                                                             <span class="node-text">Preço/L</span>
+                                                                            <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                                         </div>
                                                                     </li>
                                                                     <li>
                                                                         <div id="node-consumo_medio" onclick="handleNodeClick('consumo_medio', event)" class="w-[75px] text-center p-1 text-[8px] font-bold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer relative node-card leading-tight">
                                                                             <span class="node-text">Consumo médio</span>
+                                                                            <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                                         </div>
                                                                     </li>
                                                                 </ul>
                                                             </li>
                                                         </ul>
                                                     </li>
-                                                    <!-- Sub 2.3: CONTROLE DE PEDÁGIO -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
                                                             <div id="node-controle_pedagio" onclick="handleNodeClick('controle_pedagio', event)" class="w-[140px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
@@ -414,7 +390,6 @@
                                                 </ul>
                                             </li>
 
-                                            <!-- Coluna 3: Fechamento de Resultados -->
                                             <li>
                                                 <div class="tree-node-wrapper has-children">
                                                     <div id="node-fech_resultados" onclick="handleNodeClick('fech_resultados', event)" class="w-[175px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
@@ -423,7 +398,6 @@
                                                     </div>
                                                 </div>
                                                 <ul>
-                                                    <!-- Sub 3.1: FECHAMENTO JORNADA MOTORISTA -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
                                                             <div id="node-fech_jornada" onclick="handleNodeClick('fech_jornada', event)" class="w-[135px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
@@ -435,11 +409,11 @@
                                                             <li>
                                                                 <div id="node-perf_motorista" onclick="handleNodeClick('perf_motorista', event)" class="w-[135px] text-center p-2 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                                     <span class="node-text">Performance motorista</span>
+                                                                    <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                                 </div>
                                                             </li>
                                                         </ul>
                                                     </li>
-                                                    <!-- Sub 3.2: FECHAMENTO MENSAL FROTA -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
                                                             <div id="node-fech_mensal_frota" onclick="handleNodeClick('fech_mensal_frota', event)" class="w-[135px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
@@ -451,11 +425,11 @@
                                                             <li>
                                                                 <div id="node-res_liquido" onclick="handleNodeClick('res_liquido', event)" class="w-[135px] text-center p-2 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                                     <span class="node-text">Resultado líquido</span>
+                                                                    <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                                 </div>
                                                             </li>
                                                         </ul>
                                                     </li>
-                                                    <!-- Sub 3.3: FECHAMENTO MENSAL CLIENTES/FROTA -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
                                                             <div id="node-fech_clientes_frota" onclick="handleNodeClick('fech_clientes_frota', event)" class="w-[135px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
@@ -467,6 +441,7 @@
                                                             <li>
                                                                 <div id="node-ineficiencias_carga" onclick="handleNodeClick('ineficiencias_carga', event)" class="w-[135px] text-center p-1.5 text-[8px] font-semibold rounded color-to-develop shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                                     <span class="node-text">Ineficiências de carga e descarga e diárias</span>
+                                                                    <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                                 </div>
                                                             </li>
                                                         </ul>
@@ -474,7 +449,6 @@
                                                 </ul>
                                             </li>
 
-                                            <!-- Coluna 4: Planeamento / Desenvolvimento - Frota -->
                                             <li>
                                                 <div class="tree-node-wrapper has-children">
                                                     <div id="node-planejamento_frota" onclick="handleNodeClick('planejamento_frota', event)" class="w-[225px] text-center p-2 font-bold text-[10px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card leading-tight">
@@ -487,12 +461,14 @@
                                                         <div class="tree-node-wrapper has-children">
                                                             <div id="node-gestao_eficiencia" onclick="handleNodeClick('gestao_eficiencia', event)" class="w-[135px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                                 <span class="node-text">GESTÃO DE EFICIÊNCIA E PROCESSO</span>
+                                                                <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                             </div>
                                                         </div>
                                                         <ul>
                                                             <li>
                                                                 <div id="node-definir_cronograma" onclick="handleNodeClick('definir_cronograma', event)" class="w-[135px] text-center p-1 text-[8px] font-semibold rounded color-to-develop shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-snug">
                                                                     <span class="node-text">DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO...</span>
+                                                                    <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                                 </div>
                                                             </li>
                                                         </ul>
@@ -500,7 +476,6 @@
                                                 </ul>
                                             </li>
 
-                                            <!-- Coluna 5: Gestão Administrativa da Frota -->
                                             <li>
                                                 <div class="tree-node-wrapper has-children">
                                                     <div id="node-regularizacao_frota" onclick="handleNodeClick('regularizacao_frota', event)" class="w-[220px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
@@ -509,22 +484,22 @@
                                                     </div>
                                                 </div>
                                                 <ul>
-                                                    <!-- Sub 5.1: LICENCIAMENTO E ADEQUAÇÕES -->
                                                     <li>
                                                         <div id="node-licenciamento" onclick="handleNodeClick('licenciamento', event)" class="w-[135px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                             <span class="node-text">LICENCIAMENTO E ADEQUAÇÕES FROTA</span>
+                                                            <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                         </div>
                                                     </li>
-                                                    <!-- Sub 5.2: ADEQUAÇÕES ADMINISTRATIVAS -->
                                                     <li>
                                                         <div id="node-adeq_admin" onclick="handleNodeClick('adeq_admin', event)" class="w-[135px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                             <span class="node-text">ADEQUAÇÕES ADMINISTRATIVAS</span>
+                                                            <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                         </div>
                                                     </li>
-                                                    <!-- Sub 5.3: GESTÃO DE SINISTRO -->
                                                     <li>
                                                         <div id="node-gestao_sinistro" onclick="handleNodeClick('gestao_sinistro', event)" class="w-[135px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                             <span class="node-text">GESTÃO DE SINISTRO</span>
+                                                            <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                         </div>
                                                     </li>
                                                 </ul>
@@ -538,7 +513,6 @@
 
                 </div>
 
-                <!-- BALÃO FLUTUANTE DE PRÉ-VISUALIZAÇÃO -->
                 <div id="link-preview-bubble" class="absolute bg-white shadow-2xl border border-slate-300 rounded-lg p-3 hidden z-30 w-[350px] transition-all duration-150 text-slate-800 font-sans">
                     <div class="flex items-start gap-3">
                         <div id="bubble-doc-icon-wrapper" class="bg-emerald-100 text-emerald-700 p-2 rounded-lg shrink-0 flex items-center justify-center">
@@ -558,7 +532,6 @@
                         </div>
                     </div>
 
-                    <!-- Pré-visualização da Tabela -->
                     <div id="bubble-preview-table-container" class="mt-2.5 border border-slate-200 rounded overflow-hidden">
                         <table class="w-full text-[9px] text-left border-collapse bg-slate-50">
                             <thead>
@@ -572,7 +545,6 @@
                         </table>
                     </div>
 
-                    <!-- Rodapé do Balão -->
                     <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between">
                         <span class="text-[9px] text-slate-400 italic font-medium">Clique no bloco para gerir anotações</span>
                         <button id="bubble-btn-action" class="bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold px-2.5 py-1 rounded transition-colors flex items-center gap-1">
@@ -584,10 +556,8 @@
             </div>
         </div>
 
-        <!-- SEPARADOR 2: NOVO MASTER SPREADSHEET (PLANILHA DE ALTA FIDELIDADE) -->
         <div id="tab-master-sheet-view" class="tab-content flex-grow hidden flex-col overflow-auto p-4 md:p-6 w-full h-full">
             <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex flex-col h-full gap-4 max-w-7xl mx-auto w-full">
-                <!-- Cabeçalho da Planilha -->
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-3 shrink-0 gap-3">
                     <div class="flex items-center gap-3">
                         <div class="bg-emerald-100 text-emerald-700 p-2.5 rounded-xl text-xl flex items-center justify-center">
@@ -603,7 +573,6 @@
                     </button>
                 </div>
 
-                <!-- Contentor da Planilha -->
                 <div class="flex-grow overflow-auto border border-slate-200 rounded-lg bg-slate-50/50">
                     <table class="w-full text-xs text-left border-collapse min-w-[1200px]">
                         <thead>
@@ -626,18 +595,15 @@
                             </tr>
                         </thead>
                         <tbody id="master-sheet-tbody" class="bg-white">
-                            <!-- Preenchido dinamicamente via JavaScript -->
-                        </tbody>
+                            </tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <!-- SEPARADOR 3: GERIDOR DE PÁGINAS E SEPARADORES AUXILIARES -->
         <div id="tab-custom-tabs-view" class="tab-content flex-grow hidden flex-col overflow-auto p-6">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto w-full">
                 
-                <!-- Criador de Separador -->
                 <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex flex-col gap-4">
                     <div class="bg-blue-50 text-blue-600 w-11 h-11 rounded-xl flex items-center justify-center text-lg">
                         <i class="fa-solid fa-folder-plus"></i>
@@ -669,7 +635,6 @@
                     </form>
                 </div>
 
-                <!-- Lista de Separadores Ativos -->
                 <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex flex-col gap-4 col-span-2">
                     <div>
                         <h3 class="text-sm font-bold text-slate-800">Páginas e Separadores Ativos</h3>
@@ -682,7 +647,6 @@
             </div>
         </div>
 
-        <!-- SEPARADOR 4: CÓPIA DE SEGURANÇA E DADOS -->
         <div id="tab-backup-view" class="tab-content flex-grow hidden flex-col overflow-auto p-6">
             <div class="max-w-4xl mx-auto w-full bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                 <div class="flex items-center gap-4 mb-6">
@@ -719,7 +683,6 @@
             </div>
         </div>
 
-        <!-- MODAL DE CONFIGURAÇÃO DO BLOCO -->
         <div id="config-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
             <div class="bg-white rounded-xl w-full max-w-md shadow-2xl overflow-hidden flex flex-col border border-slate-100 animate-zoom-in">
                 
@@ -775,10 +738,8 @@
 
     </main>
 
-    <!-- Overlay de Fundo -->
     <div id="sidebar-overlay" onclick="closeAllModals()" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-20 hidden"></div>
 
-    <!-- SDK do Firebase & Scripts de Operação (Módulos JS) -->
     <script type="module">
         // Importando o SDK oficial v10 para garantir o funcionamento correto de módulos web CDN
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -815,7 +776,7 @@
             "disp_frota": { name: "Disponibilidade da frota", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-disp_frota", desc: "Acompanhamento da taxa de prontidão de veículos na Planilha Geral." },
             
             "prog_folgas": { name: "PROGRAMAÇÃO DE FOLGAS", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
-            "alinhamento_folgas": { name: "Alinhamento de início e retorno das folgas x Manutenção no período", type: "color-indicator", linkType: "internal", url: "", tabId: "internal-tab-folgas", desc: "Planilha de organização de folgas e conciliação com a oficina." },
+            "alinhamento_folgas": { name: "Alinhamento de início e retorno das folgas x Manutenção no período", type: "color-indicator", linkType: "internal", url: "", tabId: "internal-tab-folgas", desc: "Planilha de organization de folgas e conciliação com a oficina." },
             
             "gestao_clientes": { name: "GESTÃO DE CLIENTES", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "objetivos_rotas": { name: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES.", type: "color-to-develop", linkType: "none", url: "", tabId: "", desc: "" },
@@ -893,7 +854,7 @@
                 icon: "fa-chart-pie",
                 notes: "Tabela de acompanhamento operacional das escalas das folgas integradas com o cronograma de manutenção de equipamentos da oficina.",
                 tableData: [
-                    { "Mês": "Janeiro", "Resultado": "18", "Meta": "14" }
+                    { "Mês / Referência": "Janeiro", "Resultado": "18", "Meta": "14" }
                 ]
             }
         ];
@@ -909,6 +870,24 @@
         let activeNodeId = "";
         let selectedLinkType = "none";
         let confirmCallback = null;
+
+        // --- SISTEMA DE NOTIFICAÇÃO CUSTOMIZADA (TOAST) ---
+        function showToast(message) {
+            const container = document.getElementById("toast-container");
+            const toast = document.createElement("div");
+            toast.className = "bg-slate-900 text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-xl border border-slate-700/50 flex items-center gap-2 animate-fade-in pointer-events-auto transition-all duration-300 transform translate-y-2 opacity-0";
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> <span>${message}</span>`;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.remove("translate-y-2", "opacity-0");
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add("translate-y-2", "opacity-0");
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
 
         // --- SISTEMA DE COMUNICACAO DO BANCO DE DADOS EM NUVEM (FIREBASE FIRESTORE) ---
 
@@ -945,7 +924,7 @@
             }
         }
 
-        // Inicia a escuta ativa em tempo real dos documentos da nuvem
+        // Inicia a escuta activa em tempo real dos documentos da nuvem
         function startSync() {
             if (!currentUser) return;
             const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'promap_store', 'systemData');
@@ -957,7 +936,7 @@
                         try {
                             const parsed = JSON.parse(cloudData.payload);
                             
-                            // Integra novos nós se ausentes na nuvem (Compatibilidade e Retrocompatibilidade de dados de Pedágio e Sinistro)
+                            // Integra novos nós se ausentes na nuvem
                             if (parsed.nodes) {
                                 if (!parsed.nodes["controle_pedagio"]) {
                                     parsed.nodes["controle_pedagio"] = JSON.parse(JSON.stringify(DEFAULT_NODES_DATA["controle_pedagio"]));
@@ -986,7 +965,6 @@
                         }
                     }
                 } else {
-                    // Documento vazio na nuvem: Inicializamos enviando os dados iniciais locais
                     pushToCloud();
                 }
             }, (error) => {
@@ -995,7 +973,7 @@
             });
         }
 
-        // Autenticação prévia obrigatória antes de qualquer chamada Firestore (Regra 3)
+        // Autenticação prévia obrigatória antes de qualquer chamada Firestore
         const initAuth = async () => {
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
@@ -1005,7 +983,6 @@
                     const cred = await signInAnonymously(auth);
                     currentUser = cred.user;
                 }
-                // Ativa a sincronização assim que autenticado com sucesso
                 startSync();
             } catch (err) {
                 console.error("Erro de Autenticação Firebase:", err);
@@ -1019,61 +996,18 @@
             pushToCloud();
         }
 
-        // Persistência local no navegador secundária (v12)
         function saveToLocalStorage() {
             localStorage.setItem("ProMap_Indicadores_DB_v12", JSON.stringify(systemData));
         }
 
-        function loadFromLocalStorage() {
-            let saved = localStorage.getItem("ProMap_Indicadores_DB_v12");
-            if (!saved) {
-                // Tenta importar histórico das versões anteriores para migração
-                saved = localStorage.getItem("ProMap_Indicadores_DB_v11") || 
-                        localStorage.getItem("ProMap_Indicadores_DB_v10") || 
-                        localStorage.getItem("ProMap_Indicadores_DB_v5") || 
-                        localStorage.getItem("ProMap_Indicadores_DB_v4");
-            }
-
-            if (saved) {
-                try {
-                    let parsed = JSON.parse(saved);
-                    if (parsed.tabs) systemData.tabs = parsed.tabs;
-                    if (parsed.masterSheet) {
-                        // Preserva todos os números lançados anteriormente
-                        parsed.masterSheet.forEach(row => {
-                            let target = systemData.masterSheet.find(r => r.id === row.id);
-                            if (target && row.data) {
-                                target.data = row.data;
-                            }
-                        });
-                    }
-                    if (parsed.nodes) {
-                        Object.keys(parsed.nodes).forEach(key => {
-                            if (systemData.nodes[key]) {
-                                systemData.nodes[key].linkType = parsed.nodes[key].linkType;
-                                systemData.nodes[key].url = parsed.nodes[key].url;
-                                systemData.nodes[key].tabId = parsed.nodes[key].tabId;
-                                systemData.nodes[key].desc = parsed.nodes[key].desc;
-                            }
-                        });
-                    }
-                } catch(e) {
-                    console.error("Erro na leitura do cache local.", e);
-                }
-            }
-        }
-
         // --- OPERACAO E RENDERIZACAO VISUAL DO SISTEMA ---
 
-        // Renderiza a Planilha Master de Alta Fidelidade
         function renderMasterSpreadsheet() {
             const tbody = document.getElementById("master-sheet-tbody");
             tbody.innerHTML = "";
-
             let currentCategory = "";
 
             systemData.masterSheet.forEach((row, rowIndex) => {
-                // Cabeçalhos de Categoria (sem metas ao lado)
                 if (row.category !== currentCategory) {
                     currentCategory = row.category;
                     tbody.innerHTML += `
@@ -1084,10 +1018,7 @@
                     `;
                 }
 
-                // Calcular Acumulado Dinamicamente
                 let valorAcumulado = calcularAcumulado(row);
-
-                // Criar células para os 12 meses
                 let monthsHtml = "";
                 for (let i = 0; i < 12; i++) {
                     let val = row.data[i];
@@ -1107,17 +1038,12 @@
                     monthsHtml += `<td class="${cellClass}" ondblclick="editMasterCell(${rowIndex}, ${i}, this)">${displayVal}</td>`;
                 }
 
-                // Identificador de Meta Individual (Garante que "9,00" e todas as metas importantes fiquem em badge verde)
                 let rowMetaHtml = `<span class="font-bold text-slate-700">${row.meta}</span>`;
-                if (row.meta === "25 DIAS MÊS" || row.meta === "R$ 5,69 (2025)" || row.meta === "1,86" || row.meta === "100%" || row.meta === "80%" || row.meta === "90%" || row.meta === ">10%" || row.meta === "<35%" || row.meta === "0" || row.meta === "9,00") {
+                if (["25 DIAS MÊS", "R$ 5,69 (2025)", "1,86", "100%", "80%", "90%", ">10%", "<35%", "0", "9,00"].includes(row.meta)) {
                     rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">${row.meta}</span>`;
                 }
 
-                // Identificador de Responsável
-                let respHtml = "";
-                if (row.responsible) {
-                    respHtml = `<span class="bg-blue-100 text-blue-700 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider">${row.responsible}</span>`;
-                }
+                let respHtml = row.responsible ? `<span class="bg-blue-100 text-blue-700 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider">${row.responsible}</span>` : "";
 
                 tbody.innerHTML += `
                     <tr id="${row.id}" class="border-b border-slate-200 hover:bg-slate-50/60 transition-colors">
@@ -1139,31 +1065,21 @@
 
         function formatCellValue(val, type) {
             if (val === null || val === undefined || isNaN(val)) return "";
-            if (type === "currency") {
-                return "R$ " + val.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            }
-            if (type === "percentage") {
-                return val.toLocaleString('pt-BR') + "%";
-            }
-            if (type === "decimal") {
-                return val.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            }
+            if (type === "currency") return "R$ " + val.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            if (type === "percentage") return val.toLocaleString('pt-BR') + "%";
+            if (type === "decimal") return val.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             return val.toLocaleString('pt-BR');
         }
 
         function calcularAcumulado(row) {
             let activeValues = row.data.filter(v => v !== null && v !== undefined && !isNaN(v));
             if (activeValues.length === 0) return "#DIV/0!";
-
             if (row.formula === "avg") {
                 let sum = activeValues.reduce((a, b) => a + b, 0);
-                let avg = sum / activeValues.length;
-                return formatCellValue(avg, row.type);
+                return formatCellValue(sum / activeValues.length, row.type);
             }
             return "";
         }
-
-        // --- SISTEMA DE COMUNICACAO DO BANCO DE DADOS EM NUVEM (FIREBASE FIRESTORE) ---
 
         function obterUltimoMesComDados(row) {
             const mesesNomes = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
@@ -1180,9 +1096,7 @@
             let row = systemData.masterSheet[rowIndex];
             let val = row.data[monthIndex];
             
-            element.innerHTML = `
-                <input type="number" step="any" class="w-full text-center bg-white border border-blue-500 rounded px-1 py-0.5 text-xs focus:outline-none" value="${val !== null ? val : ''}">
-            `;
+            element.innerHTML = `<input type="number" step="any" class="w-full text-center bg-white border border-blue-500 rounded px-1 py-0.5 text-xs focus:outline-none" value="${val !== null ? val : ''}">`;
             let input = element.querySelector('input');
             input.focus();
             input.select();
@@ -1197,12 +1111,8 @@
 
             input.onblur = saveValue;
             input.onkeydown = function(e) {
-                if (e.key === "Enter") {
-                    saveValue();
-                }
-                if (e.key === "Escape") {
-                    renderMasterSpreadsheet();
-                }
+                if (e.key === "Enter") saveValue();
+                if (e.key === "Escape") renderMasterSpreadsheet();
             };
         }
 
@@ -1218,11 +1128,17 @@
             confirmCallback = null;
         }
 
+        // Eventos dos botões do Confirm Modal
+        document.getElementById("btn-confirm-action").onclick = function() {
+            if (confirmCallback) confirmCallback();
+            closeConfirmModal();
+        };
+        document.getElementById("btn-confirm-cancel").onclick = closeConfirmModal;
+
         function applyNodeStylingAndData() {
             Object.keys(systemData.nodes).forEach(nodeId => {
                 const nodeEl = document.getElementById(`node-${nodeId}`);
                 if (!nodeEl) return;
-
                 const data = systemData.nodes[nodeId];
 
                 const textEl = nodeEl.querySelector('.node-text');
@@ -1230,7 +1146,11 @@
 
                 const badgeEl = nodeEl.querySelector('.link-badge');
                 if (badgeEl) {
-                    badgeEl.classList.add('hidden');
+                    if (data.linkType && data.linkType !== 'none') {
+                        badgeEl.classList.remove('hidden');
+                    } else {
+                        badgeEl.classList.add('hidden');
+                    }
                 }
             });
         }
@@ -1253,27 +1173,15 @@
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('flex'));
-            
             const activeContent = document.getElementById(`tab-${tabId}`);
-            if (activeContent) {
-                if(tabId === 'diagram-view') {
-                    activeContent.classList.remove('hidden');
-                    activeContent.classList.add('flex');
-                } else {
-                    activeContent.classList.remove('hidden');
-                }
-            }
+            if (activeContent) activeContent.classList.remove('hidden');
 
             document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('bg-blue-600', 'text-white', 'shadow-sm');
-                btn.classList.add('text-slate-400', 'hover:bg-slate-900', 'hover:text-white');
+                btn.className = "tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all";
             });
-            
             const activeBtn = document.getElementById(`btn-${tabId}`);
             if (activeBtn) {
-                activeBtn.classList.add('bg-blue-600', 'text-white', 'shadow-sm');
-                activeBtn.classList.remove('text-slate-400', 'hover:bg-slate-900', 'hover:text-white');
+                activeBtn.className = "tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold transition-all bg-blue-600 text-white shadow-sm";
             }
             closePreviewBubble();
         }
@@ -1292,7 +1200,6 @@
         function showPreviewBubble(nodeId, element) {
             const nodeData = systemData.nodes[nodeId];
             const bubble = document.getElementById("link-preview-bubble");
-
             document.getElementById("bubble-node-title").innerText = nodeData.name || "Sem Nome";
 
             const iconWrapper = document.getElementById("bubble-doc-icon-wrapper");
@@ -1321,10 +1228,8 @@
                 iconWrapper.className = "bg-emerald-100 text-emerald-700 p-2 rounded-lg shrink-0 flex items-center justify-center";
                 iconEl.className = "fa-solid fa-table text-lg";
                 subTypeEl.innerText = "Planilha Master de Indicadores";
-                
                 tableContainer.classList.remove('hidden');
                 renderMasterPreviewMiniTable(nodeData.tabId);
-
                 btnAction.className = "bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold px-2.5 py-1 rounded transition-colors flex items-center gap-1";
                 btnAction.innerHTML = `Ver Planilha <i class="fa-solid fa-table text-[8px]"></i>`;
                 btnAction.onclick = () => accessMasterRow(nodeData.tabId);
@@ -1350,19 +1255,16 @@
             const canvasContainer = element.closest('.bg-slate-50');
             const canvasRect = canvasContainer.getBoundingClientRect();
 
-            const topPosition = (rect.bottom - canvasRect.top) + canvasContainer.scrollTop + 8;
-            const leftPosition = (rect.left - canvasRect.left) + canvasContainer.scrollLeft + (rect.width / 2) - 175;
-
-            bubble.style.top = `${topPosition}px`;
-            bubble.style.left = `${leftPosition}px`;
+            bubble.style.top = `${(rect.bottom - canvasRect.top) + canvasContainer.scrollTop + 8}px`;
+            bubble.style.left = `${(rect.left - canvasRect.left) + canvasContainer.scrollLeft + (rect.width / 2) - 175}px`;
             bubble.classList.remove('hidden');
         }
 
         function renderMasterPreviewMiniTable(targetId) {
             const tbody = document.getElementById("bubble-preview-table-body");
             tbody.innerHTML = "";
-
             let rowsToPreview = [];
+
             if (targetId.startsWith("row-")) {
                 let r = systemData.masterSheet.find(row => row.id === targetId);
                 if (r) rowsToPreview.push(r);
@@ -1378,11 +1280,10 @@
             }
 
             rowsToPreview.slice(0, 3).forEach(row => {
-                let valorRecente = obterUltimoMesComDados(row);
                 tbody.innerHTML += `
                     <tr class="border-b border-slate-200">
                         <td class="p-1.5 border-r border-slate-200 font-bold truncate max-w-[130px]">${row.name}</td>
-                        <td class="p-1.5 border-r border-slate-200 text-center font-semibold text-slate-700">${valorRecente}</td>
+                        <td class="p-1.5 border-r border-slate-200 text-center font-semibold text-slate-700">${obterUltimoMesComDados(row)}</td>
                         <td class="p-1.5 text-center font-bold text-emerald-600">${row.meta}</td>
                     </tr>
                 `;
@@ -1392,14 +1293,11 @@
         function renderMiniPreviewTable(tab) {
             const tbody = document.getElementById("bubble-preview-table-body");
             tbody.innerHTML = "";
-
             if (!tab.tableData || tab.tableData.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" class="p-2 text-center text-slate-400 italic">Separador vazio. Insira dados na aba correspondente.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="3" class="p-2 text-center text-slate-400 italic">Separador vazio.</td></tr>`;
                 return;
             }
-
-            const rows = tab.tableData.slice(0, 3);
-            rows.forEach(row => {
+            tab.tableData.slice(0, 3).forEach(row => {
                 const keys = Object.keys(row);
                 tbody.innerHTML += `
                     <tr class="border-b border-slate-200">
@@ -1414,24 +1312,12 @@
         function accessMasterRow(targetId) {
             switchTab('master-sheet-view');
             closePreviewBubble();
-
             setTimeout(() => {
-                let targetElement = null;
-                if (targetId.startsWith("row-")) {
-                    targetElement = document.getElementById(targetId);
-                } else if (targetId === "section-sat_motorista") {
-                    targetElement = document.getElementById("row-sat-camila");
-                } else if (targetId === "section-perf_motorista") {
-                    targetElement = document.getElementById("row-perf-camila");
-                }
-
+                let targetElement = targetId.startsWith("row-") ? document.getElementById(targetId) : (targetId === "section-sat_motorista" ? document.getElementById("row-sat-camila") : document.getElementById("row-perf-camila"));
                 if (targetElement) {
                     targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     targetElement.classList.add('row-highlight');
-                    
-                    setTimeout(() => {
-                        targetElement.classList.remove('row-highlight');
-                    }, 2000);
+                    setTimeout(() => targetElement.classList.remove('row-highlight'), 2000);
                 }
             }, 300);
         }
@@ -1439,24 +1325,8 @@
         function copyCurrentLink() {
             const data = systemData.nodes[activeNodeId];
             if (!data) return;
-            
-            let linkToCopy = data.url;
-            if (data.linkType === 'internal') {
-                linkToCopy = `#${data.tabId}`;
-            } else if (data.linkType === 'internal-master') {
-                linkToCopy = `Planilha Master: ${data.tabId}`;
-            } else if (data.linkType === 'none') {
-                linkToCopy = data.desc || "Anotação de apoio do fluxo.";
-            }
-
-            const tempInput = document.createElement("input");
-            tempInput.value = linkToCopy;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-
-            showToast("Dados copiados!");
+            let linkToCopy = data.linkType === 'external' ? data.url : (data.linkType === 'internal' ? `#${data.tabId}` : (data.linkType === 'internal-master' ? `Master: ${data.tabId}` : (data.desc || "Anotação.")));
+            navigator.clipboard.writeText(linkToCopy).then(() => showToast("Dados copiados!"));
         }
 
         function closePreviewBubble() {
@@ -1465,9 +1335,7 @@
         }
 
         document.addEventListener('click', (e) => {
-            if (!e.target.closest('#link-preview-bubble') && !e.target.closest('.node-card')) {
-                closePreviewBubble();
-            }
+            if (!e.target.closest('#link-preview-bubble') && !e.target.closest('.node-card')) closePreviewBubble();
         });
 
         function openConfigModal() {
@@ -1479,7 +1347,6 @@
             document.getElementById("config-node-desc").value = data.desc || "";
 
             const tabSelect = document.getElementById("config-node-tab");
-            
             let selectOptions = `<optgroup label="Planilha Master">
                 <option value="row-disp_frota">Disponibilidade da Frota</option>
                 <option value="row-preco_l">Preço/Litro</option>
@@ -1492,20 +1359,14 @@
 
             if (systemData.tabs.length > 0) {
                 selectOptions += `<optgroup label="Separadores Auxiliares">`;
-                systemData.tabs.forEach(t => {
-                    selectOptions += `<option value="${t.id}">${t.name}</option>`;
-                });
+                systemData.tabs.forEach(t => { selectOptions += `<option value="${t.id}">${t.name}</option>`; });
                 selectOptions += `</optgroup>`;
             }
-
             tabSelect.innerHTML = selectOptions;
 
             selectLinkType(data.linkType);
-            if (data.linkType === 'external') {
-                document.getElementById("config-node-url").value = data.url || "";
-            } else if (data.linkType === 'internal' || data.linkType === 'internal-master') {
-                document.getElementById("config-node-tab").value = data.tabId || "";
-            }
+            if (data.linkType === 'external') document.getElementById("config-node-url").value = data.url || "";
+            else if (['internal', 'internal-master'].includes(data.linkType)) document.getElementById("config-node-tab").value = data.tabId || "";
 
             document.getElementById("config-modal").classList.remove('hidden');
             document.getElementById("sidebar-overlay").classList.remove('hidden');
@@ -1519,27 +1380,16 @@
         function selectLinkType(type) {
             selectedLinkType = type;
             document.querySelectorAll('.link-type-btn').forEach(btn => {
-                btn.classList.remove('bg-white', 'shadow-sm', 'text-slate-800');
-                btn.classList.add('text-slate-600');
+                btn.className = "link-type-btn text-[10px] font-bold py-1.5 px-3 rounded text-center transition-all text-slate-600";
             });
-
-            let visualType = type;
-            if (type === 'internal-master') visualType = 'internal';
-
+            let visualType = type === 'internal-master' ? 'internal' : type;
             const activeBtn = document.getElementById(`btn-link-${visualType}`);
-            if (activeBtn) {
-                activeBtn.classList.add('bg-white', 'shadow-sm', 'text-slate-800');
-                activeBtn.classList.remove('text-slate-600');
-            }
+            if (activeBtn) activeBtn.className = "link-type-btn text-[10px] font-bold py-1.5 px-3 rounded text-center transition-all bg-white shadow-sm text-slate-800";
 
             document.getElementById("link-input-external").classList.add('hidden');
             document.getElementById("link-input-internal").classList.add('hidden');
-
-            if (type === 'external') {
-                document.getElementById("link-input-external").classList.remove('hidden');
-            } else if (type === 'internal' || type === 'internal-master') {
-                document.getElementById("link-input-internal").classList.remove('hidden');
-            }
+            if (type === 'external') document.getElementById("link-input-external").classList.remove('hidden');
+            if (['internal', 'internal-master'].includes(type)) document.getElementById("link-input-internal").classList.remove('hidden');
         }
 
         function saveNodeConfig(event) {
@@ -1552,20 +1402,13 @@
             
             let finalLinkType = selectedLinkType;
             let val = document.getElementById("config-node-tab").value;
-            
-            if (selectedLinkType === 'internal') {
-                if (val.startsWith("row-") || val.startsWith("section-")) {
-                    finalLinkType = "internal-master";
-                }
+            if (selectedLinkType === 'internal' && (val.startsWith("row-") || val.startsWith("section-"))) {
+                finalLinkType = "internal-master";
             }
 
             data.linkType = finalLinkType;
-
-            if (finalLinkType === 'external') {
-                data.url = document.getElementById("config-node-url").value;
-            } else {
-                data.tabId = val;
-            }
+            if (finalLinkType === 'external') data.url = document.getElementById("config-node-url").value;
+            else data.tabId = val;
 
             saveAllData();
             applyNodeStylingAndData();
@@ -1578,23 +1421,18 @@
             event.preventDefault();
             const name = document.getElementById("new-tab-name").value.trim();
             const icon = document.getElementById("new-tab-icon").value;
-
             if (!name) return;
 
-            const newId = `custom-tab-${Date.now()}`;
-            const newTab = {
-                id: newId,
+            systemData.tabs.push({
+                id: `custom-tab-${Date.now()}`,
                 name: name,
                 icon: icon,
-                notes: `Registe os seus procedimentos e orientações de apoio às operações de ${name} neste espaço de edição livre.`,
+                notes: `Registe os seus procedimentos e orientações de apoio às operações de ${name} neste espaço.`,
                 tableData: []
-            };
-
-            systemData.tabs.push(newTab);
+            });
             saveAllData();
             renderCustomTabsList();
             renderDynamicTabsMenu();
-
             document.getElementById("new-tab-name").value = "";
             showToast(`Separador "${name}" criado com sucesso!`);
         }
@@ -1602,11 +1440,10 @@
         function renderCustomTabsList() {
             const container = document.getElementById("custom-tabs-list");
             if (systemData.tabs.length === 0) {
-                container.innerHTML = `<div class="text-slate-400 text-xs text-center py-8">Nenhum separador auxiliar criado. Utilize o formulário à esquerda!</div>`;
+                container.innerHTML = `<div class="text-slate-400 text-xs text-center py-8">Nenhum separador auxiliar criado.</div>`;
                 return;
             }
-
-            container.innerHTML = systemData.tabs.map((tab, idx) => `
+            container.innerHTML = systemData.tabs.map(tab => `
                 <div class="flex items-center justify-between p-3.5 bg-slate-50 border border-slate-200 rounded-lg hover:bg-slate-100/50 transition-all">
                     <div class="flex items-center gap-3">
                         <span class="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm"><i class="fa-solid ${tab.icon}"></i></span>
@@ -1616,7 +1453,7 @@
                         </div>
                     </div>
                     <div class="flex gap-1.5">
-                        <button onclick="switchTab('${tab.id}')" class="bg-blue-50 hover:bg-blue-100 text-blue-600 px-3 py-1.5 rounded-md text-[10px] font-bold transition-all"><i class="fa-solid fa-eye mr-1"></i> Abrir Aba</button>
+                        <button onclick="switchTab('${tab.id}')" class="bg-blue-50 hover:bg-blue-100 text-blue-600 px-3 py-1.5 rounded-md text-[10px] font-bold transition-all"><i class="fa-solid fa-eye mr-1"></i> Abrir</button>
                         <button onclick="triggerDeleteCustomTab('${tab.id}')" class="text-slate-400 hover:text-red-600 p-2 text-xs transition-colors"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
                 </div>
@@ -1624,9 +1461,7 @@
         }
 
         function renderDynamicTabsMenu() {
-            document.querySelectorAll(".dynamic-header-tab").forEach(tab => tab.remove());
-            document.querySelectorAll(".dynamic-tab-section").forEach(sec => sec.remove());
-
+            document.querySelectorAll(".dynamic-header-tab, .dynamic-tab-section").forEach(el => el.remove());
             const nav = document.querySelector("nav");
             const main = document.querySelector("main");
 
@@ -1653,32 +1488,27 @@
                             </div>
                             <button onclick="switchTab('diagram-view')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold px-3 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-arrow-left mr-1"></i> Voltar ao Fluxograma</button>
                         </div>
-                        
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 flex-grow overflow-auto min-h-0">
                             <div class="bg-slate-50 p-4 rounded-lg border flex flex-col gap-2 min-h-[220px]">
-                                <label class="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Anotações e Manual do Processo</label>
-                                <textarea id="custom-notes-${tab.id}" class="flex-grow w-full text-xs bg-white border border-slate-200 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700 leading-relaxed resize-none" placeholder="Escreva aqui procedimentos padrões do processo...">${tab.notes || ""}</textarea>
-                                <button onclick="saveCustomTabNotes('${tab.id}')" class="bg-slate-800 hover:bg-slate-900 text-white text-[10px] font-bold py-2 rounded-lg transition-all w-full">Guardar Procedimentos</button>
+                                <label class="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Anotações e Manual</label>
+                                <textarea id="custom-notes-${tab.id}" class="flex-grow w-full text-xs bg-white border border-slate-200 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700 leading-relaxed resize-none">${tab.notes || ""}</textarea>
+                                <button onclick="saveCustomTabNotes('${tab.id}')" class="bg-slate-800 hover:bg-slate-900 text-white text-[10px] font-bold py-2 rounded-lg transition-all w-full">Guardar Notas</button>
                             </div>
-
                             <div class="lg:col-span-2 flex flex-col gap-3 min-h-0">
                                 <div class="bg-slate-50 p-3.5 rounded-lg border">
-                                    <label class="block text-[10px] font-bold text-slate-600 uppercase tracking-wider mb-2">Lançamento de Indicadores</label>
                                     <form onsubmit="addTableRow(event, '${tab.id}')" class="grid grid-cols-3 gap-2">
-                                        <input type="text" placeholder="Mês / Referência" required name="col1" class="bg-white text-xs border rounded px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500 font-semibold text-slate-700">
-                                        <input type="text" placeholder="Resultado" required name="col2" class="bg-white text-xs border rounded px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                        <input type="text" placeholder="Meta" required name="col3" class="bg-white text-xs border rounded px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                        <button type="submit" class="col-span-3 bg-blue-600 text-white font-bold py-1.5 rounded text-[10px] hover:bg-blue-700 transition-colors uppercase tracking-wider">Adicionar Registo</button>
+                                        <input type="text" placeholder="Mês / Referência" required name="col1" class="bg-white text-xs border rounded px-2.5 py-1.5 focus:outline-none">
+                                        <input type="text" placeholder="Resultado" required name="col2" class="bg-white text-xs border rounded px-2.5 py-1.5 focus:outline-none">
+                                        <input type="text" placeholder="Meta" required name="col3" class="bg-white text-xs border rounded px-2.5 py-1.5 focus:outline-none">
+                                        <button type="submit" class="col-span-3 bg-blue-600 text-white font-bold py-1.5 rounded text-[10px] hover:bg-blue-700">Adicionar Registo</button>
                                     </form>
                                 </div>
-
                                 <div class="border rounded-lg overflow-hidden flex-grow overflow-auto bg-slate-50/50">
                                     <table class="w-full text-[11px] text-left border-collapse" id="table-custom-${tab.id}"></table>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                `;
+                    </div>`;
                 main.appendChild(section);
                 renderCustomTabTable(tab.id);
             });
@@ -1694,11 +1524,7 @@
         }
 
         function triggerDeleteCustomTab(tabId) {
-            showCustomConfirm(
-                "Eliminar Separador Auxiliar?", 
-                "Esta ação irá eliminar permanentemente este separador auxiliar e todos os históricos introduzidos. Deseja prosseguir?", 
-                () => deleteCustomTab(tabId)
-            );
+            showCustomConfirm("Eliminar Separador Auxiliar?", "Esta ação irá eliminar permanentemente este separador. Deseja prosseguir?", () => deleteCustomTab(tabId));
         }
 
         function deleteCustomTab(tabId) {
@@ -1708,14 +1534,13 @@
                     systemData.nodes[key].tabId = '';
                 }
             });
-
             systemData.tabs = systemData.tabs.filter(t => t.id !== tabId);
             saveAllData();
             renderCustomTabsList();
             renderDynamicTabsMenu();
             applyNodeStylingAndData();
             switchTab('diagram-view');
-            showToast("Aba eliminada permanentemente.", "success");
+            showToast("Aba eliminada permanentemente.");
         }
 
         function addTableRow(event, tabId) {
@@ -1725,13 +1550,11 @@
             if (!tab) return;
 
             const formData = new FormData(form);
-            const newRow = {
+            tab.tableData.push({
                 "Mês / Referência": formData.get("col1"),
                 "Resultado": formData.get("col2"),
                 "Meta": formData.get("col3")
-            };
-
-            tab.tableData.push(newRow);
+            });
             saveAllData();
             form.reset();
             renderCustomTabTable(tabId);
@@ -1743,30 +1566,22 @@
             const tab = systemData.tabs.find(t => t.id === tabId);
             if (!tab || !table) return;
 
-            const data = tab.tableData;
-            if (data.length === 0) {
-                table.innerHTML = `<tr><td class="p-8 text-center text-slate-400 italic text-xs">Nenhum registo no histórico desta tabela.</td></tr>`;
+            if (tab.tableData.length === 0) {
+                table.innerHTML = `<tr><td class="p-8 text-center text-slate-400 italic text-xs">Nenhum registo no histórico.</td></tr>`;
                 return;
             }
 
-            const headers = Object.keys(data[0]);
-            let headerHtml = `<tr class="bg-slate-200/80 font-bold border-b text-slate-700 text-[10px] uppercase tracking-wider sticky top-0">`;
-            headers.forEach(h => {
-                headerHtml += `<th class="p-2.5 border-r border-slate-200">${h}</th>`;
-            });
+            const headers = Object.keys(tab.tableData[0]);
+            let headerHtml = `<tr class="bg-slate-200/80 font-bold border-b text-slate-700 text-[10px] uppercase sticky top-0">`;
+            headers.forEach(h => { headerHtml += `<th class="p-2.5 border-r border-slate-200">${h}</th>`; });
             headerHtml += `<th class="p-2.5 text-center">Ações</th></tr>`;
 
             let rowsHtml = "";
-            data.forEach((row, rowIndex) => {
+            tab.tableData.forEach((row, rowIndex) => {
                 rowsHtml += `<tr class="border-b hover:bg-white text-slate-600 transition-colors bg-white/70">`;
-                headers.forEach(h => {
-                    rowsHtml += `<td class="p-2.5 font-semibold border-r border-slate-100">${row[h] || ''}</td>`;
-                });
-                rowsHtml += `<td class="p-2 text-center">
-                    <button onclick="removeTableRow('${tabId}', ${rowIndex})" class="text-slate-400 hover:text-red-600 transition-colors px-2 py-1"><i class="fa-solid fa-trash-can"></i></button>
-                </td></tr>`;
+                headers.forEach(h => { rowsHtml += `<td class="p-2.5 font-semibold border-r border-slate-100">${row[h] || ''}</td>`; });
+                rowsHtml += `<td class="p-2 text-center"><button onclick="removeTableRow('${tabId}', ${rowIndex})" class="text-slate-400 hover:text-red-600 px-2 py-1"><i class="fa-solid fa-trash-can"></i></button></td></tr>`;
             });
-
             table.innerHTML = headerHtml + rowsHtml;
         }
 
@@ -1776,7 +1591,7 @@
                 tab.tableData.splice(index, 1);
                 saveAllData();
                 renderCustomTabTable(tabId);
-                showToast("Registo removido.", "success");
+                showToast("Registo removido.");
             }
         }
 
@@ -1786,7 +1601,7 @@
             dlAnchorElem.setAttribute("href", dataStr);
             dlAnchorElem.setAttribute("download", "promap_backup_indicadores.json");
             dlAnchorElem.click();
-            showToast("Download da cópia de segurança iniciado!");
+            showToast("Download iniciado!");
         }
 
         function importDiagramData(event) {
@@ -1799,52 +1614,31 @@
                 try {
                     let parsed = JSON.parse(reader.result);
                     if (parsed.nodes && parsed.tabs) {
-                        // Higienizar dados retrocomprimidos para compatibilidade com nomes limpos de indicadores e responsáveis
-                        if (parsed.masterSheet) {
-                            parsed.masterSheet.forEach(row => {
-                                if (row.name && row.name.includes("<span")) {
-                                    const tempDiv = document.createElement("div");
-                                    tempDiv.innerHTML = row.name;
-                                    row.name = tempDiv.firstChild ? tempDiv.firstChild.textContent.trim() : row.name;
-                                    const spanEl = tempDiv.querySelector("span");
-                                    if (spanEl && !row.responsible) {
-                                        row.responsible = spanEl.textContent.trim();
-                                    }
-                                }
-                            });
-                        }
-                        
                         systemData = parsed;
                         saveAllData();
                         applyNodeStylingAndData();
                         renderCustomTabsList();
                         renderDynamicTabsMenu();
                         renderMasterSpreadsheet();
-                        showToast("Configurações importadas e sincronizadas!");
+                        showToast("Configurações importadas!");
                         switchTab('diagram-view');
                     } else {
-                        showToast("Ficheiro de cópia inválido.", "error");
+                        showToast("Ficheiro de cópia inválido.");
                     }
                 } catch (e) {
-                    showToast("Erro ao ler dados JSON.", "error");
+                    showToast("Erro ao ler dados JSON.");
                 } finally {
-                    input.value = ""; // Permite re-upload contínuo
+                    input.value = "";
                 }
             };
             reader.readAsText(file);
         }
 
         function triggerResetDefault() {
-            showCustomConfirm(
-                "Repor Configurações?", 
-                "Esta ação irá apagar permanentemente todas as suas configurações, tabelas de dados, links e novos separadores associados. Deseja redefinir?", 
-                resetAllToDefault
-            );
-        }
-
-        function resetAllToDefault() {
-            localStorage.removeItem("ProMap_Indicadores_DB_v12");
-            location.reload();
+            showCustomConfirm("Repor Configurações?", "Esta ação irá apagar permanentemente todas as suas configurações locais. Deseja continuar?", () => {
+                localStorage.removeItem("ProMap_Indicadores_DB_v12");
+                location.reload();
+            });
         }
 
         function closeAllModals() {
@@ -1852,7 +1646,7 @@
             closeConfirmModal();
         }
 
-        // Exportação das Funções ao Escopo Global (Janela do Browser) devido à declaração de módulo JS
+        // Exportação Global
         window.switchTab = switchTab;
         window.adjustZoom = adjustZoom;
         window.resetZoom = resetZoom;
@@ -1874,7 +1668,6 @@
         window.closeAllModals = closeAllModals;
         window.accessMasterRow = accessMasterRow;
 
-        // Autentica o utilizador de imediato ao iniciar
         initAuth();
     </script>
 </body>
