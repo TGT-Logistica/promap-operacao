@@ -52,12 +52,11 @@
         }
         .tree li {
             position: relative;
-            padding: 15px 10px 0 10px; /* Margem lateral aumentada para respiração e impedir cortes */
+            padding: 15px 10px 0 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-        /* Linhas horizontais de divisão */
         .tree li::before, .tree li::after {
             content: '';
             position: absolute;
@@ -73,14 +72,12 @@
             border-left: 2px solid #cbd5e1;
         }
         
-        /* Configurações para filhos únicos, primeiros e últimos */
         .tree li:only-child::after, .tree li:only-child::before {
             display: none;
         }
         .tree li:only-child {
             padding-top: 15px;
         }
-        /* Correção para renderizar corretamente a linha vertical nos filhos únicos */
         .tree li:only-child::before {
             content: '';
             display: block !important; 
@@ -104,7 +101,6 @@
             border-radius: 6px 0 0 0;
         }
 
-        /* Conectores verticais partindo debaixo de cada nó pai */
         .tree-node-wrapper {
             position: relative;
             display: flex;
@@ -123,7 +119,6 @@
             z-index: 10;
         }
         
-        /* Barra de rolagem personalizada */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -139,7 +134,6 @@
             background: #94a3b8;
         }
 
-        /* Efeito de destaque para a linha da planilha ao clicar no fluxograma */
         @keyframes rowPulse {
             0% { background-color: rgba(59, 130, 246, 0.3); }
             100% { background-color: transparent; }
@@ -186,6 +180,9 @@
             <button onclick="switchTab('diagram-view')" id="btn-diagram-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold transition-all bg-blue-600 text-white shadow-sm">
                 <i class="fa-solid fa-network-wired mr-1.5"></i>Fluxograma do Processo
             </button>
+            <button onclick="switchTab('organograma-view')" id="btn-organograma-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all">
+                <i class="fa-solid fa-users mr-1.5"></i>👥 Organograma Frota
+            </button>
             <button onclick="switchTab('master-sheet-view')" id="btn-master-sheet-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all">
                 <i class="fa-solid fa-table-list mr-1.5"></i>📊 Planilha Indicadores Frota
             </button>
@@ -213,7 +210,6 @@
     <main class="flex-grow flex overflow-hidden relative bg-slate-100">
 
         <div id="tab-diagram-view" class="tab-content flex-grow flex flex-col overflow-auto p-4 w-full h-full">
-            
             <div class="mb-3 shrink-0 flex flex-wrap gap-4 justify-between items-center bg-white p-3 rounded-xl shadow-sm border border-slate-200">
                 <div class="max-w-xl">
                     <h2 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Mapeador Operacional Interativo</h2>
@@ -233,9 +229,7 @@
             </div>
 
             <div class="flex-grow bg-slate-50 rounded-xl border border-slate-200 overflow-auto relative p-6">
-                
                 <div id="diagram-scale-container" class="origin-top-left transition-transform duration-100 ease-out min-w-[2450px] py-6 px-16">
-                    
                     <div class="tree">
                         <ul>
                             <li>
@@ -510,7 +504,6 @@
                             </li>
                         </ul>
                     </div>
-
                 </div>
 
                 <div id="link-preview-bubble" class="absolute bg-white shadow-2xl border border-slate-300 rounded-lg p-3 hidden z-30 w-[350px] transition-all duration-150 text-slate-800 font-sans">
@@ -552,7 +545,65 @@
                         </button>
                     </div>
                 </div>
+            </div>
+        </div>
 
+        <div id="tab-organograma-view" class="tab-content flex-grow hidden flex-col overflow-auto p-6 w-full h-full">
+            <div class="bg-white p-8 rounded-xl shadow-sm border border-slate-200 flex flex-col items-center gap-1 max-w-4xl mx-auto w-full select-none">
+                
+                <h2 class="text-xl font-extrabold text-slate-800 tracking-widest uppercase border-b-2 border-slate-200 pb-3 mb-8 w-full text-center">
+                    ORGANOGRAMA FROTA
+                </h2>
+
+                <div class="color-macro-top rounded-xl py-3.5 px-6 text-center w-[380px] border shadow-md font-sans">
+                    <div class="text-[11px] font-bold tracking-wider uppercase opacity-90">GER. DE OPERAÇÕES DE TRANSPORTES</div>
+                    <div class="text-base font-black tracking-wide mt-1">JOÃO RICARDO DA ROCHA</div>
+                </div>
+
+                <div class="w-0.5 h-8 bg-slate-300"></div>
+
+                <div class="color-macro-sub rounded-xl py-3 px-8 text-center w-[300px] border shadow-md font-sans">
+                    <div class="text-sm font-black tracking-widest uppercase">FROTAS</div>
+                </div>
+
+                <div class="w-0.5 h-8 bg-slate-300"></div>
+
+                <div class="flex gap-14 items-start justify-center w-full max-w-3xl px-4">
+                    
+                    <div class="flex flex-col items-center w-[300px]">
+                        <div class="color-sub-process rounded-xl py-3 px-4 text-center w-full border shadow-sm">
+                            <div class="text-[10px] font-extrabold tracking-wider uppercase opacity-90">SUPERVISORA DE TRANSPORTES</div>
+                            <div class="text-xs font-black mt-1">JAQUELINE GONÇALVES</div>
+                        </div>
+
+                        <div class="w-0.5 h-8 bg-slate-300"></div>
+
+                        <div class="color-sub-process rounded-xl py-3.5 px-4 text-center w-full border shadow-sm">
+                            <div class="text-[10px] font-extrabold tracking-wider uppercase opacity-90">PROGRAMADOR DE TRANSP. RODOV.</div>
+                            <div class="text-xs font-bold mt-2.5 space-y-1 text-emerald-950/90 tracking-wide">
+                                <div class="font-black">CAMILA ALMEIDA</div>
+                                <div class="font-black">FABIO BESSA</div>
+                                <div class="font-black">GUILHERME OLIVEIRA</div>
+                                <div class="font-black">LORENA WILBERT</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col items-center w-[300px]">
+                        <div class="h-[88px] w-full flex items-center justify-center">
+                            <div class="w-0.5 h-full bg-transparent"></div>
+                        </div>
+
+                        <div class="color-sub-process rounded-xl py-4 px-4 text-center w-full border shadow-sm min-h-[116px] flex flex-col justify-center">
+                            <div class="text-[10px] font-extrabold tracking-wider uppercase opacity-90 leading-tight">CONTROLADOR DE SERVIÇOS DE MÁQUINAS E VEÍCULOS</div>
+                            <div class="text-xs font-bold mt-3 space-y-1 text-emerald-950/90 tracking-wide">
+                                <div class="font-black">LEONARDO CORTASIO</div>
+                                <div class="font-black">PABLO DA COSTA</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
 
@@ -594,8 +645,7 @@
                                 <th class="p-2.5 text-center w-[100px] bg-slate-100 font-extrabold text-slate-800">Acumulado</th>
                             </tr>
                         </thead>
-                        <tbody id="master-sheet-tbody" class="bg-white">
-                            </tbody>
+                        <tbody id="master-sheet-tbody" class="bg-white"></tbody>
                     </table>
                 </div>
             </div>
@@ -603,14 +653,13 @@
 
         <div id="tab-custom-tabs-view" class="tab-content flex-grow hidden flex-col overflow-auto p-6">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto w-full">
-                
                 <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex flex-col gap-4">
                     <div class="bg-blue-50 text-blue-600 w-11 h-11 rounded-xl flex items-center justify-center text-lg">
                         <i class="fa-solid fa-folder-plus"></i>
                     </div>
                     <div>
                         <h3 class="text-sm font-bold text-slate-800">Criar Nova Página / Separador</h3>
-                        <p class="text-[11px] text-slate-500 mt-1">Crie páginas de trabalho auxiliares (com anotações de processos e tabelas integradas) e associe-as aos blocos do fluxo.</p>
+                        <p class="text-[11px] text-slate-500 mt-1">Crie páginas de trabalho auxiliares e associe-as aos blocos do fluxo.</p>
                     </div>
                     <hr class="border-slate-100">
                     <form onsubmit="createCustomTab(event)" class="flex flex-col gap-3">
@@ -643,7 +692,6 @@
                     <hr class="border-slate-100">
                     <div id="custom-tabs-list" class="flex flex-col gap-2 max-h-[350px] overflow-auto pr-1"></div>
                 </div>
-
             </div>
         </div>
 
@@ -653,14 +701,14 @@
                     <div class="bg-blue-50 text-blue-600 p-3 rounded-xl"><i class="fa-solid fa-cloud-arrow-down text-xl"></i></div>
                     <div>
                         <h2 class="text-base font-bold text-slate-800">Gestor de Cópia de Segurança e Portabilidade</h2>
-                        <p class="text-[11px] text-slate-500">Transfira as suas configurações, tabelas de indicadores e anotações para um ficheiro local para partilhar com a equipa ou guardar como backup.</p>
+                        <p class="text-[11px] text-slate-500">Transfira as suas configurações, tabelas de indicadores e anotações para um ficheiro local.</p>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="p-4 border border-slate-100 rounded-xl bg-slate-50/50">
                         <h3 class="font-bold text-slate-800 text-xs mb-1"><i class="fa-solid fa-download mr-1.5 text-blue-600"></i>Exportar Dados Operacionais</h3>
-                        <p class="text-[11px] text-slate-500 mb-4">Gere um ficheiro `.json` contendo todos os dados inseridos, configurações de links e notas.</p>
+                        <p class="text-[11px] text-slate-500 mb-4">Gere um ficheiro `.json` contendo todos os dados inseridos.</p>
                         <button onclick="exportDiagramData()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg text-xs shadow-sm transition-all">
                             Descarregar Configurações (JSON)
                         </button>
@@ -668,7 +716,7 @@
 
                     <div class="p-4 border border-slate-100 rounded-xl bg-slate-50/50">
                         <h3 class="font-bold text-slate-800 text-xs mb-1"><i class="fa-solid fa-upload mr-1.5 text-emerald-600"></i>Importar Cópia de Segurança</h3>
-                        <p class="text-[11px] text-slate-500 mb-4">Carregue um ficheiro de backup `.json` existente para atualizar todo o ecossistema local do navegador.</p>
+                        <p class="text-[11px] text-slate-500 mb-4">Carregue um ficheiro de backup `.json` existente.</p>
                         <input type="file" id="import-file-input" class="hidden" accept=".json" onchange="importDiagramData(event)">
                         <button onclick="document.getElementById('import-file-input').click()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-4 rounded-lg text-xs shadow-sm transition-all">
                             Carregar Cópia (.json)
@@ -685,7 +733,6 @@
 
         <div id="config-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
             <div class="bg-white rounded-xl w-full max-w-md shadow-2xl overflow-hidden flex flex-col border border-slate-100 animate-zoom-in">
-                
                 <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
                     <div>
                         <span id="modal-node-type-label" class="text-[9px] font-bold uppercase tracking-wider bg-blue-100 text-blue-700 px-2 py-0.5 rounded">Painel de Controlo</span>
@@ -712,7 +759,7 @@
                     </div>
 
                     <div id="link-input-external" class="hidden">
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">URL Externa (Google Sheets, Docs, Trello, etc.)</label>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">URL Externa</label>
                         <input type="url" id="config-node-url" placeholder="https://docs.google.com/..." class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-800">
                     </div>
 
@@ -723,7 +770,7 @@
 
                     <div>
                         <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Instruções e Notas Operacionais</label>
-                        <textarea id="config-node-desc" rows="3" placeholder="Insira o guia passo a passo, diretrizes de segurança ou finalidade operacional deste bloco..." class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700 leading-relaxed"></textarea>
+                        <textarea id="config-node-desc" rows="3" placeholder="Insira o guia passo a passo..." class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700 leading-relaxed"></textarea>
                     </div>
 
                     <div class="flex gap-2.5 mt-1.5">
@@ -732,7 +779,6 @@
                         </button>
                     </div>
                 </form>
-
             </div>
         </div>
 
@@ -741,12 +787,10 @@
     <div id="sidebar-overlay" onclick="closeAllModals()" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-20 hidden"></div>
 
     <script type="module">
-        // Importando o SDK oficial v10 para garantir o funcionamento correto de módulos web CDN
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // Configuração Oficial Fornecida pelo Usuário
         const firebaseConfig = {
             apiKey: "AIzaSyBzpMt8VaRiIK4NtFn_zoonc1YQIrAHBG4",
             authDomain: "promap-frota.firebaseapp.com",
@@ -757,67 +801,49 @@
             measurementId: "G-145JSZMPDP"
         };
 
-        // Inicializando Serviços do Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'promap-frota-app';
 
-        // Variável de controle do usuário autenticado
         let currentUser = null;
 
-        // Base de Dados padrão das Caixas do Diagrama (Atualizada com Controle de Pedágio, Gestão Administrativa da Frota e Gestão de Sinistros)
         const DEFAULT_NODES_DATA = {
             "operacao": { name: "OPERAÇÃO", type: "color-macro-top", linkType: "none", url: "", tabId: "", desc: "Fluxo Geral de Processos e Indicadores de Operação." },
             "gestao_frota": { name: "GESTÃO DA FROTA", type: "color-macro-sub", linkType: "none", url: "", tabId: "", desc: "Gestão macro da frota." },
-            
             "prog_veiculos": { name: "PROGRAMAÇÃO DE VEÍCULOS", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
             "disp_recursos": { name: "GESTÃO DE DISP. RECURSOS", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
-            "disp_frota": { name: "Disponibilidade da frota", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-disp_frota", desc: "Acompanhamento da taxa de prontidão de veículos na Planilha Geral." },
-            
+            "disp_frota": { name: "Disponibilidade da frota", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-disp_frota", desc: "Acompanhamento da taxa de prontidão de veículos." },
             "prog_folgas": { name: "PROGRAMAÇÃO DE FOLGAS", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
-            "alinhamento_folgas": { name: "Alinhamento de início e retorno das folgas x Manutenção no período", type: "color-indicator", linkType: "internal", url: "", tabId: "internal-tab-folgas", desc: "Planilha de organization de folgas e conciliação com a oficina." },
-            
+            "alinhamento_folgas": { name: "Alinhamento de início e retorno das folgas x Manutenção no período", type: "color-indicator", linkType: "internal", url: "", tabId: "internal-tab-folgas", desc: "Planilha de organization de folgas." },
             "gestao_clientes": { name: "GESTÃO DE CLIENTES", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "objetivos_rotas": { name: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES.", type: "color-to-develop", linkType: "none", url: "", tabId: "", desc: "" },
-            
             "acomp_jornada": { name: "ACOMPANHAMENTO DE JORNADA", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
             "acomp_motorista": { name: "ACOMPANHAMENTO DE MOTORISTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
-            "sat_motorista": { name: "Satisfação do motorista", type: "color-indicator", linkType: "internal-master", url: "", tabId: "section-sat_motorista", desc: "Consolidado de satisfação da equipa de motoristas." },
-            
+            "sat_motorista": { name: "Satisfação do motorista", type: "color-indicator", linkType: "internal-master", url: "", tabId: "section-sat_motorista", desc: "Satisfação dos motoristas." },
             "controle_combustivel": { name: "CONTROLE DE COMBUSTÍVEL", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
-            "perc_combustivel": { name: "Percentual Combustível x Faturamento líquido", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-perc_combustivel", desc: "Porcentagem do Combustível face ao faturamento líquido global." },
+            "perc_combustivel": { name: "Percentual Combustível x Faturamento líquido", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-perc_combustivel", desc: "Combustível face ao faturamento líquido." },
             "preco_l": { name: "Preço/L", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-preco_l", desc: "Preço médio por litro de combustível." },
             "consumo_medio": { name: "Consumo médio", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-consumo_medio", desc: "Consumo médio geral da frota." },
-            
-            // Novos nós sob Controle de Pedágio
-            "controle_pedagio": { name: "CONTROLE DE PEDÁGIO", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "Subprocesso de monitoramento e validação de despesas de pedágios." },
-            "conferencia_pedagio": { name: "Conferência de pedágio", type: "color-indicator", linkType: "none", url: "", tabId: "", desc: "Mapeamento da conferência periódica de taxas e transações de pedágio." },
-
+            "controle_pedagio": { name: "CONTROLE DE PEDÁGIO", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "Subprocesso de monitoramento de despesas de pedágios." },
+            "conferencia_pedagio": { name: "Conferência de pedágio", type: "color-indicator", linkType: "none", url: "", tabId: "", desc: "Mapeamento da conferência periódica de pedágio." },
             "fech_resultados": { name: "FECHAMENTO DE RESULTADOS", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
             "fech_jornada": { name: "FECHAMENTO JORNADA MOTORISTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
-            "perf_motorista": { name: "Performance motorista", type: "color-indicator", linkType: "internal-master", url: "section-perf_motorista", tabId: "", desc: "Performance operacional por motorista." },
-            
+            "perf_motorista": { name: "Performance motorista", type: "color-indicator", linkType: "internal-master", url: "section-perf_motorista", tabId: "", desc: "Performance operacional." },
             "fech_mensal_frota": { name: "FECHAMENTO MENSAL FROTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "res_liquido": { name: "Resultado líquido", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-res_liquido", desc: "Resultado líquido operacional acumulado." },
-            
             "fech_clientes_frota": { name: "FECHAMENTO MENSAL CLIENTES/FROTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "ineficiencias_carga": { name: "Ineficiências de carga e descarga e diárias", type: "color-to-develop", linkType: "none", url: "", tabId: "", desc: "" },
-            
             "planejamento_frota": { name: "PLANEAMENTO/DESENVOLVIMENTO - FROTA", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
             "gestao_eficiencia": { name: "GESTÃO DE EFICIÊNCIA E PROCESSO", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "definir_cronograma": { name: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO...", type: "color-to-develop", linkType: "none", url: "", tabId: "", desc: "" },
-            
-            // Gestão Administrativa da Frota (com Novo Subprocesso)
-            "regularizacao_frota": { name: "GESTÃO ADMINISTRATIVA DA FROTA", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "Processo-chave encarregado dos trâmites administrativos, regularizações, licenciamentos e tratamento de sinistros." },
+            "regularizacao_frota": { name: "GESTÃO ADMINISTRATIVA DA FROTA", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "Processo-chave administrativo." },
             "licenciamento": { name: "LICENCIAMENTO E ADEQUAÇÕES FROTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "adeq_admin": { name: "ADEQUAÇÕES ADMINISTRATIVAS", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
-            "gestao_sinistro": { name: "GESTÃO DE SINISTRO", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "Fluxo e controle operacional para abertura, acompanhamento e liquidação de sinistros e seguros." }
+            "gestao_sinistro": { name: "GESTÃO DE SINISTRO", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "Controle operacional de sinistros." }
         };
 
-        // Dados Master de Indicadores da Planilha Integrada
         const DEFAULT_MASTER_SHEET_DATA = [
-            // Categoria 1: INDICADORES (Metas e Responsáveis Actualizados)
             { id: "row-disp_frota", category: "INDICADORES", name: "DISPONIBILIDADE DA FROTA", responsible: "JOÃO RICARDO", meta: "25 DIAS MÊS", type: "number", data: [22, 22, 22, 20, 24, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-res_liquido", category: "INDICADORES", name: "RESULTADO LÍQUIDO", responsible: "JAQUELINE", meta: ">10%", type: "percentage", data: [115, 116, 81, 129, 119, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-eficiencia_gestores", category: "INDICADORES", name: "EFICIENCIA DE PROGRAMAÇÃO DOS GESTORES", responsible: "JAQUELINE", meta: "90%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
@@ -826,40 +852,30 @@
             { id: "row-preco_l", category: "INDICADORES", name: "PREÇO/LITRO", responsible: "PABLO", meta: "R$ 5,69 (2025)", type: "currency", data: [5.73, 5.68, 6.70, 7.14, 6.80, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-consumo_medio", category: "INDICADORES", name: "CONSUMO MÉDIO", responsible: "PABLO", meta: "1,86", type: "decimal", data: [1.85, 1.83, 1.82, 1.86, 1.84, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-manutencao_folga", category: "INDICADORES", name: "MANUTENÇÃO PÓS FOLGA SEM ADIAR RETORNO DO MOTORISTA", responsible: "LEONARDO", meta: "0", type: "number", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
-            
-            // Categoria 2: SATISFAÇÃO DO MOTORISTA
             { id: "row-sat-camila", category: "SATISFAÇÃO DO MOTORISTA", name: "CAMILA", responsible: "", meta: "9,00", type: "decimal", data: [9.90, 9.83, 9.83, null, 9.66, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-sat-fabio", category: "SATISFAÇÃO DO MOTORISTA", name: "FABIO", responsible: "", meta: "9,00", type: "decimal", data: [9.04, 9.48, 9.48, 8.93, 9.50, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-sat-guilherme", category: "SATISFAÇÃO DO MOTORISTA", name: "GUILHERME", responsible: "", meta: "9,00", type: "decimal", data: [9.60, 9.77, 9.77, 9.05, 9.63, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-sat-lorena", category: "SATISFAÇÃO DO MOTORISTA", name: "LORENA", responsible: "", meta: "9,00", type: "decimal", data: [9.75, 9.61, 9.61, 9.67, 9.76, null, null, null, null, null, null, null], formula: "avg" },
-            
-            // Categoria 3: PERFORMANCE MOTORISTA
             { id: "row-perf-camila", category: "PERFORMANCE MOTORISTA", name: "CAMILA", responsible: "", meta: "80%", type: "percentage", data: [60, 77, 72, null, 75, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-perf-fabio", category: "PERFORMANCE MOTORISTA", name: "FABIO", responsible: "", meta: "80%", type: "percentage", data: [63, 47, 16, 50, 67, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-perf-guilherme", category: "PERFORMANCE MOTORISTA", name: "GUILHERME", responsible: "", meta: "80%", type: "percentage", data: [100, 90, 92, 77, 80, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-perf-lorena", category: "PERFORMANCE MOTORISTA", name: "LORENA", responsible: "", meta: "80%", type: "percentage", data: [77, 75, 67, 43, 63, null, null, null, null, null, null, null], formula: "avg" },
-
-            // Categoria 4: RESULTADO LÍQUIDO MOTORISTAS
             { id: "row-res-camila", category: "RESULTADO LÍQUIDO", name: "CAMILA", responsible: "", meta: "100%", type: "percentage", data: [85, 83, 69, null, 106, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-res-fabio", category: "RESULTADO LÍQUIDO", name: "FABIO", responsible: "", meta: "100%", type: "percentage", data: [93, 81, 98, 118, 121, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-res-guilherme", category: "RESULTADO LÍQUIDO", name: "GUILHERME", responsible: "", meta: "100%", type: "percentage", data: [103, 117, 80, 93, 92, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-res-lorena", category: "RESULTADO LÍQUIDO", name: "LORENA", responsible: "", meta: "100%", type: "percentage", data: [92, 99, 83, 124, 101, null, null, null, null, null, null, null], formula: "avg" }
         ];
 
-        // Abas adicionais padrão
         const DEFAULT_TABS_DATA = [
             {
                 id: "internal-tab-folgas",
                 name: "Indicadores Frota",
                 icon: "fa-chart-pie",
-                notes: "Tabela de acompanhamento operacional das escalas das folgas integradas com o cronograma de manutenção de equipamentos da oficina.",
-                tableData: [
-                    { "Mês / Referência": "Janeiro", "Resultado": "18", "Meta": "14" }
-                ]
+                notes: "Tabela de acompanhamento das escalas das folgas.",
+                tableData: [{ "Mês / Referência": "Janeiro", "Resultado": "18", "Meta": "14" }]
             }
         ];
 
-        // Objeto em memória unificado do sistema
         let systemData = {
             nodes: JSON.parse(JSON.stringify(DEFAULT_NODES_DATA)),
             tabs: JSON.parse(JSON.stringify(DEFAULT_TABS_DATA)),
@@ -871,27 +887,19 @@
         let selectedLinkType = "none";
         let confirmCallback = null;
 
-        // --- SISTEMA DE NOTIFICAÇÃO CUSTOMIZADA (TOAST) ---
         function showToast(message) {
             const container = document.getElementById("toast-container");
             const toast = document.createElement("div");
-            toast.className = "bg-slate-900 text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-xl border border-slate-700/50 flex items-center gap-2 animate-fade-in pointer-events-auto transition-all duration-300 transform translate-y-2 opacity-0";
+            toast.className = "bg-slate-900 text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-xl border border-slate-700/50 flex items-center gap-2 transition-all duration-300 transform translate-y-2 opacity-0 pointer-events-auto";
             toast.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> <span>${message}</span>`;
             container.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.classList.remove("translate-y-2", "opacity-0");
-            }, 10);
-
+            setTimeout(() => toast.classList.remove("translate-y-2", "opacity-0"), 10);
             setTimeout(() => {
                 toast.classList.add("translate-y-2", "opacity-0");
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
 
-        // --- SISTEMA DE COMUNICACAO DO BANCO DE DADOS EM NUVEM (FIREBASE FIRESTORE) ---
-
-        // Método para atualizar o status de conectividade visível na Topbar
         function updateNetworkStatus(status, customMsg) {
             const indicator = document.getElementById("sync-status-indicator");
             if (!indicator) return;
@@ -907,53 +915,27 @@
             }
         }
 
-        // Envia as alterações da memória para o banco de dados em nuvem
         async function pushToCloud() {
             if (!currentUser) return;
             updateNetworkStatus(null, "Atualizando...");
             const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'promap_store', 'systemData');
             try {
-                await setDoc(docRef, {
-                    payload: JSON.stringify(systemData),
-                    updatedAt: new Date().toISOString()
-                });
+                await setDoc(docRef, { payload: JSON.stringify(systemData), updatedAt: new Date().toISOString() });
                 updateNetworkStatus(true);
             } catch (err) {
-                console.error("Falha ao salvar no Firestore:", err);
                 updateNetworkStatus(false, "Falha de Escrita");
             }
         }
 
-        // Inicia a escuta activa em tempo real dos documentos da nuvem
         function startSync() {
             if (!currentUser) return;
             const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'promap_store', 'systemData');
-            
             onSnapshot(docRef, (docSnap) => {
                 if (docSnap.exists()) {
                     const cloudData = docSnap.data();
                     if (cloudData && cloudData.payload) {
                         try {
                             const parsed = JSON.parse(cloudData.payload);
-                            
-                            // Integra novos nós se ausentes na nuvem
-                            if (parsed.nodes) {
-                                if (!parsed.nodes["controle_pedagio"]) {
-                                    parsed.nodes["controle_pedagio"] = JSON.parse(JSON.stringify(DEFAULT_NODES_DATA["controle_pedagio"]));
-                                }
-                                if (!parsed.nodes["conferencia_pedagio"]) {
-                                    parsed.nodes["conferencia_pedagio"] = JSON.parse(JSON.stringify(DEFAULT_NODES_DATA["conferencia_pedagio"]));
-                                }
-                                if (!parsed.nodes["regularizacao_frota"]) {
-                                    parsed.nodes["regularizacao_frota"] = JSON.parse(JSON.stringify(DEFAULT_NODES_DATA["regularizacao_frota"]));
-                                } else {
-                                    parsed.nodes["regularizacao_frota"].name = "GESTÃO ADMINISTRATIVA DA FROTA";
-                                }
-                                if (!parsed.nodes["gestao_sinistro"]) {
-                                    parsed.nodes["gestao_sinistro"] = JSON.parse(JSON.stringify(DEFAULT_NODES_DATA["gestao_sinistro"]));
-                                }
-                            }
-                            
                             systemData = parsed;
                             applyNodeStylingAndData();
                             renderCustomTabsList();
@@ -961,19 +943,17 @@
                             renderMasterSpreadsheet();
                             updateNetworkStatus(true);
                         } catch(e) {
-                            console.error("Erro ao converter payload JSON:", e);
+                            console.error(e);
                         }
                     }
                 } else {
                     pushToCloud();
                 }
             }, (error) => {
-                console.error("Erro no Listener Real-time:", error);
                 updateNetworkStatus(false, "Erro de Fluxo");
             });
         }
 
-        // Autenticação prévia obrigatória antes de qualquer chamada Firestore
         const initAuth = async () => {
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
@@ -985,22 +965,14 @@
                 }
                 startSync();
             } catch (err) {
-                console.error("Erro de Autenticação Firebase:", err);
                 updateNetworkStatus(false, "Autenticação Falhou");
             }
         };
 
-        // Salva localmente em cache como contingência secundária e aciona a nuvem
         function saveAllData() {
-            saveToLocalStorage();
+            localStorage.setItem("ProMap_Indicadores_DB_v12", JSON.stringify(systemData));
             pushToCloud();
         }
-
-        function saveToLocalStorage() {
-            localStorage.setItem("ProMap_Indicadores_DB_v12", JSON.stringify(systemData));
-        }
-
-        // --- OPERACAO E RENDERIZACAO VISUAL DO SISTEMA ---
 
         function renderMasterSpreadsheet() {
             const tbody = document.getElementById("master-sheet-tbody");
@@ -1023,18 +995,12 @@
                 for (let i = 0; i < 12; i++) {
                     let val = row.data[i];
                     let displayVal = formatCellValue(val, row.type);
-                    
                     let cellClass = "p-2 border-r border-slate-200 text-center cursor-pointer hover:bg-slate-50 transition-colors font-medium";
-                    if (row.category === "SATISFAÇÃO DO MOTORISTA" && val !== null) {
-                        if (val > 9.5) cellClass += " bg-red-100 text-red-800 font-bold";
+                    if (val !== null) {
+                        if (row.category === "SATISFAÇÃO DO MOTORISTA" && val > 9.5) cellClass += " bg-red-100 text-red-800 font-bold";
+                        if (row.category === "PERFORMANCE MOTORISTA" && val < 80) cellClass += " bg-red-100 text-red-800 font-bold";
+                        if (row.category === "RESULTADO LÍQUIDO" && val < 100) cellClass += " bg-red-100 text-red-800 font-bold";
                     }
-                    if (row.category === "PERFORMANCE MOTORISTA" && val !== null) {
-                        if (val < 80) cellClass += " bg-red-100 text-red-800 font-bold";
-                    }
-                    if (row.category === "RESULTADO LÍQUIDO" && val !== null) {
-                        if (val < 100) cellClass += " bg-red-100 text-red-800 font-bold";
-                    }
-
                     monthsHtml += `<td class="${cellClass}" ondblclick="editMasterCell(${rowIndex}, ${i}, this)">${displayVal}</td>`;
                 }
 
@@ -1042,22 +1008,18 @@
                 if (["25 DIAS MÊS", "R$ 5,69 (2025)", "1,86", "100%", "80%", "90%", ">10%", "<35%", "0", "9,00"].includes(row.meta)) {
                     rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">${row.meta}</span>`;
                 }
-
-                let respHtml = row.responsible ? `<span class="bg-blue-100 text-blue-700 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider">${row.responsible}</span>` : "";
+                let respHtml = row.responsible ? `<span class="bg-blue-100 text-blue-700 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">${row.responsible}</span>` : "";
 
                 tbody.innerHTML += `
                     <tr id="${row.id}" class="border-b border-slate-200 hover:bg-slate-50/60 transition-colors">
                         <td class="p-2.5 border-r border-slate-200 font-semibold text-slate-800 pl-6">
                             <div class="flex flex-wrap items-center gap-1.5">
-                                <span>${row.name}</span>
-                                ${respHtml}
+                                <span>${row.name}</span>${respHtml}
                             </div>
                         </td>
                         <td class="p-2 border-r border-slate-200 text-center text-[10px] font-bold">${rowMetaHtml}</td>
                         ${monthsHtml}
-                        <td class="p-2 text-center font-extrabold bg-slate-50 text-slate-800 ${valorAcumulado === '#DIV/0!' ? 'text-red-500' : ''}">
-                            ${valorAcumulado}
-                        </td>
+                        <td class="p-2 text-center font-extrabold bg-slate-50 text-slate-800 ${valorAcumulado === '#DIV/0!' ? 'text-red-500' : ''}">${valorAcumulado}</td>
                     </tr>
                 `;
             });
@@ -1081,21 +1043,9 @@
             return "";
         }
 
-        function obterUltimoMesComDados(row) {
-            const mesesNomes = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
-            for (let i = 11; i >= 0; i--) {
-                let val = row.data[i];
-                if (val !== null && val !== undefined && !isNaN(val)) {
-                    return formatCellValue(val, row.type) + ` (${mesesNomes[i]})`;
-                }
-            }
-            return "Sem dados";
-        }
-
         function editMasterCell(rowIndex, monthIndex, element) {
             let row = systemData.masterSheet[rowIndex];
             let val = row.data[monthIndex];
-            
             element.innerHTML = `<input type="number" step="any" class="w-full text-center bg-white border border-blue-500 rounded px-1 py-0.5 text-xs focus:outline-none" value="${val !== null ? val : ''}">`;
             let input = element.querySelector('input');
             input.focus();
@@ -1108,7 +1058,6 @@
                 renderMasterSpreadsheet();
                 showToast("Dados atualizados com sucesso!");
             }
-
             input.onblur = saveValue;
             input.onkeydown = function(e) {
                 if (e.key === "Enter") saveValue();
@@ -1128,7 +1077,6 @@
             confirmCallback = null;
         }
 
-        // Eventos dos botões do Confirm Modal
         document.getElementById("btn-confirm-action").onclick = function() {
             if (confirmCallback) confirmCallback();
             closeConfirmModal();
@@ -1140,35 +1088,27 @@
                 const nodeEl = document.getElementById(`node-${nodeId}`);
                 if (!nodeEl) return;
                 const data = systemData.nodes[nodeId];
-
                 const textEl = nodeEl.querySelector('.node-text');
                 if (textEl && data.name !== undefined) textEl.innerText = data.name;
 
                 const badgeEl = nodeEl.querySelector('.link-badge');
                 if (badgeEl) {
-                    if (data.linkType && data.linkType !== 'none') {
-                        badgeEl.classList.remove('hidden');
-                    } else {
-                        badgeEl.classList.add('hidden');
-                    }
+                    if (data.linkType && data.linkType !== 'none') badgeEl.classList.remove('hidden');
+                    else badgeEl.classList.add('hidden');
                 }
             });
         }
 
         function adjustZoom(factor) {
             currentZoom = Math.max(0.4, Math.min(1.5, currentZoom + factor));
-            applyZoom();
+            const container = document.getElementById("diagram-scale-container");
+            if(container) container.style.transform = `scale(${currentZoom})`;
+            document.getElementById("zoom-indicator").innerText = `${Math.round(currentZoom * 100)}%`;
         }
 
         function resetZoom() {
             currentZoom = 1.0;
-            applyZoom();
-        }
-
-        function applyZoom() {
-            const container = document.getElementById("diagram-scale-container");
-            container.style.transform = `scale(${currentZoom})`;
-            document.getElementById("zoom-indicator").innerText = `${Math.round(currentZoom * 100)}%`;
+            adjustZoom(0);
         }
 
         function switchTab(tabId) {
@@ -1189,11 +1129,9 @@
         function handleNodeClick(nodeId, event) {
             event.stopPropagation();
             activeNodeId = nodeId;
-
             document.querySelectorAll('.node-card').forEach(n => n.classList.remove('node-selected'));
             const targetEl = document.getElementById(`node-${nodeId}`);
             if (targetEl) targetEl.classList.add('node-selected');
-
             showPreviewBubble(nodeId, targetEl);
         }
 
@@ -1237,7 +1175,6 @@
                 iconWrapper.className = "bg-sky-100 text-sky-700 p-2 rounded-lg shrink-0 flex items-center justify-center";
                 iconEl.className = "fa-solid fa-folder-open text-lg";
                 subTypeEl.innerText = "Separador Auxiliar Interno";
-                
                 const linkedTab = systemData.tabs.find(t => t.id === nodeData.tabId);
                 if (linkedTab) {
                     tableContainer.classList.remove('hidden');
@@ -1247,14 +1184,12 @@
                     btnAction.onclick = () => switchTab(linkedTab.id);
                 } else {
                     tableContainer.classList.add('hidden');
-                    subTypeEl.innerText = "Aba de dados não encontrada";
                 }
             }
 
             const rect = element.getBoundingClientRect();
             const canvasContainer = element.closest('.bg-slate-50');
             const canvasRect = canvasContainer.getBoundingClientRect();
-
             bubble.style.top = `${(rect.bottom - canvasRect.top) + canvasContainer.scrollTop + 8}px`;
             bubble.style.left = `${(rect.left - canvasRect.left) + canvasContainer.scrollLeft + (rect.width / 2) - 175}px`;
             bubble.classList.remove('hidden');
@@ -1275,15 +1210,17 @@
             }
 
             if (rowsToPreview.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" class="p-2 text-center text-slate-400 italic">Sem dados disponíveis.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="3" class="p-2 text-center text-slate-400 italic">Sem dados.</td></tr>`;
                 return;
             }
 
             rowsToPreview.slice(0, 3).forEach(row => {
+                let activeValues = row.data.filter(v => v !== null && v !== undefined && !isNaN(v));
+                let valorRecente = activeValues.length ? formatCellValue(activeValues[activeValues.length - 1], row.type) : "Sem dados";
                 tbody.innerHTML += `
                     <tr class="border-b border-slate-200">
                         <td class="p-1.5 border-r border-slate-200 font-bold truncate max-w-[130px]">${row.name}</td>
-                        <td class="p-1.5 border-r border-slate-200 text-center font-semibold text-slate-700">${obterUltimoMesComDados(row)}</td>
+                        <td class="p-1.5 border-r border-slate-200 text-center font-semibold text-slate-700">${valorRecente}</td>
                         <td class="p-1.5 text-center font-bold text-emerald-600">${row.meta}</td>
                     </tr>
                 `;
@@ -1294,7 +1231,7 @@
             const tbody = document.getElementById("bubble-preview-table-body");
             tbody.innerHTML = "";
             if (!tab.tableData || tab.tableData.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" class="p-2 text-center text-slate-400 italic">Separador vazio.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="3" class="p-2 text-center text-slate-400 italic">Vazio.</td></tr>`;
                 return;
             }
             tab.tableData.slice(0, 3).forEach(row => {
@@ -1325,8 +1262,8 @@
         function copyCurrentLink() {
             const data = systemData.nodes[activeNodeId];
             if (!data) return;
-            let linkToCopy = data.linkType === 'external' ? data.url : (data.linkType === 'internal' ? `#${data.tabId}` : (data.linkType === 'internal-master' ? `Master: ${data.tabId}` : (data.desc || "Anotação.")));
-            navigator.clipboard.writeText(linkToCopy).then(() => showToast("Dados copiados!"));
+            let linkToCopy = data.linkType === 'external' ? data.url : (data.linkType === 'internal' ? `#${data.tabId}` : (data.linkType === 'internal-master' ? `Master: ${data.tabId}` : (data.desc || "")));
+            navigator.clipboard.writeText(linkToCopy).then(() => showToast("Copiado!"));
         }
 
         function closePreviewBubble() {
@@ -1341,8 +1278,7 @@
         function openConfigModal() {
             const data = systemData.nodes[activeNodeId];
             if (!data) return;
-
-            document.getElementById("modal-node-title").innerText = data.name || "Configurar Bloco";
+            document.getElementById("modal-node-title").innerText = data.name || "Configurar";
             document.getElementById("config-node-name").value = data.name || "";
             document.getElementById("config-node-desc").value = data.desc || "";
 
@@ -1353,21 +1289,14 @@
                 <option value="row-consumo_medio">Consumo Médio</option>
                 <option value="row-res_liquido">Resultado Líquido</option>
                 <option value="row-perc_combustivel">Porcentagem Combustível</option>
-                <option value="section-sat_motorista">Sessão Satisfação Motorista</option>
-                <option value="section-perf_motorista">Sessão Performance Motorista</option>
             </optgroup>`;
-
             if (systemData.tabs.length > 0) {
-                selectOptions += `<optgroup label="Separadores Auxiliares">`;
+                selectOptions += `<optgroup label="Auxiliares">`;
                 systemData.tabs.forEach(t => { selectOptions += `<option value="${t.id}">${t.name}</option>`; });
                 selectOptions += `</optgroup>`;
             }
             tabSelect.innerHTML = selectOptions;
-
             selectLinkType(data.linkType);
-            if (data.linkType === 'external') document.getElementById("config-node-url").value = data.url || "";
-            else if (['internal', 'internal-master'].includes(data.linkType)) document.getElementById("config-node-tab").value = data.tabId || "";
-
             document.getElementById("config-modal").classList.remove('hidden');
             document.getElementById("sidebar-overlay").classList.remove('hidden');
         }
@@ -1380,11 +1309,11 @@
         function selectLinkType(type) {
             selectedLinkType = type;
             document.querySelectorAll('.link-type-btn').forEach(btn => {
-                btn.className = "link-type-btn text-[10px] font-bold py-1.5 px-3 rounded text-center transition-all text-slate-600";
+                btn.className = "link-type-btn text-[10px] font-bold py-1.5 px-3 rounded text-center text-slate-600";
             });
             let visualType = type === 'internal-master' ? 'internal' : type;
             const activeBtn = document.getElementById(`btn-link-${visualType}`);
-            if (activeBtn) activeBtn.className = "link-type-btn text-[10px] font-bold py-1.5 px-3 rounded text-center transition-all bg-white shadow-sm text-slate-800";
+            if (activeBtn) activeBtn.className = "link-type-btn text-[10px] font-bold py-1.5 px-3 rounded text-center bg-white shadow-sm text-slate-800";
 
             document.getElementById("link-input-external").classList.add('hidden');
             document.getElementById("link-input-internal").classList.add('hidden');
@@ -1396,25 +1325,19 @@
             event.preventDefault();
             const data = systemData.nodes[activeNodeId];
             if (!data) return;
-
             data.name = document.getElementById("config-node-name").value;
             data.desc = document.getElementById("config-node-desc").value;
-            
             let finalLinkType = selectedLinkType;
             let val = document.getElementById("config-node-tab").value;
-            if (selectedLinkType === 'internal' && (val.startsWith("row-") || val.startsWith("section-"))) {
-                finalLinkType = "internal-master";
-            }
-
+            if (selectedLinkType === 'internal' && (val.startsWith("row-") || val.startsWith("section-"))) finalLinkType = "internal-master";
             data.linkType = finalLinkType;
             if (finalLinkType === 'external') data.url = document.getElementById("config-node-url").value;
             else data.tabId = val;
 
             saveAllData();
             applyNodeStylingAndData();
-            closeConfigModal();
-            closePreviewBubble();
-            showToast("Alterações guardadas com sucesso!");
+            closeAllModals();
+            showToast("Alterações salvas!");
         }
 
         function createCustomTab(event) {
@@ -1422,40 +1345,24 @@
             const name = document.getElementById("new-tab-name").value.trim();
             const icon = document.getElementById("new-tab-icon").value;
             if (!name) return;
-
-            systemData.tabs.push({
-                id: `custom-tab-${Date.now()}`,
-                name: name,
-                icon: icon,
-                notes: `Registe os seus procedimentos e orientações de apoio às operações de ${name} neste espaço.`,
-                tableData: []
-            });
+            systemData.tabs.push({ id: `custom-tab-${Date.now()}`, name: name, icon: icon, notes: "", tableData: [] });
             saveAllData();
             renderCustomTabsList();
             renderDynamicTabsMenu();
             document.getElementById("new-tab-name").value = "";
-            showToast(`Separador "${name}" criado com sucesso!`);
+            showToast("Criado!");
         }
 
         function renderCustomTabsList() {
             const container = document.getElementById("custom-tabs-list");
-            if (systemData.tabs.length === 0) {
-                container.innerHTML = `<div class="text-slate-400 text-xs text-center py-8">Nenhum separador auxiliar criado.</div>`;
-                return;
-            }
+            if (systemData.tabs.length === 0) { container.innerHTML = `<div class="text-slate-400 text-xs text-center py-8">Nenhum.</div>`; return; }
             container.innerHTML = systemData.tabs.map(tab => `
-                <div class="flex items-center justify-between p-3.5 bg-slate-50 border border-slate-200 rounded-lg hover:bg-slate-100/50 transition-all">
+                <div class="flex items-center justify-between p-3 bg-slate-50 border rounded-lg">
                     <div class="flex items-center gap-3">
-                        <span class="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm"><i class="fa-solid ${tab.icon}"></i></span>
-                        <div>
-                            <h4 class="font-bold text-xs text-slate-800">${tab.name}</h4>
-                            <p class="text-[10px] text-slate-500">${tab.tableData.length} registos na tabela</p>
-                        </div>
+                        <span class="w-8 h-8 rounded bg-blue-50 text-blue-600 flex items-center justify-center"><i class="fa-solid ${tab.icon}"></i></span>
+                        <div><h4 class="font-bold text-xs">${tab.name}</h4></div>
                     </div>
-                    <div class="flex gap-1.5">
-                        <button onclick="switchTab('${tab.id}')" class="bg-blue-50 hover:bg-blue-100 text-blue-600 px-3 py-1.5 rounded-md text-[10px] font-bold transition-all"><i class="fa-solid fa-eye mr-1"></i> Abrir</button>
-                        <button onclick="triggerDeleteCustomTab('${tab.id}')" class="text-slate-400 hover:text-red-600 p-2 text-xs transition-colors"><i class="fa-solid fa-trash-can"></i></button>
-                    </div>
+                    <button onclick="switchTab('${tab.id}')" class="bg-blue-50 text-blue-600 px-2 py-1 rounded text-[10px] font-bold">Abrir</button>
                 </div>
             `).join('');
         }
@@ -1477,35 +1384,24 @@
                 section.id = `tab-${tab.id}`;
                 section.className = "tab-content dynamic-tab-section flex-grow hidden flex-col overflow-auto p-5";
                 section.innerHTML = `
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex flex-col h-full gap-4 max-w-7xl mx-auto w-full">
-                        <div class="flex justify-between items-center border-b pb-3 shrink-0">
-                            <div class="flex items-center gap-2.5">
-                                <span class="text-emerald-500 text-xl"><i class="fa-solid ${tab.icon}"></i></span>
-                                <div>
-                                    <h2 class="text-sm font-bold text-slate-800">${tab.name}</h2>
-                                    <p class="text-[10px] text-slate-500">Planilha Auxiliar de Lançamento e Apoio ao Processo.</p>
-                                </div>
-                            </div>
-                            <button onclick="switchTab('diagram-view')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold px-3 py-1.5 rounded-lg transition-all"><i class="fa-solid fa-arrow-left mr-1"></i> Voltar ao Fluxograma</button>
+                    <div class="bg-white p-5 rounded-xl border flex flex-col h-full gap-4 max-w-7xl mx-auto w-full">
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <h2 class="text-sm font-bold">${tab.name}</h2>
+                            <button onclick="switchTab('diagram-view')" class="bg-slate-100 text-slate-700 text-[10px] font-bold px-2.5 py-1.5 rounded-lg">Voltar</button>
                         </div>
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 flex-grow overflow-auto min-h-0">
-                            <div class="bg-slate-50 p-4 rounded-lg border flex flex-col gap-2 min-h-[220px]">
-                                <label class="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Anotações e Manual</label>
-                                <textarea id="custom-notes-${tab.id}" class="flex-grow w-full text-xs bg-white border border-slate-200 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700 leading-relaxed resize-none">${tab.notes || ""}</textarea>
-                                <button onclick="saveCustomTabNotes('${tab.id}')" class="bg-slate-800 hover:bg-slate-900 text-white text-[10px] font-bold py-2 rounded-lg transition-all w-full">Guardar Notas</button>
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 flex-grow overflow-auto">
+                            <div class="bg-slate-50 p-4 border rounded-lg flex flex-col gap-2">
+                                <textarea id="custom-notes-${tab.id}" class="flex-grow w-full text-xs border rounded-lg p-2 resize-none">${tab.notes || ""}</textarea>
+                                <button onclick="saveCustomTabNotes('${tab.id}')" class="bg-slate-800 text-white text-[10px] font-bold py-2 rounded-lg">Salvar Notas</button>
                             </div>
-                            <div class="lg:col-span-2 flex flex-col gap-3 min-h-0">
-                                <div class="bg-slate-50 p-3.5 rounded-lg border">
-                                    <form onsubmit="addTableRow(event, '${tab.id}')" class="grid grid-cols-3 gap-2">
-                                        <input type="text" placeholder="Mês / Referência" required name="col1" class="bg-white text-xs border rounded px-2.5 py-1.5 focus:outline-none">
-                                        <input type="text" placeholder="Resultado" required name="col2" class="bg-white text-xs border rounded px-2.5 py-1.5 focus:outline-none">
-                                        <input type="text" placeholder="Meta" required name="col3" class="bg-white text-xs border rounded px-2.5 py-1.5 focus:outline-none">
-                                        <button type="submit" class="col-span-3 bg-blue-600 text-white font-bold py-1.5 rounded text-[10px] hover:bg-blue-700">Adicionar Registo</button>
-                                    </form>
-                                </div>
-                                <div class="border rounded-lg overflow-hidden flex-grow overflow-auto bg-slate-50/50">
-                                    <table class="w-full text-[11px] text-left border-collapse" id="table-custom-${tab.id}"></table>
-                                </div>
+                            <div class="lg:col-span-2 flex flex-col gap-3">
+                                <form onsubmit="addTableRow(event, '${tab.id}')" class="grid grid-cols-3 gap-2 bg-slate-50 p-3 border rounded-lg">
+                                    <input type="text" placeholder="Ref" required name="col1" class="border text-xs rounded p-1.5">
+                                    <input type="text" placeholder="Result" required name="col2" class="border text-xs rounded p-1.5">
+                                    <input type="text" placeholder="Meta" required name="col3" class="border text-xs rounded p-1.5">
+                                    <button type="submit" class="col-span-3 bg-blue-600 text-white py-1 rounded text-[10px]">Adicionar</button>
+                                </form>
+                                <div class="border rounded-lg overflow-auto flex-grow"><table class="w-full text-[11px]" id="table-custom-${tab.id}"></table></div>
                             </div>
                         </div>
                     </div>`;
@@ -1516,31 +1412,7 @@
 
         function saveCustomTabNotes(tabId) {
             const tab = systemData.tabs.find(t => t.id === tabId);
-            if (tab) {
-                tab.notes = document.getElementById(`custom-notes-${tabId}`).value;
-                saveAllData();
-                showToast("Notas operacionais salvas!");
-            }
-        }
-
-        function triggerDeleteCustomTab(tabId) {
-            showCustomConfirm("Eliminar Separador Auxiliar?", "Esta ação irá eliminar permanentemente este separador. Deseja prosseguir?", () => deleteCustomTab(tabId));
-        }
-
-        function deleteCustomTab(tabId) {
-            Object.keys(systemData.nodes).forEach(key => {
-                if (systemData.nodes[key].tabId === tabId) {
-                    systemData.nodes[key].linkType = 'none';
-                    systemData.nodes[key].tabId = '';
-                }
-            });
-            systemData.tabs = systemData.tabs.filter(t => t.id !== tabId);
-            saveAllData();
-            renderCustomTabsList();
-            renderDynamicTabsMenu();
-            applyNodeStylingAndData();
-            switchTab('diagram-view');
-            showToast("Aba eliminada permanentemente.");
+            if (tab) { tab.notes = document.getElementById(`custom-notes-${tabId}`).value; saveAllData(); showToast("Salvo!"); }
         }
 
         function addTableRow(event, tabId) {
@@ -1548,105 +1420,56 @@
             const form = event.target;
             const tab = systemData.tabs.find(t => t.id === tabId);
             if (!tab) return;
-
             const formData = new FormData(form);
-            tab.tableData.push({
-                "Mês / Referência": formData.get("col1"),
-                "Resultado": formData.get("col2"),
-                "Meta": formData.get("col3")
-            });
-            saveAllData();
-            form.reset();
-            renderCustomTabTable(tabId);
-            showToast("Registo guardado!");
+            tab.tableData.push({ "Mês / Referência": formData.get("col1"), "Resultado": formData.get("col2"), "Meta": formData.get("col3") });
+            saveAllData(); form.reset(); renderCustomTabTable(tabId); showToast("Adicionado!");
         }
 
         function renderCustomTabTable(tabId) {
             const table = document.getElementById(`table-custom-${tabId}`);
             const tab = systemData.tabs.find(t => t.id === tabId);
             if (!tab || !table) return;
-
-            if (tab.tableData.length === 0) {
-                table.innerHTML = `<tr><td class="p-8 text-center text-slate-400 italic text-xs">Nenhum registo no histórico.</td></tr>`;
-                return;
-            }
-
+            if (tab.tableData.length === 0) { table.innerHTML = `<tr><td class="p-4 text-center text-slate-400 italic text-xs">Vazio.</td></tr>`; return; }
             const headers = Object.keys(tab.tableData[0]);
-            let headerHtml = `<tr class="bg-slate-200/80 font-bold border-b text-slate-700 text-[10px] uppercase sticky top-0">`;
-            headers.forEach(h => { headerHtml += `<th class="p-2.5 border-r border-slate-200">${h}</th>`; });
-            headerHtml += `<th class="p-2.5 text-center">Ações</th></tr>`;
-
-            let rowsHtml = "";
-            tab.tableData.forEach((row, rowIndex) => {
-                rowsHtml += `<tr class="border-b hover:bg-white text-slate-600 transition-colors bg-white/70">`;
-                headers.forEach(h => { rowsHtml += `<td class="p-2.5 font-semibold border-r border-slate-100">${row[h] || ''}</td>`; });
-                rowsHtml += `<td class="p-2 text-center"><button onclick="removeTableRow('${tabId}', ${rowIndex})" class="text-slate-400 hover:text-red-600 px-2 py-1"><i class="fa-solid fa-trash-can"></i></button></td></tr>`;
+            let html = `<tr class="bg-slate-100 font-bold border-b text-[10px]">`;
+            headers.forEach(h => html += `<th class="p-2 border-r">${h}</th>`);
+            html += `<th class="p-2 text-center">Ações</th></tr>`;
+            tab.tableData.forEach((row, rIdx) => {
+                html += `<tr class="border-b bg-white text-slate-600">`;
+                headers.forEach(h => html += `<td class="p-2 border-r">${row[h] || ''}</td>`);
+                html += `<td class="p-1 text-center"><button onclick="removeTableRow('${tabId}', ${rIdx})" class="text-slate-400 hover:text-red-600"><i class="fa-solid fa-trash-can"></i></button></td></tr>`;
             });
-            table.innerHTML = headerHtml + rowsHtml;
+            table.innerHTML = html;
         }
 
         function removeTableRow(tabId, index) {
             const tab = systemData.tabs.find(t => t.id === tabId);
-            if (tab) {
-                tab.tableData.splice(index, 1);
-                saveAllData();
-                renderCustomTabTable(tabId);
-                showToast("Registo removido.");
-            }
+            if (tab) { tab.tableData.splice(index, 1); saveAllData(); renderCustomTabTable(tabId); }
         }
 
         function exportDiagramData() {
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(systemData, null, 2));
-            const dlAnchorElem = document.createElement('a');
-            dlAnchorElem.setAttribute("href", dataStr);
-            dlAnchorElem.setAttribute("download", "promap_backup_indicadores.json");
-            dlAnchorElem.click();
-            showToast("Download iniciado!");
+            const a = document.createElement('a'); a.setAttribute("href", dataStr); a.setAttribute("download", "promap_backup.json"); a.click();
         }
 
         function importDiagramData(event) {
-            const input = event.target;
-            const file = input.files[0];
-            if (!file) return;
-
+            const file = event.target.files[0]; if (!file) return;
             const reader = new FileReader();
             reader.onload = function() {
                 try {
                     let parsed = JSON.parse(reader.result);
                     if (parsed.nodes && parsed.tabs) {
-                        systemData = parsed;
-                        saveAllData();
-                        applyNodeStylingAndData();
-                        renderCustomTabsList();
-                        renderDynamicTabsMenu();
-                        renderMasterSpreadsheet();
-                        showToast("Configurações importadas!");
-                        switchTab('diagram-view');
-                    } else {
-                        showToast("Ficheiro de cópia inválido.");
+                        systemData = parsed; saveAllData(); applyNodeStylingAndData();
+                        renderCustomTabsList(); renderDynamicTabsMenu(); renderMasterSpreadsheet();
+                        showToast("Importado!"); switchTab('diagram-view');
                     }
-                } catch (e) {
-                    showToast("Erro ao ler dados JSON.");
-                } finally {
-                    input.value = "";
-                }
+                } catch (e) { showToast("Erro."); }
             };
             reader.readAsText(file);
         }
 
-        function triggerResetDefault() {
-            showCustomConfirm("Repor Configurações?", "Esta ação irá apagar permanentemente todas as suas configurações locais. Deseja continuar?", () => {
-                localStorage.removeItem("ProMap_Indicadores_DB_v12");
-                location.reload();
-            });
-        }
+        function closeAllModals() { closeConfigModal(); closeConfirmModal(); }
 
-        function closeAllModals() {
-            closeConfigModal();
-            closeConfirmModal();
-        }
-
-        // Exportação Global
         window.switchTab = switchTab;
         window.adjustZoom = adjustZoom;
         window.resetZoom = resetZoom;
@@ -1658,13 +1481,10 @@
         window.saveNodeConfig = saveNodeConfig;
         window.createCustomTab = createCustomTab;
         window.saveCustomTabNotes = saveCustomTabNotes;
-        window.deleteCustomTab = deleteCustomTab;
-        window.triggerDeleteCustomTab = triggerDeleteCustomTab;
         window.addTableRow = addTableRow;
         window.removeTableRow = removeTableRow;
         window.exportDiagramData = exportDiagramData;
         window.importDiagramData = importDiagramData;
-        window.triggerResetDefault = triggerResetDefault;
         window.closeAllModals = closeAllModals;
         window.accessMasterRow = accessMasterRow;
 
