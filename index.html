@@ -3,49 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProMap Studio - Organograma & Fluxo</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
-        .color-macro-top { background-color: #a4c2f4; color: #1e3a8a; border: 1.5px solid #7fa5e3; } 
-        .color-macro-sub { background-color: #ffff00; color: #000000; border: 1.5px solid #e6e600; } 
-        .color-sub-process { background-color: #d9ead3; color: #274e13; border: 1.5px solid #c2dbb8; } 
-        
-        .node-card { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); user-select: none; }
-        .node-card:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1); }
-
-        .tree ul { padding-top: 15px; position: relative; display: flex; justify-content: center; margin: 0; }
-        .tree li { position: relative; padding: 15px 10px 0 10px; display: flex; flex-direction: column; align-items: center; }
-        .tree li::before, .tree li::after { content: ''; position: absolute; top: 0; right: 50%; border-top: 2px solid #cbd5e1; width: 50%; height: 15px; }
-        .tree li::after { right: auto; left: 50%; border-left: 2px solid #cbd5e1; }
-        .tree li:only-child::after, .tree li:only-child::before { display: none; }
-        .tree li:only-child::before { content: ''; display: block; position: absolute; top: 0; left: 50%; border-left: 2px solid #cbd5e1; width: 0; height: 15px; transform: translateX(-50%); }
-        .tree li:first-child::before, .tree li:last-child::after { border: 0 none; }
-        .tree li:last-child::before { border-right: 2px solid #cbd5e1; border-radius: 0 6px 0 0; }
-        .tree li:first-child::after { border-radius: 6px 0 0 0; }
-    </style>
-</head>
-<body class="h-screen flex flex-col overflow-hidden">
-
-    <header class="bg-slate-900 text-white px-6 py-3 flex items-center justify-between border-b border-slate-800">
-        <h1 class="text-base font-bold">ProMap Studio</h1>
-        <nav class="flex gap-1.5 bg-slate-950 p-1.5 rounded-xl border border-slate-800">
-            <button onclick="switchTab('diagram-view')" id="btn-diagram-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white">Fluxograma</button>
-            <button onclick="switchTab('org-chart-view')" id="btn-org-chart-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white">Organograma</button>
-        </nav>
-        <span id="sync-status" class="text-[10px] text-emerald-400"><i class="fa-solid fa-cloud"></i> Sincronizado</span>
-    </header>
-
-    <main class="flex-grow bg-slate-100 overflow-auto">
-        <!-- ABA 1: Fluxograma (Conteúdo original omitido para brevidade, mantenha o seu aqui) -->
-        <div id="tab-diagram-view" class="tab-content p-6">
-            <h2 class="text-lg font-bold">Fluxograma Operacional</h2>
-            <!-- [COLOQUE SEU FLUXOGRAMA AQUI] --> <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProMap - Fluxo de Processos & Indicadores</title>
     <!-- Tailwind CSS para design moderno -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -1919,68 +1876,6 @@
 
         // Autentica o utilizador de imediato ao iniciar
         initAuth();
-    </script>
-</body>
-</html>
-
-        </div>
-
-        <!-- ABA 2: ORGANOGRAMA FROTA -->
-        <div id="tab-org-chart-view" class="tab-content hidden p-6">
-            <h2 class="text-xl font-bold text-slate-800 mb-8 text-center uppercase tracking-widest">Organograma Frota</h2>
-            <div class="tree">
-                <ul>
-                    <li>
-                        <div class="node-card color-macro-top p-4 rounded-xl w-[320px] text-center shadow-md">
-                            <span class="font-black text-sm block uppercase">GER. DE OPERAÇÕES DE TRANSPORTES</span>
-                            <span class="text-xs font-semibold block mt-1">JOÃO RICARDO DA ROCHA</span>
-                        </div>
-                        <ul>
-                            <li>
-                                <div class="node-card color-macro-sub p-4 rounded-xl w-[240px] text-center shadow-md">
-                                    <span class="font-bold text-sm uppercase">FROTAS</span>
-                                </div>
-                                <ul>
-                                    <li>
-                                        <div class="node-card color-sub-process p-4 rounded-xl w-[240px] text-center shadow-md">
-                                            <span class="font-bold text-xs block uppercase">SUPERVISORA DE TRANSPORTES</span>
-                                            <span class="text-[11px] mt-1 block font-semibold">JAQUELINE GONÇALVES</span>
-                                        </div>
-                                        <ul>
-                                            <li>
-                                                <div class="node-card color-sub-process p-4 rounded-xl w-[240px] text-center shadow-md">
-                                                    <span class="font-bold text-xs block uppercase">PROGRAMADOR DE TRANSP. RODOV.</span>
-                                                    <span class="text-[11px] mt-1 block">CAMILA ALMEIDA<br>FABIO BESSA<br>GUILHERME OLIVEIRA<br>LORENA WILBERT</span>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <div class="node-card color-sub-process p-4 rounded-xl w-[240px] text-center shadow-md">
-                                            <span class="font-bold text-xs block uppercase">CONTROLADOR DE SERVIÇOS DE MÁQUINAS E VEÍCULOS</span>
-                                            <span class="text-[11px] mt-1 block font-semibold">LEONARDO CORTASIO<br>PABLO DA COSTA</span>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </main>
-
-    <script>
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
-            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
-            document.querySelectorAll('.tab-btn').forEach(b => {
-                b.classList.remove('bg-blue-600', 'text-white');
-                b.classList.add('text-slate-400');
-            });
-            document.getElementById(`btn-${tabId}`).classList.add('bg-blue-600', 'text-white');
-            document.getElementById(`btn-${tabId}`).classList.remove('text-slate-400');
-        }
     </script>
 </body>
 </html>
