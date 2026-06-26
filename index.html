@@ -572,7 +572,7 @@
                     
                     <div class="absolute top-0 left-[165px] right-[165px] h-0.5 bg-slate-300"></div>
                     
-                    <div class="flex gap-16 justify-center w-full mt-0">
+                    <div class="flex gap-16 justify-center w-full mt-0 items-stretch">
                         
                         <div class="flex flex-col items-center w-[270px] relative">
                             <div class="absolute top-0 left-1/2 -translate-x-1/2 w-0.5 h-4 bg-slate-300"></div>
@@ -584,7 +584,7 @@
 
                             <div class="w-0.5 h-8 bg-slate-300"></div>
 
-                            <div class="color-sub-process rounded-xl py-3.5 px-4 text-center w-full border shadow-xs z-10">
+                            <div class="color-sub-process rounded-xl py-3.5 px-4 text-center w-full border shadow-xs z-10 flex-grow flex flex-col justify-center">
                                 <div class="text-[10px] font-bold tracking-wider uppercase opacity-90">PROGRAMADOR DE TRANSP. RODOV.</div>
                                 <div class="text-xs font-bold mt-2 space-y-1 text-emerald-950/90 tracking-wide">
                                     <div class="font-black text-slate-800">CAMILA ALMEIDA</div>
@@ -595,14 +595,14 @@
                             </div>
                         </div>
 
-                        <div class="flex flex-col items-center w-[270px] relative">
+                        <div class="flex flex-col items-end w-[270px] relative justify-end">
                             <div class="absolute top-0 left-1/2 -translate-x-1/2 w-0.5 h-[142px] bg-slate-300"></div>
                             
-                            <div class="color-sub-process rounded-xl py-4 px-4 text-center w-full border shadow-xs mt-[142px] z-10 min-h-[140px] flex flex-col justify-center">
+                            <div class="color-sub-process rounded-xl py-4 px-4 text-center w-full border shadow-xs z-10 min-h-[146px] flex flex-col justify-center">
                                 <div class="text-[10px] font-bold tracking-wider uppercase opacity-90 leading-tight">CONTROLADOR DE SERVIÇOS DE MÁQUINAS E VEÍCULOS</div>
                                 <div class="text-xs font-bold mt-3 space-y-1 text-emerald-950/90 tracking-wide">
-                                    <div class="font-black">LEONARDO CORTASIO</div>
-                                    <div class="font-black">PABLO DA COSTA</div>
+                                    <div class="font-black text-slate-800">LEONARDO CORTASIO</div>
+                                    <div class="font-black text-slate-800">PABLO DA COSTA</div>
                                 </div>
                             </div>
                         </div>
@@ -882,17 +882,6 @@
             }
         ];
 
-        let systemData = {
-            nodes: JSON.parse(JSON.stringify(DEFAULT_NODES_DATA)),
-            tabs: JSON.parse(JSON.stringify(DEFAULT_TABS_DATA)),
-            masterSheet: JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA))
-        };
-
-        let currentZoom = 1.0;
-        let activeNodeId = "";
-        let selectedLinkType = "none";
-        let confirmCallback = null;
-
         function showToast(message) {
             const container = document.getElementById("toast-container");
             const toast = document.createElement("div");
@@ -1087,7 +1076,7 @@
                 row.data[monthIndex] = newVal;
                 saveAllData();
                 renderMasterSpreadsheet();
-                showToast("Dados atualizados com sucesso!");
+                showToast("Dados updated com sucesso!");
             }
             input.onblur = saveValue;
             input.onkeydown = function(e) {
@@ -1251,7 +1240,7 @@
                 tbody.innerHTML += `
                     <tr class="border-b border-slate-200">
                         <td class="p-1.5 border-r border-slate-200 font-bold truncate max-w-[130px]">${row.name}</td>
-                        <td class="p-1.5 border-r border-slate-200 text-center font-semibold text-slate-700">${valorRecente}</td>
+                        <td class="p-1.5 border-r border-slate-200 text-center font-semibold text-slate-700">${obterUltimoMesComDados(row)}</td>
                         <td class="p-1.5 text-center font-bold text-emerald-600">${row.meta}</td>
                     </tr>
                 `;
@@ -1344,7 +1333,7 @@
             });
             let visualType = type === 'internal-master' ? 'internal' : type;
             const activeBtn = document.getElementById(`btn-link-${visualType}`);
-            if (activeBtn) activeBtn.className = "btn-link style text-[10px] font-bold py-1.5 px-3 rounded text-center bg-white shadow-sm text-slate-800";
+            if (activeBtn) activeBtn.className = "link-type-btn text-[10px] font-bold py-1.5 px-3 rounded text-center bg-white shadow-sm text-slate-800";
 
             document.getElementById("link-input-external").classList.add('hidden');
             document.getElementById("link-input-internal").classList.add('hidden');
@@ -1367,7 +1356,8 @@
 
             saveAllData();
             applyNodeStylingAndData();
-            closeAllModals();
+            closeConfigModal();
+            closePreviewBubble();
             showToast("Alterações salvas!");
         }
 
@@ -1390,7 +1380,7 @@
             container.innerHTML = systemData.tabs.map(tab => `
                 <div class="flex items-center justify-between p-3 bg-slate-50 border rounded-lg">
                     <div class="flex items-center gap-3">
-                        <span class="w-8 h-8 rounded bg-blue-50 text-blue-600 flex items-center justify-center"><i class="fa-solid ${tab.icon}"></i></span>
+                        <span class="w-8 h-8 rounded bg-blue-50 text-blue-600 flex items-center justify-center text-sm"><i class="fa-solid ${tab.icon}"></i></span>
                         <div><h4 class="font-bold text-xs">${tab.name}</h4></div>
                     </div>
                     <button onclick="switchTab('${tab.id}')" class="bg-blue-50 text-blue-600 px-2 py-1 rounded text-[10px] font-bold">Abrir</button>
@@ -1422,7 +1412,7 @@
                         </div>
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 flex-grow overflow-auto">
                             <div class="bg-slate-50 p-4 border rounded-lg flex flex-col gap-2">
-                                <textarea id="custom-notes-${tab.id}" class="flex-grow w-full text-xs border rounded-lg p-2 resize-none">${tab.notes || ""}</textarea>
+                                <textarea id="custom-notes-${tab.id}" class="flex-grow w-full text-xs bg-white border border-slate-200 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700 leading-relaxed resize-none">${tab.notes || ""}</textarea>
                                 <button onclick="saveCustomTabNotes('${tab.id}')" class="bg-slate-800 text-white text-[10px] font-bold py-2 rounded-lg">Salvar Notas</button>
                             </div>
                             <div class="lg:col-span-2 flex flex-col gap-3">
@@ -1430,7 +1420,7 @@
                                     <input type="text" placeholder="Ref" required name="col1" class="border text-xs rounded p-1.5">
                                     <input type="text" placeholder="Result" required name="col2" class="border text-xs rounded p-1.5">
                                     <input type="text" placeholder="Meta" required name="col3" class="border text-xs rounded p-1.5">
-                                    <button type="submit" class="col-span-3 bg-blue-600 text-white py-1 rounded text-[10px]">Adicionar</button>
+                                    <button type="submit" class="col-span-3 bg-blue-600 text-white py-1 rounded text-[10px]">Adicionar Registo</button>
                                 </form>
                                 <div class="border rounded-lg overflow-auto flex-grow"><table class="w-full text-[11px]" id="table-custom-${tab.id}"></table></div>
                             </div>
