@@ -193,6 +193,9 @@
             <button onclick="switchTab('diagram-view')" id="btn-diagram-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold transition-all bg-blue-600 text-white shadow-sm">
                 <i class="fa-solid fa-network-wired mr-1.5"></i>Fluxograma do Processo
             </button>
+            <button onclick="switchTab('organograma-frota')" id="btn-organograma-frota" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all">
+                <i class="fa-solid fa-users mr-1.5"></i>Organograma
+            </button>
             <button onclick="switchTab('master-sheet-view')" id="btn-master-sheet-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all">
                 <i class="fa-solid fa-table-list mr-1.5"></i>📊 Planilha Indicadores Frota
             </button>
@@ -223,7 +226,34 @@
     <main class="flex-grow flex overflow-hidden relative bg-slate-100">
 
         <!-- SEPARADOR 1: DIAGRAMA INTERATIVO -->
-        <div id="tab-diagram-view" class="tab-content flex-grow flex flex-col overflow-auto p-4 w-full h-full">
+     </div> 
+
+<div id="tab-organograma-frota" class="tab-content flex-grow hidden flex-col overflow-auto p-10 bg-slate-50 items-center">
+    <h2 class="text-xl font-black text-slate-800 mb-10 uppercase tracking-widest">Estrutura Organizacional</h2>
+    <div class="tree">
+        <ul>
+            <li>
+                <div class="node-card p-4 bg-green-700 text-white font-black text-center w-[350px] rounded-xl shadow-lg">
+                    GER. DE OPERAÇÕES DE TRANSPORTES<br>JOÃO RICARDO DA ROCHA
+                </div>
+                <ul>
+                    <li>
+                        <div class="node-card p-3 bg-green-500 text-white font-bold text-center w-[300px] mt-4 rounded-md">FROTAS</div>
+                        <ul style="display: flex; gap: 50px;">
+                            <li>
+                                <div class="node-card p-3 bg-green-200 text-black font-bold text-center w-[250px] mt-4 rounded-md">SUPERVISORA DE TRANSPORTES<br>JAQUELINE GONÇALVES</div>
+                                <div class="node-card p-3 bg-green-100 text-black text-xs font-bold text-center w-[250px] mt-2 rounded-md">PROGRAMADOR DE TRANSP. RODOV.<br>CAMILA ALMEIDA, FABIO BESSA, GUILHERME OLIVEIRA, LORENA WILBERT</div>
+                            </li>
+                            <li>
+                                <div class="node-card p-3 bg-green-200 text-black font-bold text-center w-[250px] mt-4 rounded-md">CONTROLADOR DE SERVIÇOS DE MÁQUINAS E VEÍCULOS<br>LEONARDO CORTASIO, PABLO DA COSTA</div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
             
             <!-- Barra Informativa com Legenda Integrada e Horizontal -->
             <div class="mb-3 shrink-0 flex flex-wrap gap-4 justify-between items-center bg-white p-3 rounded-xl shadow-sm border border-slate-200">
