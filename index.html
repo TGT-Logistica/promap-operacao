@@ -562,7 +562,7 @@
 
                 <div class="w-0.5 h-6 bg-slate-300"></div>
 
-                <div class="color-macro-sub rounded-xl py-2 px-12 text-center border shadow-xs font-sans z-10">
+                <div class="color-macro-sub rounded-xl py-2 px-12 text-center border shadow-xs z-10">
                     <div class="text-sm font-black tracking-widest uppercase px-4">FROTAS</div>
                 </div>
 
@@ -601,8 +601,8 @@
                             <div class="color-sub-process rounded-xl py-4 px-4 text-center w-full border shadow-xs mt-[142px] z-10 min-h-[140px] flex flex-col justify-center">
                                 <div class="text-[10px] font-bold tracking-wider uppercase opacity-90 leading-tight">CONTROLADOR DE SERVIÇOS DE MÁQUINAS E VEÍCULOS</div>
                                 <div class="text-xs font-bold mt-3 space-y-1 text-emerald-950/90 tracking-wide">
-                                    <div class="font-black text-slate-800">LEONARDO CORTASIO</div>
-                                    <div class="font-black text-slate-800">PABLO DA COSTA</div>
+                                    <div class="font-black">LEONARDO CORTASIO</div>
+                                    <div class="font-black">PABLO DA COSTA</div>
                                 </div>
                             </div>
                         </div>
@@ -807,11 +807,12 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const auth = getAuth(auth);
+        const auth = getAuth(app);
         const db = getFirestore(app);
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'promap-frota-app';
 
         let currentUser = null;
+        let isOfflineMode = false;
 
         const DEFAULT_NODES_DATA = {
             "operacao": { name: "OPERAÇÃO", type: "color-macro-top", linkType: "none", url: "", tabId: "", desc: "Fluxo Geral de Processos e Indicadores de Operação." },
@@ -913,7 +914,7 @@
                 indicator.innerHTML = `<i class="fa-solid fa-cloud-arrow-up mr-1"></i>Nuvem Sincronizada`;
             } else if (status === false) {
                 indicator.className = "bg-red-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-red-400 border border-red-500/20 animate-none";
-                indicator.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1"></i>Modo Offline (${customMsg || 'Falha'})`;
+                indicator.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1"></i>Modo Offline (${customMsg || 'Local'})`;
             } else {
                 indicator.className = "bg-amber-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-amber-500 border border-amber-500/20 animate-pulse";
                 indicator.innerHTML = `<i class="fa-solid fa-spinner animate-spin mr-1"></i>${customMsg || 'Gravando...'}`;
@@ -921,7 +922,7 @@
         }
 
         async function pushToCloud() {
-            if (!currentUser) return;
+            if (isOfflineMode || !currentUser) return;
             updateNetworkStatus(null, "Atualizando...");
             const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'promap_store', 'systemData');
             try {
@@ -933,9 +934,10 @@
         }
 
         function startSync() {
-            if (!currentUser) return;
+            if (isOfflineMode || !currentUser) return;
             const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'promap_store', 'systemData');
             onSnapshot(docRef, (docSnap) => {
+                if (isOfflineMode) return;
                 if (docSnap.exists()) {
                     const cloudData = docSnap.data();
                     if (cloudData && cloudData.payload) {
@@ -955,11 +957,33 @@
                     pushToCloud();
                 }
             }, (error) => {
-                updateNetworkStatus(false, "Erro de Fluxo");
+                switchToLocalFallback("Erro de Rede");
             });
         }
 
+        function switchToLocalFallback(reason) {
+            isOfflineMode = true;
+            console.log("Ignorando nuvem e usando cache local:", reason);
+            let saved = localStorage.getItem("ProMap_Indicadores_DB_v12");
+            if (saved) {
+                try {
+                    systemData = JSON.parse(saved);
+                } catch(e) {}
+            }
+            applyNodeStylingAndData();
+            renderCustomTabsList();
+            renderDynamicTabsMenu();
+            renderMasterSpreadsheet();
+            updateNetworkStatus(false, "Local Cache");
+        }
+
         const initAuth = async () => {
+            const cloudTimeout = setTimeout(() => {
+                if (!currentUser) {
+                    switchToLocalFallback("Timeout de Autenticação");
+                }
+            }, 3000);
+
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                     const cred = await signInWithCustomToken(auth, __initial_auth_token);
@@ -968,15 +992,17 @@
                     const cred = await signInAnonymously(auth);
                     currentUser = cred.user;
                 }
-                startSync();
+                clearTimeout(cloudTimeout);
+                if (!isOfflineMode) startSync();
             } catch (err) {
-                updateNetworkStatus(false, "Autenticação Falhou");
+                clearTimeout(cloudTimeout);
+                switchToLocalFallback("Falha de Comunicação");
             }
         };
 
         function saveAllData() {
             localStorage.setItem("ProMap_Indicadores_DB_v12", JSON.stringify(systemData));
-            pushToCloud();
+            if (!isOfflineMode) pushToCloud();
         }
 
         function renderMasterSpreadsheet() {
@@ -1061,7 +1087,7 @@
                 row.data[monthIndex] = newVal;
                 saveAllData();
                 renderMasterSpreadsheet();
-                showToast("Dados updated com sucesso!");
+                showToast("Dados atualizados com sucesso!");
             }
             input.onblur = saveValue;
             input.onkeydown = function(e) {
@@ -1211,3 +1237,289 @@
             } else if (targetId === "section-sat_motorista") {
                 rowsToPreview = systemData.masterSheet.filter(row => row.category === "SATISFAÇÃO DO MOTORISTA");
             } else if (targetId === "section-perf_motorista") {
+                rowsToPreview = systemData.masterSheet.filter(row => row.category === "PERFORMANCE MOTORISTA");
+            }
+
+            if (rowsToPreview.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" class="p-2 text-center text-slate-400 italic">Sem dados.</td></tr>`;
+                return;
+            }
+
+            rowsToPreview.slice(0, 3).forEach(row => {
+                let activeValues = row.data.filter(v => v !== null && v !== undefined && !isNaN(v));
+                let valorRecente = activeValues.length ? formatCellValue(activeValues[activeValues.length - 1], row.type) : "Sem dados";
+                tbody.innerHTML += `
+                    <tr class="border-b border-slate-200">
+                        <td class="p-1.5 border-r border-slate-200 font-bold truncate max-w-[130px]">${row.name}</td>
+                        <td class="p-1.5 border-r border-slate-200 text-center font-semibold text-slate-700">${valorRecente}</td>
+                        <td class="p-1.5 text-center font-bold text-emerald-600">${row.meta}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderMiniPreviewTable(tab) {
+            const tbody = document.getElementById("bubble-preview-table-body");
+            tbody.innerHTML = "";
+            if (!tab.tableData || tab.tableData.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" class="p-2 text-center text-slate-400 italic">Vazio.</td></tr>`;
+                return;
+            }
+            tab.tableData.slice(0, 3).forEach(row => {
+                const keys = Object.keys(row);
+                tbody.innerHTML += `
+                    <tr class="border-b border-slate-200">
+                        <td class="p-1.5 border-r border-slate-200 truncate max-w-[90px] font-semibold">${row[keys[0]] || ''}</td>
+                        <td class="p-1.5 border-r border-slate-200 truncate max-w-[90px]">${row[keys[1]] || ''}</td>
+                        <td class="p-1.5 truncate max-w-[90px]">${row[keys[2]] || ''}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function accessMasterRow(targetId) {
+            switchTab('master-sheet-view');
+            closePreviewBubble();
+            setTimeout(() => {
+                let targetElement = targetId.startsWith("row-") ? document.getElementById(targetId) : (targetId === "section-sat_motorista" ? document.getElementById("row-sat-camila") : document.getElementById("row-perf-camila"));
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    targetElement.classList.add('row-highlight');
+                    setTimeout(() => targetElement.classList.remove('row-highlight'), 2000);
+                }
+            }, 300);
+        }
+
+        function copyCurrentLink() {
+            const data = systemData.nodes[activeNodeId];
+            if (!data) return;
+            let linkToCopy = data.linkType === 'external' ? data.url : (data.linkType === 'internal' ? `#${data.tabId}` : (data.linkType === 'internal-master' ? `Master: ${data.tabId}` : (data.desc || "")));
+            navigator.clipboard.writeText(linkToCopy).then(() => showToast("Copiado!"));
+        }
+
+        function closePreviewBubble() {
+            document.getElementById("link-preview-bubble").classList.add('hidden');
+            document.querySelectorAll('.node-card').forEach(n => n.classList.remove('node-selected'));
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#link-preview-bubble') && !e.target.closest('.node-card')) closePreviewBubble();
+        });
+
+        function openConfigModal() {
+            const data = systemData.nodes[activeNodeId];
+            if (!data) return;
+            document.getElementById("modal-node-title").innerText = data.name || "Configurar";
+            document.getElementById("config-node-name").value = data.name || "";
+            document.getElementById("config-node-desc").value = data.desc || "";
+
+            const tabSelect = document.getElementById("config-node-tab");
+            let selectOptions = `<optgroup label="Planilha Master">
+                <option value="row-disp_frota">Disponibilidade da Frota</option>
+                <option value="row-preco_l">Preço/Litro</option>
+                <option value="row-consumo_medio">Consumo Médio</option>
+                <option value="row-res_liquido">Resultado Líquido</option>
+                <option value="row-perc_combustivel">Porcentagem Combustível</option>
+            </optgroup>`;
+            if (systemData.tabs.length > 0) {
+                selectOptions += `<optgroup label="Auxiliares">`;
+                systemData.tabs.forEach(t => { selectOptions += `<option value="${t.id}">${t.name}</option>`; });
+                selectOptions += `</optgroup>`;
+            }
+            tabSelect.innerHTML = selectOptions;
+            selectLinkType(data.linkType);
+            document.getElementById("config-modal").classList.remove('hidden');
+            document.getElementById("sidebar-overlay").classList.remove('hidden');
+        }
+
+        function closeConfigModal() {
+            document.getElementById("config-modal").classList.add('hidden');
+            document.getElementById("sidebar-overlay").classList.add('hidden');
+        }
+
+        function selectLinkType(type) {
+            selectedLinkType = type;
+            document.querySelectorAll('.link-type-btn').forEach(btn => {
+                btn.className = "link-type-btn text-[10px] font-bold py-1.5 px-3 rounded text-center text-slate-600";
+            });
+            let visualType = type === 'internal-master' ? 'internal' : type;
+            const activeBtn = document.getElementById(`btn-link-${visualType}`);
+            if (activeBtn) activeBtn.className = "btn-link style text-[10px] font-bold py-1.5 px-3 rounded text-center bg-white shadow-sm text-slate-800";
+
+            document.getElementById("link-input-external").classList.add('hidden');
+            document.getElementById("link-input-internal").classList.add('hidden');
+            if (type === 'external') document.getElementById("link-input-external").classList.remove('hidden');
+            if (['internal', 'internal-master'].includes(type)) document.getElementById("link-input-internal").classList.remove('hidden');
+        }
+
+        function saveNodeConfig(event) {
+            event.preventDefault();
+            const data = systemData.nodes[activeNodeId];
+            if (!data) return;
+            data.name = document.getElementById("config-node-name").value;
+            data.desc = document.getElementById("config-node-desc").value;
+            let finalLinkType = selectedLinkType;
+            let val = document.getElementById("config-node-tab").value;
+            if (selectedLinkType === 'internal' && (val.startsWith("row-") || val.startsWith("section-"))) finalLinkType = "internal-master";
+            data.linkType = finalLinkType;
+            if (finalLinkType === 'external') data.url = document.getElementById("config-node-url").value;
+            else data.tabId = val;
+
+            saveAllData();
+            applyNodeStylingAndData();
+            closeAllModals();
+            showToast("Alterações salvas!");
+        }
+
+        function createCustomTab(event) {
+            event.preventDefault();
+            const name = document.getElementById("new-tab-name").value.trim();
+            const icon = document.getElementById("new-tab-icon").value;
+            if (!name) return;
+            systemData.tabs.push({ id: `custom-tab-${Date.now()}`, name: name, icon: icon, notes: "", tableData: [] });
+            saveAllData();
+            renderCustomTabsList();
+            renderDynamicTabsMenu();
+            document.getElementById("new-tab-name").value = "";
+            showToast("Criado!");
+        }
+
+        function renderCustomTabsList() {
+            const container = document.getElementById("custom-tabs-list");
+            if (systemData.tabs.length === 0) { container.innerHTML = `<div class="text-slate-400 text-xs text-center py-8">Nenhum.</div>`; return; }
+            container.innerHTML = systemData.tabs.map(tab => `
+                <div class="flex items-center justify-between p-3 bg-slate-50 border rounded-lg">
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded bg-blue-50 text-blue-600 flex items-center justify-center"><i class="fa-solid ${tab.icon}"></i></span>
+                        <div><h4 class="font-bold text-xs">${tab.name}</h4></div>
+                    </div>
+                    <button onclick="switchTab('${tab.id}')" class="bg-blue-50 text-blue-600 px-2 py-1 rounded text-[10px] font-bold">Abrir</button>
+                </div>
+            `).join('');
+        }
+
+        function renderDynamicTabsMenu() {
+            document.querySelectorAll(".dynamic-header-tab, .dynamic-tab-section").forEach(el => el.remove());
+            const nav = document.querySelector("nav");
+            const main = document.querySelector("main");
+
+            systemData.tabs.forEach(tab => {
+                const btn = document.createElement("button");
+                btn.id = `btn-${tab.id}`;
+                btn.className = "tab-btn dynamic-header-tab px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all";
+                btn.onclick = () => switchTab(tab.id);
+                btn.innerHTML = `<i class="fa-solid ${tab.icon} mr-1.5"></i>${tab.name}`;
+                nav.appendChild(btn);
+
+                const section = document.createElement("div");
+                section.id = `tab-${tab.id}`;
+                section.className = "tab-content dynamic-tab-section flex-grow hidden flex-col overflow-auto p-5";
+                section.innerHTML = `
+                    <div class="bg-white p-5 rounded-xl border flex flex-col h-full gap-4 max-w-7xl mx-auto w-full">
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <h2 class="text-sm font-bold">${tab.name}</h2>
+                            <button onclick="switchTab('diagram-view')" class="bg-slate-100 text-slate-700 text-[10px] font-bold px-2.5 py-1.5 rounded-lg">Voltar</button>
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 flex-grow overflow-auto">
+                            <div class="bg-slate-50 p-4 border rounded-lg flex flex-col gap-2">
+                                <textarea id="custom-notes-${tab.id}" class="flex-grow w-full text-xs border rounded-lg p-2 resize-none">${tab.notes || ""}</textarea>
+                                <button onclick="saveCustomTabNotes('${tab.id}')" class="bg-slate-800 text-white text-[10px] font-bold py-2 rounded-lg">Salvar Notas</button>
+                            </div>
+                            <div class="lg:col-span-2 flex flex-col gap-3">
+                                <form onsubmit="addTableRow(event, '${tab.id}')" class="grid grid-cols-3 gap-2 bg-slate-50 p-3 border rounded-lg">
+                                    <input type="text" placeholder="Ref" required name="col1" class="border text-xs rounded p-1.5">
+                                    <input type="text" placeholder="Result" required name="col2" class="border text-xs rounded p-1.5">
+                                    <input type="text" placeholder="Meta" required name="col3" class="border text-xs rounded p-1.5">
+                                    <button type="submit" class="col-span-3 bg-blue-600 text-white py-1 rounded text-[10px]">Adicionar</button>
+                                </form>
+                                <div class="border rounded-lg overflow-auto flex-grow"><table class="w-full text-[11px]" id="table-custom-${tab.id}"></table></div>
+                            </div>
+                        </div>
+                    </div>`;
+                main.appendChild(section);
+                renderCustomTabTable(tab.id);
+            });
+        }
+
+        function saveCustomTabNotes(tabId) {
+            const tab = systemData.tabs.find(t => t.id === tabId);
+            if (tab) { tab.notes = document.getElementById(`custom-notes-${tabId}`).value; saveAllData(); showToast("Salvo!"); }
+        }
+
+        function addTableRow(event, tabId) {
+            event.preventDefault();
+            const form = event.target;
+            const tab = systemData.tabs.find(t => t.id === tabId);
+            if (!tab) return;
+            const formData = new FormData(form);
+            tab.tableData.push({ "Mês / Referência": formData.get("col1"), "Resultado": formData.get("col2"), "Meta": formData.get("col3") });
+            saveAllData(); form.reset(); renderCustomTabTable(tabId); showToast("Adicionado!");
+        }
+
+        function renderCustomTabTable(tabId) {
+            const table = document.getElementById(`table-custom-${tabId}`);
+            const tab = systemData.tabs.find(t => t.id === tabId);
+            if (!tab || !table) return;
+            if (tab.tableData.length === 0) { table.innerHTML = `<tr><td class="p-4 text-center text-slate-400 italic text-xs">Vazio.</td></tr>`; return; }
+            const headers = Object.keys(tab.tableData[0]);
+            let html = `<tr class="bg-slate-100 font-bold border-b text-[10px]">`;
+            headers.forEach(h => html += `<th class="p-2 border-r">${h}</th>`);
+            html += `<th class="p-2 text-center">Ações</th></tr>`;
+            tab.tableData.forEach((row, rIdx) => {
+                html += `<tr class="border-b bg-white text-slate-600">`;
+                headers.forEach(h => html += `<td class="p-2 border-r">${row[h] || ''}</td>`);
+                html += `<td class="p-1 text-center"><button onclick="removeTableRow('${tabId}', ${rIdx})" class="text-slate-400 hover:text-red-600"><i class="fa-solid fa-trash-can"></i></button></td></tr>`;
+            });
+            table.innerHTML = html;
+        }
+
+        function removeTableRow(tabId, index) {
+            const tab = systemData.tabs.find(t => t.id === tabId);
+            if (tab) { tab.tableData.splice(index, 1); saveAllData(); renderCustomTabTable(tabId); }
+        }
+
+        function exportDiagramData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(systemData, null, 2));
+            const a = document.createElement('a'); a.setAttribute("href", dataStr); a.setAttribute("download", "promap_backup.json"); a.click();
+        }
+
+        function importDiagramData(event) {
+            const file = event.target.files[0]; if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function() {
+                try {
+                    let parsed = JSON.parse(reader.result);
+                    if (parsed.nodes && parsed.tabs) {
+                        systemData = parsed; saveAllData(); applyNodeStylingAndData();
+                        renderCustomTabsList(); renderDynamicTabsMenu(); renderMasterSpreadsheet();
+                        showToast("Importado!"); switchTab('diagram-view');
+                    }
+                } catch (e) { showToast("Erro."); }
+            };
+            reader.readAsText(file);
+        }
+
+        function closeAllModals() { closeConfigModal(); closeConfirmModal(); }
+
+        window.switchTab = switchTab;
+        window.adjustZoom = adjustZoom;
+        window.resetZoom = resetZoom;
+        window.handleNodeClick = handleNodeClick;
+        window.copyCurrentLink = copyCurrentLink;
+        window.openConfigModal = openConfigModal;
+        window.closePreviewBubble = closePreviewBubble;
+        window.editMasterCell = editMasterCell;
+        window.saveNodeConfig = saveNodeConfig;
+        window.createCustomTab = createCustomTab;
+        window.saveCustomTabNotes = saveCustomTabNotes;
+        window.addTableRow = addTableRow;
+        window.removeTableRow = removeTableRow;
+        window.exportDiagramData = exportDiagramData;
+        window.importDiagramData = importDiagramData;
+        window.closeAllModals = closeAllModals;
+        window.accessMasterRow = accessMasterRow;
+
+        initAuth();
+    </script>
+</body>
+</html>
