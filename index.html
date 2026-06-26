@@ -770,7 +770,7 @@
             
             "acomp_jornada": { name: "ACOMPANHAMENTO DE JORNADA", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
             "acomp_motorista": { name: "ACOMPANHAMENTO DE MOTORISTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
-            "sat_motorista": { name: "Satisfação do motorista", type: "color-indicator", linkType: "internal-master", url: "", tabId: "section-sat_motorista", desc: "Consolidado de satisfação da equipa de motoristas." },
+            "sat_motorista": { name: "Satisfação do motorista", type: "color-indicator", linkType: "internal-master", url: "https://docs.google.com/spreadsheets/d/1lAi0B6JKoeSGPhijXpGq3zJwIJkvIo5-nyQ0tZvXZrk/edit?gid=0#gid=0", tabId: "section-sat_motorista", desc: "Consolidado de satisfação da equipa de motoristas." },
             
             "controle_combustivel": { name: "CONTROLE DE COMBUSTÍVEL", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "perc_combustivel": { name: "Percentual Combustível x Faturamento líquido", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-perc_combustivel", desc: "Porcentagem do Combustível face ao faturamento líquido global." },
@@ -801,8 +801,8 @@
             { id: "row-disp_frota", category: "INDICADORES", name: "DISPONIBILIDADE DA FROTA", responsible: "João Ricardo", meta: "25 DIAS MÊS", type: "number", data: [22, 22, 22, 20, 24, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-preco_l", category: "INDICADORES", name: "PREÇO/LITRO", responsible: "Pablo", meta: "R$ 5,69 (2025)", type: "currency", data: [5.73, 5.68, 6.70, 7.14, 6.80, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-consumo_medio", category: "INDICADORES", name: "CONSUMO MÉDIO", responsible: "Pablo", meta: "1,86", type: "decimal", data: [1.85, 1.83, 1.82, 1.86, 1.84, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-perc_combustivel", category: "INDICADORES", name: "PORCENTAGEM COMBUSTIVEL/RESULTADO LIQUIDO", responsible: "Pablo", meta: "<35%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "combustivel_ratio" },
             { id: "row-res_liquido", category: "INDICADORES", name: "RESULTADO LÍQUIDO", responsible: "Jaqueline", meta: ">10%", type: "percentage", data: [115, 116, 81, 129, 119, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-perc_combustivel", category: "INDICADORES", name: "PORCENTAGEM COMBUSTIVEL/RESULTADO LIQUIDO", responsible: "Pablo", meta: "<35%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "combustivel_ratio" },
             { id: "row-capitacao_sub", category: "INDICADORES", name: "CAPITAÇÃO DE SUBCONTRATADO", responsible: "Jaqueline", meta: "80%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-eficiencia_prog", category: "INDICADORES", name: "EFICIÊNCIA DE PROGRAMAÇÃO DOS GESTORES", responsible: "Jaqueline", meta: "90%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-manutencao_pos_folga", category: "INDICADORES", name: "MANUTENÇÃO PÓS FOLGA SEM ADIAR RETORNO DO MOTORISTA", responsible: "Leonardo", meta: "0", type: "number", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
@@ -849,19 +849,29 @@
         let selectedLinkType = "none";
         let confirmCallback = null;
 
-        // Persistência local no Navegador - Usamos agora _v7 para evitar caches passados e injetar os novos indicadores e responsáveis
+        // Inicializador
+        window.onload = function() {
+            loadFromLocalStorage();
+            applyNodeStylingAndData();
+            renderCustomTabsList();
+            renderDynamicTabsMenu();
+            renderMasterSpreadsheet();
+            initCustomConfirm();
+        };
+
+        // Persistência local no Navegador - Usamos agora _v8 para evitar caches passados e injetar os novos indicadores e responsáveis
         function saveToLocalStorage() {
-            localStorage.setItem("ProMap_Indicadores_DB_v7", JSON.stringify(systemData));
+            localStorage.setItem("ProMap_Indicadores_DB_v8", JSON.stringify(systemData));
         }
 
         function loadFromLocalStorage() {
-            // Tentamos carregar v7 primeiro
-            let saved = localStorage.getItem("ProMap_Indicadores_DB_v7");
+            // Tentamos carregar v8 primeiro
+            let saved = localStorage.getItem("ProMap_Indicadores_DB_v8");
             let migrated = false;
 
             if (!saved) {
-                // Se não há v7, migramos dados de versões anteriores para manter as anotações do usuário intactas!
-                saved = localStorage.getItem("ProMap_Indicadores_DB_v6") || localStorage.getItem("ProMap_Indicadores_DB_v5") || localStorage.getItem("ProMap_Indicadores_DB_v4");
+                // Se não há v8, migramos dados de versões anteriores para manter as anotações do usuário intactas!
+                saved = localStorage.getItem("ProMap_Indicadores_DB_v7") || localStorage.getItem("ProMap_Indicadores_DB_v6") || localStorage.getItem("ProMap_Indicadores_DB_v5") || localStorage.getItem("ProMap_Indicadores_DB_v4");
                 migrated = true;
             }
 
@@ -872,7 +882,7 @@
                     // Carregamos separadores auxiliares se existirem
                     if (parsed.tabs) systemData.tabs = parsed.tabs;
                     
-                    // Atualizamos a planilha master garantindo que os novos indicadores e responsáveis novos do v6 sejam injetados
+                    // Atualizamos a planilha master garantindo que os novos indicadores e responsáveis novos do v8 sejam injetados
                     // mas preservando quaisquer dados editados que correspondam aos indicadores originais.
                     if (parsed.masterSheet) {
                         // Preservar valores antigos inseridos nos KPIs correspondentes
@@ -896,7 +906,7 @@
                         systemData.nodes["perc_combustivel"].name = "Porcentagem Combustível x Faturamento líquido";
                     }
 
-                    // Se foi migrado para v6, salva imediatamente para fixar a nova estrutura com responsáveis
+                    // Se foi migrado para v8, salva imediatamente para fixar a nova estrutura com responsáveis
                     if (migrated) {
                         saveToLocalStorage();
                     }
@@ -1381,8 +1391,6 @@
                 <option value="row-consumo_medio">Consumo Médio</option>
                 <option value="row-res_liquido">Resultado Líquido</option>
                 <option value="row-perc_combustivel">Porcentagem Combustível</option>
-                <option value="row-eficiencia_prog">Eficiência de Programação Gestores</option>
-                <option value="row-manutencao_pos_folga">Manutenção Pós Folga</option>
                 <option value="section-sat_motorista">Sessão Satisfação Motorista</option>
                 <option value="section-perf_motorista">Sessão Performance Motorista</option>
             </optgroup>`;
@@ -1725,7 +1733,7 @@
         }
 
         function resetAllToDefault() {
-            localStorage.removeItem("ProMap_Indicadores_DB_v7");
+            localStorage.removeItem("ProMap_Indicadores_DB_v8");
             location.reload();
         }
 
