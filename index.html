@@ -11,7 +11,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         body {
@@ -55,7 +55,7 @@
         }
         .tree li {
             position: relative;
-            padding: 15px 5px 0 5px;
+            padding: 15px 10px 0 10px; /* Margem lateral aumentada para respiração e impedir cortes */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -248,7 +248,8 @@
             <!-- Canvas do Diagrama -->
             <div class="flex-grow bg-slate-50 rounded-xl border border-slate-200 overflow-auto relative p-6">
                 
-                <div id="diagram-scale-container" class="origin-top-left transition-transform duration-100 ease-out min-w-[1750px] py-4">
+                <!-- Margens horizontais generosas para impedir cortes em qualquer zoom -->
+                <div id="diagram-scale-container" class="origin-top-left transition-transform duration-100 ease-out min-w-[1950px] py-6 px-12">
                     
                     <div class="tree">
                         <ul>
@@ -276,7 +277,7 @@
                                             <!-- Coluna 1: Programação de Veículos -->
                                             <li>
                                                 <div class="tree-node-wrapper has-children">
-                                                    <div id="node-prog_veiculos" onclick="handleNodeClick('prog_veiculos', event)" class="w-[160px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
+                                                    <div id="node-prog_veiculos" onclick="handleNodeClick('prog_veiculos', event)" class="w-[175px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
                                                         <span class="node-text">PROGRAMAÇÃO DE VEÍCULOS</span>
                                                         <span class="link-badge absolute right-1.5 top-1.5 hidden text-red-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                     </div>
@@ -285,14 +286,14 @@
                                                     <!-- Sub 1.1: GESTÃO DE DISP. RECURSOS -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
-                                                            <div id="node-disp_recursos" onclick="handleNodeClick('disp_recursos', event)" class="w-[125px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                            <div id="node-disp_recursos" onclick="handleNodeClick('disp_recursos', event)" class="w-[140px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                                 <span class="node-text">GESTÃO DE DISP. RECURSOS</span>
                                                                 <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                             </div>
                                                         </div>
                                                         <ul>
                                                             <li>
-                                                                <div id="node-disp_frota" onclick="handleNodeClick('disp_frota', event)" class="w-[125px] text-center p-2 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                <div id="node-disp_frota" onclick="handleNodeClick('disp_frota', event)" class="w-[140px] text-center p-2 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                                     <span class="node-text">Disponibilidade da frota</span>
                                                                     <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                                 </div>
@@ -302,14 +303,14 @@
                                                     <!-- Sub 1.2: PROGRAMAÇÃO DE FOLGAS -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
-                                                            <div id="node-prog_folgas" onclick="handleNodeClick('prog_folgas', event)" class="w-[125px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                            <div id="node-prog_folgas" onclick="handleNodeClick('prog_folgas', event)" class="w-[140px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                                 <span class="node-text">PROGRAMAÇÃO DE FOLGAS</span>
                                                                 <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                             </div>
                                                         </div>
                                                         <ul>
                                                             <li>
-                                                                <div id="node-alinhamento_folgas" onclick="handleNodeClick('alinhamento_folgas', event)" class="w-[125px] text-center p-1.5 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-snug">
+                                                                <div id="node-alinhamento_folgas" onclick="handleNodeClick('alinhamento_folgas', event)" class="w-[140px] text-center p-1.5 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-snug">
                                                                     <span class="node-text">Alinhamento de início e retorno das folgas x Manutenção no período</span>
                                                                     <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                                 </div>
@@ -319,14 +320,14 @@
                                                     <!-- Sub 1.3: GESTÃO DE CLIENTES -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
-                                                            <div id="node-gestao_clientes" onclick="handleNodeClick('gestao_clientes', event)" class="w-[125px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                            <div id="node-gestao_clientes" onclick="handleNodeClick('gestao_clientes', event)" class="w-[140px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                                 <span class="node-text">GESTÃO DE CLIENTES</span>
                                                                 <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                             </div>
                                                         </div>
                                                         <ul>
                                                             <li>
-                                                                <div id="node-objetivos_rotas" onclick="handleNodeClick('objetivos_rotas', event)" class="w-[125px] text-center p-1.5 text-[8px] font-semibold rounded color-to-develop shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-snug">
+                                                                <div id="node-objetivos_rotas" onclick="handleNodeClick('objetivos_rotas', event)" class="w-[140px] text-center p-1.5 text-[8px] font-semibold rounded color-to-develop shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-snug">
                                                                     <span class="node-text">OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES.</span>
                                                                     <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                                 </div>
@@ -336,10 +337,10 @@
                                                 </ul>
                                             </li>
 
-                                            <!-- Coluna 2: Acompanhamento de Jornada (Conforme imagem e51429.png) -->
+                                            <!-- Coluna 2: Acompanhamento de Jornada -->
                                             <li>
                                                 <div class="tree-node-wrapper has-children">
-                                                    <div id="node-acomp_jornada" onclick="handleNodeClick('acomp_jornada', event)" class="w-[160px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
+                                                    <div id="node-acomp_jornada" onclick="handleNodeClick('acomp_jornada', event)" class="w-[175px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
                                                         <span class="node-text">ACOMPANHAMENTO DE JORNADA</span>
                                                         <span class="link-badge absolute right-1.5 top-1.5 hidden text-red-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                     </div>
@@ -348,14 +349,14 @@
                                                     <!-- Sub 2.1: ACOMPANHAMENTO DE MOTORISTA -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
-                                                            <div id="node-acomp_motorista" onclick="handleNodeClick('acomp_motorista', event)" class="w-[125px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                            <div id="node-acomp_motorista" onclick="handleNodeClick('acomp_motorista', event)" class="w-[140px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                                 <span class="node-text">ACOMPANHAMENTO DE MOTORISTA</span>
                                                                 <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                             </div>
                                                         </div>
                                                         <ul>
                                                             <li>
-                                                                <div id="node-sat_motorista" onclick="handleNodeClick('sat_motorista', event)" class="w-[125px] text-center p-2 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                <div id="node-sat_motorista" onclick="handleNodeClick('sat_motorista', event)" class="w-[140px] text-center p-2 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                                     <span class="node-text">Satisfação do motorista</span>
                                                                     <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                                 </div>
@@ -365,7 +366,7 @@
                                                     <!-- Sub 2.2: CONTROLE DE COMBUSTÍVEL -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
-                                                            <div id="node-controle_combustivel" onclick="handleNodeClick('controle_combustivel', event)" class="w-[125px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                            <div id="node-controle_combustivel" onclick="handleNodeClick('controle_combustivel', event)" class="w-[140px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                                 <span class="node-text">CONTROLE DE COMBUSTÍVEL</span>
                                                                 <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                             </div>
@@ -373,19 +374,19 @@
                                                         <ul>
                                                             <li>
                                                                 <div class="tree-node-wrapper has-children">
-                                                                    <div id="node-perc_combustivel" onclick="handleNodeClick('perc_combustivel', event)" class="w-[125px] text-center p-1.5 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                    <div id="node-perc_combustivel" onclick="handleNodeClick('perc_combustivel', event)" class="w-[140px] text-center p-1.5 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                                         <span class="node-text">Porcentagem Combustível x Faturamento líquido</span>
                                                                         <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                                     </div>
                                                                 </div>
                                                                 <ul>
                                                                     <li>
-                                                                        <div id="node-preco_l" onclick="handleNodeClick('preco_l', event)" class="w-[65px] text-center p-1 text-[8px] font-bold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer relative node-card leading-tight">
+                                                                        <div id="node-preco_l" onclick="handleNodeClick('preco_l', event)" class="w-[75px] text-center p-1 text-[8px] font-bold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer relative node-card leading-tight">
                                                                             <span class="node-text">Preço/L</span>
                                                                         </div>
                                                                     </li>
                                                                     <li>
-                                                                        <div id="node-consumo_medio" onclick="handleNodeClick('consumo_medio', event)" class="w-[65px] text-center p-1 text-[8px] font-bold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer relative node-card leading-tight">
+                                                                        <div id="node-consumo_medio" onclick="handleNodeClick('consumo_medio', event)" class="w-[75px] text-center p-1 text-[8px] font-bold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer relative node-card leading-tight">
                                                                             <span class="node-text">Consumo médio</span>
                                                                         </div>
                                                                     </li>
@@ -393,17 +394,17 @@
                                                             </li>
                                                         </ul>
                                                     </li>
-                                                    <!-- Sub 2.3: CONTROLE DE PEDÁGIO (Novo subprocesso ao lado de controle de combustível) -->
+                                                    <!-- Sub 2.3: CONTROLE DE PEDÁGIO -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
-                                                            <div id="node-controle_pedagio" onclick="handleNodeClick('controle_pedagio', event)" class="w-[125px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                            <div id="node-controle_pedagio" onclick="handleNodeClick('controle_pedagio', event)" class="w-[140px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                                 <span class="node-text">CONTROLE DE PEDÁGIO</span>
                                                                 <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                             </div>
                                                         </div>
                                                         <ul>
                                                             <li>
-                                                                <div id="node-conferencia_pedagio" onclick="handleNodeClick('conferencia_pedagio', event)" class="w-[125px] text-center p-2 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                <div id="node-conferencia_pedagio" onclick="handleNodeClick('conferencia_pedagio', event)" class="w-[140px] text-center p-2 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                                     <span class="node-text">Conferência de pedágio</span>
                                                                     <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                                 </div>
@@ -416,7 +417,7 @@
                                             <!-- Coluna 3: Fechamento de Resultados -->
                                             <li>
                                                 <div class="tree-node-wrapper has-children">
-                                                    <div id="node-fech_resultados" onclick="handleNodeClick('fech_resultados', event)" class="w-[160px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
+                                                    <div id="node-fech_resultados" onclick="handleNodeClick('fech_resultados', event)" class="w-[175px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
                                                         <span class="node-text">FECHAMENTO DE RESULTADOS</span>
                                                         <span class="link-badge absolute right-1.5 top-1.5 hidden text-red-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                     </div>
@@ -425,14 +426,14 @@
                                                     <!-- Sub 3.1: FECHAMENTO JORNADA MOTORISTA -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
-                                                            <div id="node-fech_jornada" onclick="handleNodeClick('fech_jornada', event)" class="w-[120px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                            <div id="node-fech_jornada" onclick="handleNodeClick('fech_jornada', event)" class="w-[135px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                                 <span class="node-text">FECHAMENTO JORNADA MOTORISTA</span>
                                                                 <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                             </div>
                                                         </div>
                                                         <ul>
                                                             <li>
-                                                                <div id="node-perf_motorista" onclick="handleNodeClick('perf_motorista', event)" class="w-[120px] text-center p-2 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                <div id="node-perf_motorista" onclick="handleNodeClick('perf_motorista', event)" class="w-[135px] text-center p-2 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                                     <span class="node-text">Performance motorista</span>
                                                                 </div>
                                                             </li>
@@ -441,14 +442,14 @@
                                                     <!-- Sub 3.2: FECHAMENTO MENSAL FROTA -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
-                                                            <div id="node-fech_mensal_frota" onclick="handleNodeClick('fech_mensal_frota', event)" class="w-[120px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                            <div id="node-fech_mensal_frota" onclick="handleNodeClick('fech_mensal_frota', event)" class="w-[135px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                                 <span class="node-text">FECHAMENTO MENSAL FROTA</span>
                                                                 <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                             </div>
                                                         </div>
                                                         <ul>
                                                             <li>
-                                                                <div id="node-res_liquido" onclick="handleNodeClick('res_liquido', event)" class="w-[120px] text-center p-2 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                <div id="node-res_liquido" onclick="handleNodeClick('res_liquido', event)" class="w-[135px] text-center p-2 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                                     <span class="node-text">Resultado líquido</span>
                                                                 </div>
                                                             </li>
@@ -457,14 +458,14 @@
                                                     <!-- Sub 3.3: FECHAMENTO MENSAL CLIENTES/FROTA -->
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
-                                                            <div id="node-fech_clientes_frota" onclick="handleNodeClick('fech_clientes_frota', event)" class="w-[120px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                            <div id="node-fech_clientes_frota" onclick="handleNodeClick('fech_clientes_frota', event)" class="w-[135px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                                 <span class="node-text">FECHAMENTO MENSAL CLIENTES/FROTA</span>
                                                                 <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                             </div>
                                                         </div>
                                                         <ul>
                                                             <li>
-                                                                <div id="node-ineficiencias_carga" onclick="handleNodeClick('ineficiencias_carga', event)" class="w-[120px] text-center p-1.5 text-[8px] font-semibold rounded color-to-develop shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                <div id="node-ineficiencias_carga" onclick="handleNodeClick('ineficiencias_carga', event)" class="w-[135px] text-center p-1.5 text-[8px] font-semibold rounded color-to-develop shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                                     <span class="node-text">Ineficiências de carga e descarga e diárias</span>
                                                                 </div>
                                                             </li>
@@ -476,7 +477,7 @@
                                             <!-- Coluna 4: Planeamento / Desenvolvimento - Frota -->
                                             <li>
                                                 <div class="tree-node-wrapper has-children">
-                                                    <div id="node-planejamento_frota" onclick="handleNodeClick('planejamento_frota', event)" class="w-[210px] text-center p-2 font-bold text-[10px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card leading-tight">
+                                                    <div id="node-planejamento_frota" onclick="handleNodeClick('planejamento_frota', event)" class="w-[225px] text-center p-2 font-bold text-[10px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card leading-tight">
                                                         <span class="node-text">PLANEAMENTO/DESENVOLVIMENTO - FROTA</span>
                                                         <span class="link-badge absolute right-1.5 top-1.5 hidden text-red-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                     </div>
@@ -484,13 +485,13 @@
                                                 <ul>
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
-                                                            <div id="node-gestao_eficiencia" onclick="handleNodeClick('gestao_eficiencia', event)" class="w-[120px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                            <div id="node-gestao_eficiencia" onclick="handleNodeClick('gestao_eficiencia', event)" class="w-[135px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                                 <span class="node-text">GESTÃO DE EFICIÊNCIA E PROCESSO</span>
                                                             </div>
                                                         </div>
                                                         <ul>
                                                             <li>
-                                                                <div id="node-definir_cronograma" onclick="handleNodeClick('definir_cronograma', event)" class="w-[120px] text-center p-1 text-[8px] font-semibold rounded color-to-develop shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-snug">
+                                                                <div id="node-definir_cronograma" onclick="handleNodeClick('definir_cronograma', event)" class="w-[135px] text-center p-1 text-[8px] font-semibold rounded color-to-develop shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-snug">
                                                                     <span class="node-text">DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO...</span>
                                                                 </div>
                                                             </li>
@@ -499,25 +500,31 @@
                                                 </ul>
                                             </li>
 
-                                            <!-- Coluna 5: Regularização Frota -->
+                                            <!-- Coluna 5: Gestão Administrativa da Frota -->
                                             <li>
                                                 <div class="tree-node-wrapper has-children">
-                                                    <div id="node-regularizacao_frota" onclick="handleNodeClick('regularizacao_frota', event)" class="w-[160px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
-                                                        <span class="node-text">REGULARIZAÇÃO FROTA</span>
+                                                    <div id="node-regularizacao_frota" onclick="handleNodeClick('regularizacao_frota', event)" class="w-[220px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
+                                                        <span class="node-text">GESTÃO ADMINISTRATIVA DA FROTA</span>
                                                         <span class="link-badge absolute right-1.5 top-1.5 hidden text-red-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                     </div>
                                                 </div>
                                                 <ul>
                                                     <!-- Sub 5.1: LICENCIAMENTO E ADEQUAÇÕES -->
                                                     <li>
-                                                        <div id="node-licenciamento" onclick="handleNodeClick('licenciamento', event)" class="w-[120px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                        <div id="node-licenciamento" onclick="handleNodeClick('licenciamento', event)" class="w-[135px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                             <span class="node-text">LICENCIAMENTO E ADEQUAÇÕES FROTA</span>
                                                         </div>
                                                     </li>
                                                     <!-- Sub 5.2: ADEQUAÇÕES ADMINISTRATIVAS -->
                                                     <li>
-                                                        <div id="node-adeq_admin" onclick="handleNodeClick('adeq_admin', event)" class="w-[120px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                        <div id="node-adeq_admin" onclick="handleNodeClick('adeq_admin', event)" class="w-[135px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                             <span class="node-text">ADEQUAÇÕES ADMINISTRATIVAS</span>
+                                                        </div>
+                                                    </li>
+                                                    <!-- Sub 5.3: GESTÃO DE SINISTRO -->
+                                                    <li>
+                                                        <div id="node-gestao_sinistro" onclick="handleNodeClick('gestao_sinistro', event)" class="w-[135px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                            <span class="node-text">GESTÃO DE SINISTRO</span>
                                                         </div>
                                                     </li>
                                                 </ul>
@@ -798,7 +805,7 @@
         // Variável de controle do usuário autenticado
         let currentUser = null;
 
-        // Base de Dados padrão das Caixas do Diagrama (Atualizada com Controle de Pedágio)
+        // Base de Dados padrão das Caixas do Diagrama (Atualizada com Controle de Pedágio, Gestão Administrativa da Frota e Gestão de Sinistros)
         const DEFAULT_NODES_DATA = {
             "operacao": { name: "OPERAÇÃO", type: "color-macro-top", linkType: "none", url: "", tabId: "", desc: "Fluxo Geral de Processos e Indicadores de Operação." },
             "gestao_frota": { name: "GESTÃO DA FROTA", type: "color-macro-sub", linkType: "none", url: "", tabId: "", desc: "Gestão macro da frota." },
@@ -840,14 +847,16 @@
             "gestao_eficiencia": { name: "GESTÃO DE EFICIÊNCIA E PROCESSO", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "definir_cronograma": { name: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO...", type: "color-to-develop", linkType: "none", url: "", tabId: "", desc: "" },
             
-            "regularizacao_frota": { name: "REGULARIZAÇÃO FROTA", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
+            // Gestão Administrativa da Frota (com Novo Subprocesso)
+            "regularizacao_frota": { name: "GESTÃO ADMINISTRATIVA DA FROTA", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "Processo-chave encarregado dos trâmites administrativos, regularizações, licenciamentos e tratamento de sinistros." },
             "licenciamento": { name: "LICENCIAMENTO E ADEQUAÇÕES FROTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
-            "adeq_admin": { name: "ADEQUAÇÕES ADMINISTRATIVAS", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" }
+            "adeq_admin": { name: "ADEQUAÇÕES ADMINISTRATIVAS", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "gestao_sinistro": { name: "GESTÃO DE SINISTRO", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "Fluxo e controle operacional para abertura, acompanhamento e liquidação de sinistros e seguros." }
         };
 
         // Dados Master de Indicadores da Planilha Integrada
         const DEFAULT_MASTER_SHEET_DATA = [
-            // Categoria 1: INDICADORES
+            // Categoria 1: INDICADORES (Metas e Responsáveis Actualizados)
             { id: "row-disp_frota", category: "INDICADORES", name: "DISPONIBILIDADE DA FROTA", responsible: "JOÃO RICARDO", meta: "25 DIAS MÊS", type: "number", data: [22, 22, 22, 20, 24, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-preco_l", category: "INDICADORES", name: "PREÇO/LITRO", responsible: "PABLO", meta: "R$ 5,69 (2025)", type: "currency", data: [5.73, 5.68, 6.70, 7.14, 6.80, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-consumo_medio", category: "INDICADORES", name: "CONSUMO MÉDIO", responsible: "PABLO", meta: "1,86", type: "decimal", data: [1.85, 1.83, 1.82, 1.86, 1.84, null, null, null, null, null, null, null], formula: "avg" },
@@ -948,13 +957,21 @@
                         try {
                             const parsed = JSON.parse(cloudData.payload);
                             
-                            // Integra os novos nós e dados de Pedágio se ausentes na nuvem (Compatibilidade)
+                            // Integra novos nós se ausentes na nuvem (Compatibilidade e Retrocompatibilidade de dados de Pedágio e Sinistro)
                             if (parsed.nodes) {
                                 if (!parsed.nodes["controle_pedagio"]) {
                                     parsed.nodes["controle_pedagio"] = JSON.parse(JSON.stringify(DEFAULT_NODES_DATA["controle_pedagio"]));
                                 }
                                 if (!parsed.nodes["conferencia_pedagio"]) {
                                     parsed.nodes["conferencia_pedagio"] = JSON.parse(JSON.stringify(DEFAULT_NODES_DATA["conferencia_pedagio"]));
+                                }
+                                if (!parsed.nodes["regularizacao_frota"]) {
+                                    parsed.nodes["regularizacao_frota"] = JSON.parse(JSON.stringify(DEFAULT_NODES_DATA["regularizacao_frota"]));
+                                } else {
+                                    parsed.nodes["regularizacao_frota"].name = "GESTÃO ADMINISTRATIVA DA FROTA";
+                                }
+                                if (!parsed.nodes["gestao_sinistro"]) {
+                                    parsed.nodes["gestao_sinistro"] = JSON.parse(JSON.stringify(DEFAULT_NODES_DATA["gestao_sinistro"]));
                                 }
                             }
                             
@@ -1002,16 +1019,17 @@
             pushToCloud();
         }
 
-        // Persistência local no navegador secundária (v11)
+        // Persistência local no navegador secundária (v12)
         function saveToLocalStorage() {
-            localStorage.setItem("ProMap_Indicadores_DB_v11", JSON.stringify(systemData));
+            localStorage.setItem("ProMap_Indicadores_DB_v12", JSON.stringify(systemData));
         }
 
         function loadFromLocalStorage() {
-            let saved = localStorage.getItem("ProMap_Indicadores_DB_v11");
+            let saved = localStorage.getItem("ProMap_Indicadores_DB_v12");
             if (!saved) {
                 // Tenta importar histórico das versões anteriores para migração
-                saved = localStorage.getItem("ProMap_Indicadores_DB_v10") || 
+                saved = localStorage.getItem("ProMap_Indicadores_DB_v11") || 
+                        localStorage.getItem("ProMap_Indicadores_DB_v10") || 
                         localStorage.getItem("ProMap_Indicadores_DB_v5") || 
                         localStorage.getItem("ProMap_Indicadores_DB_v4");
             }
@@ -1089,7 +1107,7 @@
                     monthsHtml += `<td class="${cellClass}" ondblclick="editMasterCell(${rowIndex}, ${i}, this)">${displayVal}</td>`;
                 }
 
-                // Identificador de Meta Individual
+                // Identificador de Meta Individual (Garante que "9,00" e todas as metas importantes fiquem em badge verde)
                 let rowMetaHtml = `<span class="font-bold text-slate-700">${row.meta}</span>`;
                 if (row.meta === "25 DIAS MÊS" || row.meta === "R$ 5,69 (2025)" || row.meta === "1,86" || row.meta === "100%" || row.meta === "80%" || row.meta === "90%" || row.meta === ">10%" || row.meta === "<35%" || row.meta === "0" || row.meta === "9,00") {
                     rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">${row.meta}</span>`;
@@ -1172,7 +1190,7 @@
                 row.data[monthIndex] = newVal;
                 saveAllData();
                 renderMasterSpreadsheet();
-                showToast("Dados updated com sucesso!");
+                showToast("Dados atualizados com sucesso!");
             }
 
             input.onblur = saveValue;
@@ -1777,21 +1795,38 @@
             const reader = new FileReader();
             reader.onload = function() {
                 try {
-                    const parsed = JSON.parse(reader.result);
+                    let parsed = JSON.parse(reader.result);
                     if (parsed.nodes && parsed.tabs) {
+                        // Higienizar dados retrocomprimidos para compatibilidade com nomes limpos de indicadores e responsáveis
+                        if (parsed.masterSheet) {
+                            parsed.masterSheet.forEach(row => {
+                                if (row.name && row.name.includes("<span")) {
+                                    const tempDiv = document.createElement("div");
+                                    tempDiv.innerHTML = row.name;
+                                    row.name = tempDiv.firstChild ? tempDiv.firstChild.textContent.trim() : row.name;
+                                    const spanEl = tempDiv.querySelector("span");
+                                    if (spanEl && !row.responsible) {
+                                        row.responsible = spanEl.textContent.trim();
+                                    }
+                                }
+                            });
+                        }
+                        
                         systemData = parsed;
                         saveAllData();
                         applyNodeStylingAndData();
                         renderCustomTabsList();
                         renderDynamicTabsMenu();
                         renderMasterSpreadsheet();
-                        showToast("Configurações importadas!");
+                        showToast("Configurações importadas e sincronizadas!");
                         switchTab('diagram-view');
                     } else {
                         showToast("Ficheiro de cópia inválido.", "error");
                     }
                 } catch (e) {
                     showToast("Erro ao ler dados JSON.", "error");
+                } finally {
+                    input.value = ""; // Permite re-upload contínuo
                 }
             };
             reader.readAsText(file);
@@ -1806,7 +1841,7 @@
         }
 
         function resetAllToDefault() {
-            localStorage.removeItem("ProMap_Indicadores_DB_v11");
+            localStorage.removeItem("ProMap_Indicadores_DB_v12");
             location.reload();
         }
 
