@@ -798,14 +798,14 @@
 
         const DEFAULT_MASTER_SHEET_DATA = [
             // Categoria 1: INDICADORES
-            { id: "row-disp_frota", category: "INDICADORES", name: "DISPONIBILIDADE DA FROTA <span class='ml-2 text-[9px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider'>João Ricardo</span>", meta: "25 DIAS MÊ", type: "number", data: [22, 22, 22, 20, 24, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-preco_l", category: "INDICADORES", name: "PREÇO/LITRO <span class='ml-2 text-[9px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider'>Pablo</span>", meta: "R$ 5,69 (2025)", type: "currency", data: [5.73, 5.68, 6.70, 7.14, 6.80, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-consumo_medio", category: "INDICADORES", name: "CONSUMO MÉDIO <span class='ml-2 text-[9px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider'>Pablo</span>", meta: "1,86", type: "decimal", data: [1.85, 1.83, 1.82, 1.86, 1.84, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-perc_combustivel", category: "INDICADORES", name: "PORCENTAGEM COMBUSTIVEL/RESULTADO LIQUIDO <span class='ml-2 text-[9px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider'>Pablo</span>", meta: "<35%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "combustivel_ratio" },
-            { id: "row-res_liquido", category: "INDICADORES", name: "RESULTADO LÍQUIDO <span class='ml-2 text-[9px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider'>Jaqueline</span>", meta: ">10%", type: "percentage", data: [115, 116, 81, 129, 119, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-capitacao_sub", category: "INDICADORES", name: "CAPITAÇÃO DE SUBCONTRATADO <span class='ml-2 text-[9px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider'>Jaqueline</span>", meta: "80%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-efic-programacao", category: "INDICADORES", name: "EFICIENCIA DE PROGRAMAÇÃO DOS GESTORES <span class='ml-2 text-[9px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider'>Jaqueline</span>", meta: "90%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-manutencao-pos", category: "INDICADORES", name: "MANUTENÇÃO PÓS FOLGA SEM ADIAR RETORNO DO MOTORISTA <span class='ml-2 text-[9px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider'>Leonardo</span>", meta: "0", type: "number", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-disp_frota", category: "INDICADORES", name: "DISPONIBILIDADE DA FROTA <span class='bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider ml-1.5'>João Ricardo</span>", meta: "25 DIAS MÊS", type: "number", data: [22, 22, 22, 20, 24, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-preco_l", category: "INDICADORES", name: "PREÇO/LITRO <span class='bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider ml-1.5'>Pablo</span>", meta: "R$ 5,69 (2025)", type: "currency", data: [5.73, 5.68, 6.70, 7.14, 6.80, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-consumo_medio", category: "INDICADORES", name: "CONSUMO MÉDIO <span class='bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider ml-1.5'>Pablo</span>", meta: "1,86", type: "decimal", data: [1.85, 1.83, 1.82, 1.86, 1.84, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-res_liquido", category: "INDICADORES", name: "RESULTADO LÍQUIDO <span class='bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider ml-1.5'>Jaqueline</span>", meta: ">10%", type: "percentage", data: [115, 116, 81, 129, 119, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-perc_combustivel", category: "INDICADORES", name: "PORCENTAGEM COMBUSTIVEL/RESULTADO LIQUIDO <span class='bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider ml-1.5'>Pablo</span>", meta: "<35%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "combustivel_ratio" },
+            { id: "row-capitacao_sub", category: "INDICADORES", name: "CAPITAÇÃO DE SUBCONTRATADO <span class='bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider ml-1.5'>Jaqueline</span>", meta: "80%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-efic_prog", category: "INDICADORES", name: "EFICIENCIA DE PROGRAMAÇÃO DOS GESTORES <span class='bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider ml-1.5'>Jaqueline</span>", meta: "90%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-manut_pos_folga", category: "INDICADORES", name: "MANUTENÇÃO PÓS FOLGA SEM ADIAR RETORNO DO MOTORISTA <span class='bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider ml-1.5'>Leonardo</span>", meta: "0", type: "number", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
             
             // Categoria 2: SATISFAÇÃO DO MOTORISTA
             { id: "row-sat-camila", category: "SATISFAÇÃO DO MOTORISTA", name: "CAMILA", meta: "9,00", type: "decimal", data: [9.90, 9.83, 9.83, null, 9.66, null, null, null, null, null, null, null], formula: "avg" },
@@ -859,20 +859,20 @@
             initCustomConfirm();
         };
 
+        // Persistência local no Navegador - Usamos agora _v10 para evitar cache de metas incorretas
         function saveToLocalStorage() {
-            localStorage.setItem("ProMap_Indicadores_DB_v9", JSON.stringify(systemData));
+            localStorage.setItem("ProMap_Indicadores_DB_v10", JSON.stringify(systemData));
         }
 
         function loadFromLocalStorage() {
-            // Versão v9 para assegurar a planilha limpa sem metas nas categorias e sem conflitos
-            let saved = localStorage.getItem("ProMap_Indicadores_DB_v9");
+            let saved = localStorage.getItem("ProMap_Indicadores_DB_v10");
             let migrated = false;
 
             if (!saved) {
-                // Tenta importar da v8, v7 ou v6 se houver
-                saved = localStorage.getItem("ProMap_Indicadores_DB_v8") || 
-                        localStorage.getItem("ProMap_Indicadores_DB_v7") || 
-                        localStorage.getItem("ProMap_Indicadores_DB_v6");
+                // Se não há v10, migramos as definições das versões anteriores de forma limpa para reter os números digitados
+                saved = localStorage.getItem("ProMap_Indicadores_DB_v9") || 
+                        localStorage.getItem("ProMap_Indicadores_DB_v5") || 
+                        localStorage.getItem("ProMap_Indicadores_DB_v4");
                 migrated = true;
             }
 
@@ -880,32 +880,36 @@
                 try {
                     let parsed = JSON.parse(saved);
                     
-                    // Carrega as abas e estrutura mantendo lançamentos manuais intactos
+                    // Carregamos abas e planilha principal para manter os números editados
                     if (parsed.tabs) systemData.tabs = parsed.tabs;
                     if (parsed.masterSheet) {
-                        // Faz um mapeamento para atualizar apenas os dados, mas preservando nomes e metas fixos das linhas configuradas acima!
+                        // Mapeamos os dados salvos para as chaves padrões (assim os nomes das metas e responsáveis são SEMPRE atualizados!)
                         parsed.masterSheet.forEach(row => {
                             let match = systemData.masterSheet.find(m => m.id === row.id);
                             if (match) {
-                                match.data = row.data; // Mantém apenas os números digitados
+                                match.data = row.data; // Mantemos apenas o histórico numérico inserido pelo utilizador
                             }
                         });
                     }
+                    
+                    // Carregamos os nós estruturais
                     if (parsed.nodes) systemData.nodes = parsed.nodes;
 
-                    // Ajusta manualmente para o controle brasileiro e faturamento correto
+                    // CORREÇÃO FORÇADA DE CACHE (MIGRAÇÃO DE NOMES PT-BR):
+                    // Isto impede que o cache antigo do utilizador volte a reverter "controle" e "faturamento"
                     if (systemData.nodes["controle_combustivel"]) {
                         systemData.nodes["controle_combustivel"].name = "CONTROLE DE COMBUSTÍVEL";
                     }
                     if (systemData.nodes["perc_combustivel"]) {
-                        systemData.nodes["perc_combustivel"].name = "Percentagem Combustível x Faturamento líquido";
+                        systemData.nodes["perc_combustivel"].name = "Porcentagem Combustível x Faturamento líquido";
                     }
 
+                    // Se foi uma migração, salvamos de imediato no novo espaço v10
                     if (migrated) {
                         saveToLocalStorage();
                     }
                 } catch(e) {
-                    console.error("Erro ao carregar cache do browser. Usando predefinições limpas.");
+                    console.error("Erro ao carregar dados locais. Usando definições padrão.");
                 }
             }
         }
@@ -921,8 +925,8 @@
                 // Inserir linha de cabeçalho da Categoria se mudar de seção
                 if (row.category !== currentCategory) {
                     currentCategory = row.category;
-
-                    // Criamos a linha de categoria sem badge verde de meta, deixando o visual totalmente limpo
+                    
+                    // Sem os badges de meta na linha de cabeçalho das categorias, visual limpo como desejado!
                     tbody.innerHTML += `
                         <tr class="bg-slate-200 font-extrabold text-[10px] text-slate-800 uppercase tracking-wider">
                             <td class="p-2 border-r border-slate-300 pl-4 font-black">${currentCategory}</td>
@@ -956,7 +960,7 @@
                     monthsHtml += `<td class="${cellClass}" ondblclick="editMasterCell(${rowIndex}, ${i}, this)">${displayVal}</td>`;
                 }
 
-                // Identificador Meta Row-level
+                // Identificador Meta Row-level - Ajustado para exibir "9,00" em verde também
                 let rowMetaHtml = `<span class="font-bold text-slate-700">${row.meta}</span>`;
                 if (row.meta === "25 DIAS MÊS") rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">25 DIAS MÊS</span>`;
                 if (row.meta === "R$ 5,69 (2025)") rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">R$ 5,69 (2025)</span>`;
@@ -968,6 +972,7 @@
                 if (row.meta === "80%") rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">80%</span>`;
                 if (row.meta === "90%") rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">90%</span>`;
                 if (row.meta === "0") rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">0</span>`;
+                if (row.meta === "9,00") rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">9,00</span>`;
 
                 // Renderizar a Linha Principal
                 tbody.innerHTML += `
@@ -1267,6 +1272,7 @@
             }
 
             rowsToPreview.slice(0, 3).forEach(row => {
+                // Modificado para capturar o último mês preenchido em vez de puxar o cálculo acumulado
                 let valorRecente = obterUltimoMesComDados(row);
                 tbody.innerHTML += `
                     <tr class="border-b border-slate-200">
@@ -1327,7 +1333,6 @@
             }, 300);
         }
 
-        // Copiar o destino do link atual para a Área de Transferência
         function copyCurrentLink() {
             const data = systemData.nodes[activeNodeId];
             if (!data) return;
@@ -1721,7 +1726,7 @@
         }
 
         function resetAllToDefault() {
-            localStorage.removeItem("ProMap_Indicadores_DB_v9");
+            localStorage.removeItem("ProMap_Indicadores_DB_v10");
             location.reload();
         }
 
