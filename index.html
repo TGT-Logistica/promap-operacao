@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,7 +18,7 @@
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc;
         }
-        /* Cores fiéis ao diagrama original da imagem */
+        /* Cores fiéis ao diagrama original */
         .color-macro-top { background-color: #a4c2f4; color: #1e3a8a; border: 1.5px solid #7fa5e3; } 
         .color-macro-sub { background-color: #ffff00; color: #000000; border: 1.5px solid #e6e600; } 
         .color-process-key { background-color: #f4cccc; color: #5c2626; border: 1.5px solid #e0b3b3; } 
@@ -212,8 +212,9 @@
                 <button onclick="adjustZoom(0.1)" class="px-2 py-1 hover:text-white transition-colors" title="Aumentar Zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
                 <button onclick="resetZoom()" class="px-2 py-1 hover:text-white transition-colors border-l border-slate-800 ml-0.5" title="Resetar"><i class="fa-solid fa-arrows-to-eye"></i></button>
             </div>
-            <span id="sync-status" class="bg-blue-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-blue-400 border border-blue-500/20">
-                <i class="fa-solid fa-rotate mr-1 animate-spin"></i>Ligando à Nuvem...
+            <!-- Indicador do Status da Sincronização Dinâmico -->
+            <span id="sync-status-indicator" class="bg-amber-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-amber-500 border border-amber-500/20 animate-pulse">
+                <i class="fa-solid fa-spinner animate-spin mr-1"></i>Conectando Nuvem...
             </span>
         </div>
     </header>
@@ -559,7 +560,7 @@
             </div>
         </div>
 
-        <!-- SEPARADOR 2: NOVO MASTER SPREADSHEET (PLANILHA DE ALTA FIDELIDADE "image_bfef64.png") -->
+        <!-- SEPARADOR 2: NOVO MASTER SPREADSHEET (PLANILHA DE ALTA FIDELIDADE) -->
         <div id="tab-master-sheet-view" class="tab-content flex-grow hidden flex-col overflow-auto p-4 md:p-6 w-full h-full">
             <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex flex-col h-full gap-4 max-w-7xl mx-auto w-full">
                 <!-- Cabeçalho da Planilha -->
@@ -601,7 +602,7 @@
                             </tr>
                         </thead>
                         <tbody id="master-sheet-tbody" class="bg-white">
-                            <!-- Preenchido dinamicamente via JavaScript em perfeita sintonia com a imagem bfef64 -->
+                            <!-- Preenchido dinamicamente via JavaScript -->
                         </tbody>
                     </table>
                 </div>
@@ -753,11 +754,34 @@
     <!-- Overlay de Fundo -->
     <div id="sidebar-overlay" onclick="closeAllModals()" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-20 hidden"></div>
 
+    <!-- SDK do Firebase & Scripts de Operação (Módulos JS) -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        // Importando o SDK oficial v10 para garantir o funcionamento correto de módulos web CDN
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
+        // Configuração Oficial Fornecida pelo Usuário
+        const firebaseConfig = {
+            apiKey: "AIzaSyBzpMt8VaRiIK4NtFn_zoonc1YQIrAHBG4",
+            authDomain: "promap-frota.firebaseapp.com",
+            projectId: "promap-frota",
+            storageBucket: "promap-frota.firebasestorage.app",
+            messagingSenderId: "754288393761",
+            appId: "1:754288393761:web:b12d158d066b68f3412d60",
+            measurementId: "G-145JSZMPDP"
+        };
+
+        // Inicializando Serviços do Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'promap-frota-app';
+
+        // Variável de controle do usuário autenticado
+        let currentUser = null;
+
+        // Base de Dados padrão das Caixas do Diagrama
         const DEFAULT_NODES_DATA = {
             "operacao": { name: "OPERAÇÃO", type: "color-macro-top", linkType: "none", url: "", tabId: "", desc: "Fluxo Geral de Processos e Indicadores de Operação." },
             "gestao_frota": { name: "GESTÃO DA FROTA", type: "color-macro-sub", linkType: "none", url: "", tabId: "", desc: "Gestão macro da frota." },
@@ -783,7 +807,7 @@
             
             "fech_resultados": { name: "FECHAMENTO DE RESULTADOS", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
             "fech_jornada": { name: "FECHAMENTO JORNADA MOTORISTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
-            "perf_motorista": { name: "Performance motorista", type: "color-indicator", linkType: "internal-master", url: "", tabId: "section-perf_motorista", desc: "Performance operacional por motorista." },
+            "perf_motorista": { name: "Performance motorista", type: "color-indicator", linkType: "internal-master", url: "section-perf_motorista", tabId: "", desc: "Performance operacional por motorista." },
             
             "fech_mensal_frota": { name: "FECHAMENTO MENSAL FROTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "res_liquido": { name: "Resultado líquido", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-res_liquido", desc: "Resultado líquido operacional acumulado." },
@@ -800,36 +824,38 @@
             "adeq_admin": { name: "ADEQUAÇÕES ADMINISTRATIVAS", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" }
         };
 
+        // Dados Master de Indicadores da Planilha Integrada
         const DEFAULT_MASTER_SHEET_DATA = [
             // Categoria 1: INDICADORES
-            { id: "row-disp_frota", category: "INDICADORES", name: "DISPONIBILIDADE DA FROTA <span class='bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider ml-1.5'>João Ricardo</span>", meta: "25 DIAS MÊS", type: "number", data: [22, 22, 22, 20, 24, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-preco_l", category: "INDICADORES", name: "PREÇO/LITRO <span class='bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider ml-1.5'>Pablo</span>", meta: "R$ 5,69 (2025)", type: "currency", data: [5.73, 5.68, 6.70, 7.14, 6.80, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-consumo_medio", category: "INDICADORES", name: "CONSUMO MÉDIO <span class='bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider ml-1.5'>Pablo</span>", meta: "1,86", type: "decimal", data: [1.85, 1.83, 1.82, 1.86, 1.84, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-res_liquido", category: "INDICADORES", name: "RESULTADO LÍQUIDO <span class='bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider ml-1.5'>Jaqueline</span>", meta: ">10%", type: "percentage", data: [115, 116, 81, 129, 119, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-perc_combustivel", category: "INDICADORES", name: "PORCENTAGEM COMBUSTIVEL/RESULTADO LIQUIDO <span class='bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider ml-1.5'>Pablo</span>", meta: "<35%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "combustivel_ratio" },
-            { id: "row-capitacao_sub", category: "INDICADORES", name: "CAPITAÇÃO DE SUBCONTRATADO <span class='bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider ml-1.5'>Jaqueline</span>", meta: "80%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-efic_prog", category: "INDICADORES", name: "EFICIENCIA DE PROGRAMAÇÃO DOS GESTORES <span class='bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider ml-1.5'>Jaqueline</span>", meta: "90%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-manut_pos_folga", category: "INDICADORES", name: "MANUTENÇÃO PÓS FOLGA SEM ADIAR RETORNO DO MOTORISTA <span class='bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider ml-1.5'>Leonardo</span>", meta: "0", type: "number", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-disp_frota", category: "INDICADORES", name: "DISPONIBILIDADE DA FROTA", responsible: "JOÃO RICARDO", meta: "25 DIAS MÊS", type: "number", data: [22, 22, 22, 20, 24, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-preco_l", category: "INDICADORES", name: "PREÇO/LITRO", responsible: "PABLO", meta: "R$ 5,69 (2025)", type: "currency", data: [5.73, 5.68, 6.70, 7.14, 6.80, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-consumo_medio", category: "INDICADORES", name: "CONSUMO MÉDIO", responsible: "PABLO", meta: "1,86", type: "decimal", data: [1.85, 1.83, 1.82, 1.86, 1.84, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-res_liquido", category: "INDICADORES", name: "RESULTADO LÍQUIDO", responsible: "JAQUELINE", meta: ">10%", type: "percentage", data: [115, 116, 81, 129, 119, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-perc_combustivel", category: "INDICADORES", name: "PORCENTAGEM COMBUSTIVEL/RESULTADO LIQUIDO", responsible: "PABLO", meta: "<35%", type: "percentage", data: [20, 10, 1, 1, null, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-capitacao_sub", category: "INDICADORES", name: "CAPITAÇÃO DE SUBCONTRATADO", responsible: "JAQUELINE", meta: "80%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-eficiencia_gestores", category: "INDICADORES", name: "EFICIENCIA DE PROGRAMAÇÃO DOS GESTORES", responsible: "JAQUELINE", meta: "90%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-manutencao_folga", category: "INDICADORES", name: "MANUTENÇÃO PÓS FOLGA SEM ADIAR RETORNO DO MOTORISTA", responsible: "LEONARDO", meta: "0", type: "number", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
             
             // Categoria 2: SATISFAÇÃO DO MOTORISTA
-            { id: "row-sat-camila", category: "SATISFAÇÃO DO MOTORISTA", name: "CAMILA", meta: "9,00", type: "decimal", data: [9.90, 9.83, 9.83, null, 9.66, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-sat-fabio", category: "SATISFAÇÃO DO MOTORISTA", name: "FABIO", meta: "9,00", type: "decimal", data: [9.04, 9.48, 9.48, 8.93, 9.50, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-sat-guilherme", category: "SATISFAÇÃO DO MOTORISTA", name: "GUILHERME", meta: "9,00", type: "decimal", data: [9.60, 9.77, 9.77, 9.05, 9.63, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-sat-lorena", category: "SATISFAÇÃO DO MOTORISTA", name: "LORENA", meta: "9,00", type: "decimal", data: [9.75, 9.61, 9.61, 9.67, 9.76, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-sat-camila", category: "SATISFAÇÃO DO MOTORISTA", name: "CAMILA", responsible: "", meta: "9,00", type: "decimal", data: [9.90, 9.83, 9.83, null, 9.66, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-sat-fabio", category: "SATISFAÇÃO DO MOTORISTA", name: "FABIO", responsible: "", meta: "9,00", type: "decimal", data: [9.04, 9.48, 9.48, 8.93, 9.50, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-sat-guilherme", category: "SATISFAÇÃO DO MOTORISTA", name: "GUILHERME", responsible: "", meta: "9,00", type: "decimal", data: [9.60, 9.77, 9.77, 9.05, 9.63, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-sat-lorena", category: "SATISFAÇÃO DO MOTORISTA", name: "LORENA", responsible: "", meta: "9,00", type: "decimal", data: [9.75, 9.61, 9.61, 9.67, 9.76, null, null, null, null, null, null, null], formula: "avg" },
             
             // Categoria 3: PERFORMANCE MOTORISTA
-            { id: "row-perf-camila", category: "PERFORMANCE MOTORISTA", name: "CAMILA", meta: "80%", type: "percentage", data: [60, 77, 72, null, 75, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-perf-fabio", category: "PERFORMANCE MOTORISTA", name: "FABIO", meta: "80%", type: "percentage", data: [63, 47, 16, 50, 67, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-perf-guilherme", category: "PERFORMANCE MOTORISTA", name: "GUILHERME", meta: "80%", type: "percentage", data: [100, 90, 92, 77, 80, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-perf-lorena", category: "PERFORMANCE MOTORISTA", name: "LORENA", meta: "80%", type: "percentage", data: [77, 75, 67, 43, 63, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-perf-camila", category: "PERFORMANCE MOTORISTA", name: "CAMILA", responsible: "", meta: "80%", type: "percentage", data: [60, 77, 72, null, 75, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-perf-fabio", category: "PERFORMANCE MOTORISTA", name: "FABIO", responsible: "", meta: "80%", type: "percentage", data: [63, 47, 16, 50, 67, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-perf-guilherme", category: "PERFORMANCE MOTORISTA", name: "GUILHERME", responsible: "", meta: "80%", type: "percentage", data: [100, 90, 92, 77, 80, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-perf-lorena", category: "PERFORMANCE MOTORISTA", name: "LORENA", responsible: "", meta: "80%", type: "percentage", data: [77, 75, 67, 43, 63, null, null, null, null, null, null, null], formula: "avg" },
 
             // Categoria 4: RESULTADO LÍQUIDO MOTORISTAS
-            { id: "row-res-camila", category: "RESULTADO LÍQUIDO", name: "CAMILA", meta: "100%", type: "percentage", data: [85, 83, 69, null, 106, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-res-fabio", category: "RESULTADO LÍQUIDO", name: "FABIO", meta: "100%", type: "percentage", data: [93, 81, 98, 118, 121, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-res-guilherme", category: "RESULTADO LÍQUIDO", name: "GUILHERME", meta: "100%", type: "percentage", data: [103, 117, 80, 93, 92, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-res-lorena", category: "RESULTADO LÍQUIDO", name: "LORENA", meta: "100%", type: "percentage", data: [92, 99, 83, 124, 101, null, null, null, null, null, null, null], formula: "avg" }
+            { id: "row-res-camila", category: "RESULTADO LÍQUIDO", name: "CAMILA", responsible: "", meta: "100%", type: "percentage", data: [85, 83, 69, null, 106, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-res-fabio", category: "RESULTADO LÍQUIDO", name: "FABIO", responsible: "", meta: "100%", type: "percentage", data: [93, 81, 98, 118, 121, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-res-guilherme", category: "RESULTADO LÍQUIDO", name: "GUILHERME", responsible: "", meta: "100%", type: "percentage", data: [103, 117, 80, 93, 92, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-res-lorena", category: "RESULTADO LÍQUIDO", name: "LORENA", responsible: "", meta: "100%", type: "percentage", data: [92, 99, 83, 124, 101, null, null, null, null, null, null, null], formula: "avg" }
         ];
 
+        // Abas adicionais padrão
         const DEFAULT_TABS_DATA = [
             {
                 id: "internal-tab-folgas",
@@ -842,24 +868,7 @@
             }
         ];
 
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'promap-studio-shared-workspace';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-            apiKey: "mock-key",
-            authDomain: "mock.firebaseapp.com",
-            projectId: "mock-project",
-            storageBucket: "mock.appspot.com",
-            messagingSenderId: "123",
-            appId: "1:123:web:123"
-        };
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-        // Inicializar Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
-        let currentUser = null;
-        let isSyncingFromCloud = false;
-
+        // Objeto em memória unificado do sistema
         let systemData = {
             nodes: JSON.parse(JSON.stringify(DEFAULT_NODES_DATA)),
             tabs: JSON.parse(JSON.stringify(DEFAULT_TABS_DATA)),
@@ -871,136 +880,142 @@
         let selectedLinkType = "none";
         let confirmCallback = null;
 
-        // Inicializador Global
-        window.onload = function() {
-            loadFromLocalStorage();
-            applyNodeStylingAndData();
-            renderCustomTabsList();
-            renderDynamicTabsMenu();
-            renderMasterSpreadsheet();
-            initCustomConfirm();
-            initAuth();
+        // --- SISTEMA DE COMUNICACAO DO BANCO DE DADOS EM NUVEM (FIREBASE FIRESTORE) ---
+
+        // Método para atualizar o status de conectividade visível na Topbar
+        function updateNetworkStatus(status, customMsg) {
+            const indicator = document.getElementById("sync-status-indicator");
+            if (!indicator) return;
+            if (status === true) {
+                indicator.className = "bg-emerald-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-emerald-400 border border-emerald-500/20 animate-none";
+                indicator.innerHTML = `<i class="fa-solid fa-cloud-arrow-up mr-1"></i>Nuvem Sincronizada`;
+            } else if (status === false) {
+                indicator.className = "bg-red-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-red-400 border border-red-500/20 animate-none";
+                indicator.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1"></i>Modo Offline (${customMsg || 'Falha'})`;
+            } else {
+                indicator.className = "bg-amber-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-amber-500 border border-amber-500/20 animate-pulse";
+                indicator.innerHTML = `<i class="fa-solid fa-spinner animate-spin mr-1"></i>${customMsg || 'Gravando...'}`;
+            }
+        }
+
+        // Envia as alterações da memória para o banco de dados em nuvem
+        async function pushToCloud() {
+            if (!currentUser) return;
+            updateNetworkStatus(null, "Atualizando...");
+            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'promap_store', 'systemData');
+            try {
+                await setDoc(docRef, {
+                    payload: JSON.stringify(systemData),
+                    updatedAt: new Date().toISOString()
+                });
+                updateNetworkStatus(true);
+            } catch (err) {
+                console.error("Falha ao salvar no Firestore:", err);
+                updateNetworkStatus(false, "Falha de Escrita");
+            }
+        }
+
+        // Inicia a escuta ativa em tempo real dos documentos da nuvem
+        function startSync() {
+            if (!currentUser) return;
+            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'promap_store', 'systemData');
+            
+            onSnapshot(docRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const cloudData = docSnap.data();
+                    if (cloudData && cloudData.payload) {
+                        try {
+                            const parsed = JSON.parse(cloudData.payload);
+                            systemData = parsed;
+                            applyNodeStylingAndData();
+                            renderCustomTabsList();
+                            renderDynamicTabsMenu();
+                            renderMasterSpreadsheet();
+                            updateNetworkStatus(true);
+                        } catch(e) {
+                            console.error("Erro ao converter payload JSON:", e);
+                        }
+                    }
+                } else {
+                    // Documento vazio na nuvem: Inicializamos enviando os dados iniciais locais
+                    pushToCloud();
+                }
+            }, (error) => {
+                console.error("Erro no Listener Real-time:", error);
+                updateNetworkStatus(false, "Erro de Fluxo");
+            });
+        }
+
+        // Autenticação prévia obrigatória antes de qualquer chamada Firestore (Regra 3)
+        const initAuth = async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    const cred = await signInWithCustomToken(auth, __initial_auth_token);
+                    currentUser = cred.user;
+                } else {
+                    const cred = await signInAnonymously(auth);
+                    currentUser = cred.user;
+                }
+                // Ativa a sincronização assim que autenticado com sucesso
+                startSync();
+            } catch (err) {
+                console.error("Erro de Autenticação Firebase:", err);
+                updateNetworkStatus(false, "Autenticação Falhou");
+            }
         };
 
+        // Salva localmente em cache como contingência secundária e aciona a nuvem
+        function saveAllData() {
+            saveToLocalStorage();
+            pushToCloud();
+        }
+
+        // Persistência local no navegador secundária (v11)
+        function saveToLocalStorage() {
+            localStorage.setItem("ProMap_Indicadores_DB_v11", JSON.stringify(systemData));
+        }
+
         function loadFromLocalStorage() {
-            let saved = localStorage.getItem("ProMap_Indicadores_DB_v10");
+            let saved = localStorage.getItem("ProMap_Indicadores_DB_v11");
+            if (!saved) {
+                // Tenta importar histórico das versões anteriores para migração
+                saved = localStorage.getItem("ProMap_Indicadores_DB_v10") || 
+                        localStorage.getItem("ProMap_Indicadores_DB_v5") || 
+                        localStorage.getItem("ProMap_Indicadores_DB_v4");
+            }
+
             if (saved) {
                 try {
                     let parsed = JSON.parse(saved);
                     if (parsed.tabs) systemData.tabs = parsed.tabs;
                     if (parsed.masterSheet) {
+                        // Preserva todos os números lançados anteriormente
                         parsed.masterSheet.forEach(row => {
-                            let match = systemData.masterSheet.find(m => m.id === row.id);
-                            if (match) {
-                                match.data = row.data;
+                            let target = systemData.masterSheet.find(r => r.id === row.id);
+                            if (target && row.data) {
+                                target.data = row.data;
                             }
                         });
                     }
-                    if (parsed.nodes) systemData.nodes = parsed.nodes;
-
-                    // Ajustes de integridade de labels de tradução
-                    if (systemData.nodes["controle_combustivel"]) {
-                        systemData.nodes["controle_combustivel"].name = "CONTROLE DE COMBUSTÍVEL";
-                    }
-                    if (systemData.nodes["perc_combustivel"]) {
-                        systemData.nodes["perc_combustivel"].name = "Porcentagem Combustível x Faturamento líquido";
+                    if (parsed.nodes) {
+                        Object.keys(parsed.nodes).forEach(key => {
+                            if (systemData.nodes[key]) {
+                                systemData.nodes[key].linkType = parsed.nodes[key].linkType;
+                                systemData.nodes[key].url = parsed.nodes[key].url;
+                                systemData.nodes[key].tabId = parsed.nodes[key].tabId;
+                                systemData.nodes[key].desc = parsed.nodes[key].desc;
+                            }
+                        });
                     }
                 } catch(e) {
-                    console.error("Erro ao carregar dados locais. Usando definições padrão.");
+                    console.error("Erro na leitura do cache local.", e);
                 }
             }
         }
 
-        async function initAuth() {
-            try {
-                let userCredential;
-                if (initialAuthToken) {
-                    userCredential = await signInWithCustomToken(auth, initialAuthToken);
-                } else {
-                    userCredential = await signInAnonymously(auth);
-                }
-                currentUser = userCredential.user;
-                console.log("Sincronização em nuvem ativa como:", currentUser.uid);
-                setupRealtimeSync();
-            } catch (error) {
-                console.error("Ligação à nuvem falhou, executando offline:", error);
-                const statusIndicator = document.getElementById("sync-status");
-                if (statusIndicator) {
-                    statusIndicator.className = "bg-amber-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-amber-400 border border-amber-500/20";
-                    statusIndicator.innerHTML = `<i class="fa-solid fa-cloud-slash mr-1"></i> Modo Offline`;
-                }
-            }
-        }
+        // --- OPERACAO E RENDERIZACAO VISUAL DO SISTEMA ---
 
-        function setupRealtimeSync() {
-            if (!currentUser) return;
-            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'workspace', 'shared-state');
-            
-            onSnapshot(docRef, (docSnap) => {
-                if (docSnap.exists()) {
-                    const cloudData = docSnap.data();
-                    if (cloudData && cloudData.state) {
-                        try {
-                            isSyncingFromCloud = true;
-                            systemData = JSON.parse(cloudData.state);
-                            
-                            // Espelhar cópia local para consistência offline
-                            localStorage.setItem("ProMap_Indicadores_DB_v10", JSON.stringify(systemData));
-                            
-                            // Re-renderização dos ecrãs em tempo real
-                            applyNodeStylingAndData();
-                            renderCustomTabsList();
-                            renderDynamicTabsMenu();
-                            renderMasterSpreadsheet();
-                            
-                            isSyncingFromCloud = false;
-                            
-                            const statusIndicator = document.getElementById("sync-status");
-                            if (statusIndicator) {
-                                statusIndicator.className = "bg-emerald-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-emerald-400 border border-emerald-500/20";
-                                statusIndicator.innerHTML = `<i class="fa-solid fa-cloud-arrow-up mr-1"></i> Nuvem Sincronizada`;
-                            }
-                        } catch (parseError) {
-                            console.error("Erro ao decodificar dados da nuvem:", parseError);
-                            isSyncingFromCloud = false;
-                        }
-                    }
-                } else {
-                    // Documento vazio. Inicializa com os dados locais
-                    saveStateToCloud();
-                }
-            }, (error) => {
-                console.error("Inscrição de snapshot cancelada pelo servidor:", error);
-            });
-        }
-
-        async function saveStateToCloud() {
-            if (!currentUser) return;
-            if (isSyncingFromCloud) return; // Bloquear loops de re-gravação
-            
-            const statusIndicator = document.getElementById("sync-status");
-            if (statusIndicator) {
-                statusIndicator.className = "bg-blue-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-blue-400 border border-blue-500/20";
-                statusIndicator.innerHTML = `<i class="fa-solid fa-rotate mr-1 animate-spin"></i> A gravar na Nuvem...`;
-            }
-
-            try {
-                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'workspace', 'shared-state');
-                await setDoc(docRef, {
-                    state: JSON.stringify(systemData),
-                    lastUpdated: new Date().toISOString(),
-                    updatedBy: currentUser.uid
-                });
-            } catch (error) {
-                console.error("Erro ao enviar estado para o Firestore:", error);
-            }
-        }
-
-        async function saveToLocalStorage() {
-            localStorage.setItem("ProMap_Indicadores_DB_v10", JSON.stringify(systemData));
-            await saveStateToCloud();
-        }
-
+        // Renderiza a Planilha Master de Alta Fidelidade
         function renderMasterSpreadsheet() {
             const tbody = document.getElementById("master-sheet-tbody");
             tbody.innerHTML = "";
@@ -1008,20 +1023,21 @@
             let currentCategory = "";
 
             systemData.masterSheet.forEach((row, rowIndex) => {
+                // Cabeçalhos de Categoria (sem metas ao lado)
                 if (row.category !== currentCategory) {
                     currentCategory = row.category;
-                    
                     tbody.innerHTML += `
                         <tr class="bg-slate-200 font-extrabold text-[10px] text-slate-800 uppercase tracking-wider">
-                            <td class="p-2 border-r border-slate-300 pl-4 font-black">${currentCategory}</td>
-                            <td class="p-2 border-r border-slate-300 bg-slate-200"></td>
+                            <td class="p-2 border-r border-slate-300 pl-4 font-black" colspan="2">${currentCategory}</td>
                             <td colspan="13" class="p-2 bg-slate-200"></td>
                         </tr>
                     `;
                 }
 
+                // Calcular Acumulado Dinamicamente
                 let valorAcumulado = calcularAcumulado(row);
 
+                // Criar células para os 12 meses
                 let monthsHtml = "";
                 for (let i = 0; i < 12; i++) {
                     let val = row.data[i];
@@ -1041,22 +1057,26 @@
                     monthsHtml += `<td class="${cellClass}" ondblclick="editMasterCell(${rowIndex}, ${i}, this)">${displayVal}</td>`;
                 }
 
+                // Identificador de Meta Individual
                 let rowMetaHtml = `<span class="font-bold text-slate-700">${row.meta}</span>`;
-                if (row.meta === "25 DIAS MÊS") rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">25 DIAS MÊS</span>`;
-                if (row.meta === "R$ 5,69 (2025)") rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">R$ 5,69 (2025)</span>`;
-                if (row.meta === "1,86") rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">1,86</span>`;
-                if (row.meta === "100%") rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">100%</span>`;
-                if (row.meta === "<35%") rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">&lt;35%</span>`;
-                if (row.meta === "1") rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">1</span>`;
-                if (row.meta === ">10%") rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">&gt;10%</span>`;
-                if (row.meta === "80%") rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">80%</span>`;
-                if (row.meta === "90%") rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">90%</span>`;
-                if (row.meta === "0") rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">0</span>`;
-                if (row.meta === "9,00") rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">9,00</span>`;
+                if (row.meta === "25 DIAS MÊS" || row.meta === "R$ 5,69 (2025)" || row.meta === "1,86" || row.meta === "100%" || row.meta === "80%" || row.meta === "90%" || row.meta === ">10%" || row.meta === "<35%" || row.meta === "0" || row.meta === "9,00") {
+                    rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">${row.meta}</span>`;
+                }
+
+                // Identificador de Responsável
+                let respHtml = "";
+                if (row.responsible) {
+                    respHtml = `<span class="bg-blue-100 text-blue-700 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider">${row.responsible}</span>`;
+                }
 
                 tbody.innerHTML += `
                     <tr id="${row.id}" class="border-b border-slate-200 hover:bg-slate-50/60 transition-colors">
-                        <td class="p-2.5 border-r border-slate-200 font-semibold text-slate-800 pl-6">${row.name}</td>
+                        <td class="p-2.5 border-r border-slate-200 font-semibold text-slate-800 pl-6">
+                            <div class="flex flex-wrap items-center gap-1.5">
+                                <span>${row.name}</span>
+                                ${respHtml}
+                            </div>
+                        </td>
                         <td class="p-2 border-r border-slate-200 text-center text-[10px] font-bold">${rowMetaHtml}</td>
                         ${monthsHtml}
                         <td class="p-2 text-center font-extrabold bg-slate-50 text-slate-800 ${valorAcumulado === '#DIV/0!' ? 'text-red-500' : ''}">
@@ -1090,9 +1110,6 @@
                 let avg = sum / activeValues.length;
                 return formatCellValue(avg, row.type);
             }
-            if (row.formula === "combustivel_ratio") {
-                return "#DIV/0!";
-            }
             return "";
         }
 
@@ -1121,7 +1138,7 @@
             function saveValue() {
                 let newVal = input.value.trim() === "" ? null : parseFloat(input.value);
                 row.data[monthIndex] = newVal;
-                saveToLocalStorage();
+                saveAllData();
                 renderMasterSpreadsheet();
                 showToast("Dados atualizados com sucesso!");
             }
@@ -1134,14 +1151,6 @@
                 if (e.key === "Escape") {
                     renderMasterSpreadsheet();
                 }
-            };
-        }
-
-        function initCustomConfirm() {
-            document.getElementById("btn-confirm-cancel").onclick = closeConfirmModal;
-            document.getElementById("btn-confirm-action").onclick = () => {
-                if (confirmCallback) confirmCallback();
-                closeConfirmModal();
             };
         }
 
@@ -1163,6 +1172,7 @@
                 if (!nodeEl) return;
 
                 const data = systemData.nodes[nodeId];
+
                 const textEl = nodeEl.querySelector('.node-text');
                 if (textEl && data.name !== undefined) textEl.innerText = data.name;
 
@@ -1505,7 +1515,7 @@
                 data.tabId = val;
             }
 
-            saveToLocalStorage();
+            saveAllData();
             applyNodeStylingAndData();
             closeConfigModal();
             closePreviewBubble();
@@ -1529,7 +1539,7 @@
             };
 
             systemData.tabs.push(newTab);
-            saveToLocalStorage();
+            saveAllData();
             renderCustomTabsList();
             renderDynamicTabsMenu();
 
@@ -1626,7 +1636,7 @@
             const tab = systemData.tabs.find(t => t.id === tabId);
             if (tab) {
                 tab.notes = document.getElementById(`custom-notes-${tabId}`).value;
-                saveToLocalStorage();
+                saveAllData();
                 showToast("Notas operacionais salvas!");
             }
         }
@@ -1648,7 +1658,7 @@
             });
 
             systemData.tabs = systemData.tabs.filter(t => t.id !== tabId);
-            saveToLocalStorage();
+            saveAllData();
             renderCustomTabsList();
             renderDynamicTabsMenu();
             applyNodeStylingAndData();
@@ -1670,7 +1680,7 @@
             };
 
             tab.tableData.push(newRow);
-            saveToLocalStorage();
+            saveAllData();
             form.reset();
             renderCustomTabTable(tabId);
             showToast("Registo guardado!");
@@ -1712,7 +1722,7 @@
             const tab = systemData.tabs.find(t => t.id === tabId);
             if (tab) {
                 tab.tableData.splice(index, 1);
-                saveToLocalStorage();
+                saveAllData();
                 renderCustomTabTable(tabId);
                 showToast("Registo removido.", "success");
             }
@@ -1738,7 +1748,7 @@
                     const parsed = JSON.parse(reader.result);
                     if (parsed.nodes && parsed.tabs) {
                         systemData = parsed;
-                        saveToLocalStorage();
+                        saveAllData();
                         applyNodeStylingAndData();
                         renderCustomTabsList();
                         renderDynamicTabsMenu();
@@ -1764,7 +1774,7 @@
         }
 
         function resetAllToDefault() {
-            localStorage.removeItem("ProMap_Indicadores_DB_v10");
+            localStorage.removeItem("ProMap_Indicadores_DB_v11");
             location.reload();
         }
 
@@ -1773,30 +1783,30 @@
             closeConfirmModal();
         }
 
-        // Vinculando as funções criadas dentro do módulo para estarem acessíveis a escopos externos
+        // Exportação das Funções ao Escopo Global (Janela do Browser) devido à declaração de módulo JS
         window.switchTab = switchTab;
         window.adjustZoom = adjustZoom;
         window.resetZoom = resetZoom;
         window.handleNodeClick = handleNodeClick;
         window.copyCurrentLink = copyCurrentLink;
         window.openConfigModal = openConfigModal;
-        window.closeConfigModal = closeConfigModal;
-        window.selectLinkType = selectLinkType;
+        window.closePreviewBubble = closePreviewBubble;
+        window.editMasterCell = editMasterCell;
         window.saveNodeConfig = saveNodeConfig;
         window.createCustomTab = createCustomTab;
         window.saveCustomTabNotes = saveCustomTabNotes;
-        window.triggerDeleteCustomTab = triggerDeleteCustomTab;
         window.deleteCustomTab = deleteCustomTab;
+        window.triggerDeleteCustomTab = triggerDeleteCustomTab;
         window.addTableRow = addTableRow;
         window.removeTableRow = removeTableRow;
         window.exportDiagramData = exportDiagramData;
         window.importDiagramData = importDiagramData;
         window.triggerResetDefault = triggerResetDefault;
-        window.resetAllToDefault = resetAllToDefault;
         window.closeAllModals = closeAllModals;
-        window.editMasterCell = editMasterCell;
         window.accessMasterRow = accessMasterRow;
-        window.closePreviewBubble = closePreviewBubble;
+
+        // Autentica o utilizador de imediato ao iniciar
+        initAuth();
     </script>
 </body>
 </html>
