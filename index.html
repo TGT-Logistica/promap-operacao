@@ -212,7 +212,7 @@
                 <button onclick="adjustZoom(0.1)" class="px-2 py-1 hover:text-white transition-colors" title="Aumentar Zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
                 <button onclick="resetZoom()" class="px-2 py-1 hover:text-white transition-colors border-l border-slate-800 ml-0.5" title="Resetar"><i class="fa-solid fa-arrows-to-eye"></i></button>
             </div>
-            <!-- Indicador do Status da Sincronização Dinâmico -->
+            <!-- Indicador de Status com Cloud Sync -->
             <span id="sync-status-indicator" class="bg-amber-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-amber-500 border border-amber-500/20 animate-pulse">
                 <i class="fa-solid fa-spinner animate-spin mr-1"></i>Conectando Nuvem...
             </span>
@@ -336,7 +336,7 @@
                                                 </ul>
                                             </li>
 
-                                            <!-- Coluna 2: Acompanhamento de Jornada -->
+                                            <!-- Coluna 2: Acompanhamento de Jornada (Conforme imagem e51429.png) -->
                                             <li>
                                                 <div class="tree-node-wrapper has-children">
                                                     <div id="node-acomp_jornada" onclick="handleNodeClick('acomp_jornada', event)" class="w-[160px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
@@ -390,6 +390,23 @@
                                                                         </div>
                                                                     </li>
                                                                 </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <!-- Sub 2.3: CONTROLE DE PEDÁGIO (Novo subprocesso ao lado de controle de combustível) -->
+                                                    <li>
+                                                        <div class="tree-node-wrapper has-children">
+                                                            <div id="node-controle_pedagio" onclick="handleNodeClick('controle_pedagio', event)" class="w-[125px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                <span class="node-text">CONTROLE DE PEDÁGIO</span>
+                                                                <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <ul>
+                                                            <li>
+                                                                <div id="node-conferencia_pedagio" onclick="handleNodeClick('conferencia_pedagio', event)" class="w-[125px] text-center p-2 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                    <span class="node-text">Conferência de pedágio</span>
+                                                                    <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
+                                                                </div>
                                                             </li>
                                                         </ul>
                                                     </li>
@@ -781,7 +798,7 @@
         // Variável de controle do usuário autenticado
         let currentUser = null;
 
-        // Base de Dados padrão das Caixas do Diagrama
+        // Base de Dados padrão das Caixas do Diagrama (Atualizada com Controle de Pedágio)
         const DEFAULT_NODES_DATA = {
             "operacao": { name: "OPERAÇÃO", type: "color-macro-top", linkType: "none", url: "", tabId: "", desc: "Fluxo Geral de Processos e Indicadores de Operação." },
             "gestao_frota": { name: "GESTÃO DA FROTA", type: "color-macro-sub", linkType: "none", url: "", tabId: "", desc: "Gestão macro da frota." },
@@ -805,6 +822,10 @@
             "preco_l": { name: "Preço/L", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-preco_l", desc: "Preço médio por litro de combustível." },
             "consumo_medio": { name: "Consumo médio", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-consumo_medio", desc: "Consumo médio geral da frota." },
             
+            // Novos nós sob Controle de Pedágio
+            "controle_pedagio": { name: "CONTROLE DE PEDÁGIO", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "Subprocesso de monitoramento e validação de despesas de pedágios." },
+            "conferencia_pedagio": { name: "Conferência de pedágio", type: "color-indicator", linkType: "none", url: "", tabId: "", desc: "Mapeamento da conferência periódica de taxas e transações de pedágio." },
+
             "fech_resultados": { name: "FECHAMENTO DE RESULTADOS", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
             "fech_jornada": { name: "FECHAMENTO JORNADA MOTORISTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "perf_motorista": { name: "Performance motorista", type: "color-indicator", linkType: "internal-master", url: "section-perf_motorista", tabId: "", desc: "Performance operacional por motorista." },
@@ -926,6 +947,17 @@
                     if (cloudData && cloudData.payload) {
                         try {
                             const parsed = JSON.parse(cloudData.payload);
+                            
+                            // Integra os novos nós e dados de Pedágio se ausentes na nuvem (Compatibilidade)
+                            if (parsed.nodes) {
+                                if (!parsed.nodes["controle_pedagio"]) {
+                                    parsed.nodes["controle_pedagio"] = JSON.parse(JSON.stringify(DEFAULT_NODES_DATA["controle_pedagio"]));
+                                }
+                                if (!parsed.nodes["conferencia_pedagio"]) {
+                                    parsed.nodes["conferencia_pedagio"] = JSON.parse(JSON.stringify(DEFAULT_NODES_DATA["conferencia_pedagio"]));
+                                }
+                            }
+                            
                             systemData = parsed;
                             applyNodeStylingAndData();
                             renderCustomTabsList();
@@ -1140,7 +1172,7 @@
                 row.data[monthIndex] = newVal;
                 saveAllData();
                 renderMasterSpreadsheet();
-                showToast("Dados atualizados com sucesso!");
+                showToast("Dados updated com sucesso!");
             }
 
             input.onblur = saveValue;
