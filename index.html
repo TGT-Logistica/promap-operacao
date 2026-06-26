@@ -580,10 +580,10 @@
 
                 <!-- Contentor da Planilha -->
                 <div class="flex-grow overflow-auto border border-slate-200 rounded-lg bg-slate-50/50">
-                    <table class="w-full text-xs text-left border-collapse min-w-[1300px]">
+                    <table class="w-full text-xs text-left border-collapse min-w-[1200px]">
                         <thead>
                             <tr class="bg-slate-100 font-bold border-b border-slate-200 text-slate-700 text-[11px] uppercase tracking-wider sticky top-0 z-10 shadow-2xs">
-                                <th class="p-2.5 border-r border-slate-200 w-[280px]">INDICADORES / RESPONSÁVEIS</th>
+                                <th class="p-2.5 border-r border-slate-200 w-[240px]">INDICADORES / RESPONSÁVEIS</th>
                                 <th class="p-2.5 border-r border-slate-200 w-[120px] text-center">Meta</th>
                                 <th class="p-2.5 border-r border-slate-200 text-center w-[70px]">Jan</th>
                                 <th class="p-2.5 border-r border-slate-200 text-center w-[70px]">Fev</th>
@@ -770,7 +770,7 @@
             
             "acomp_jornada": { name: "ACOMPANHAMENTO DE JORNADA", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
             "acomp_motorista": { name: "ACOMPANHAMENTO DE MOTORISTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
-            "sat_motorista": { name: "Satisfação do motorista", type: "color-indicator", linkType: "internal-master", url: "https://docs.google.com/spreadsheets/d/1lAi0B6JKoeSGPhijXpGq3zJwIJkvIo5-nyQ0tZvXZrk/edit?gid=0#gid=0", tabId: "section-sat_motorista", desc: "Consolidado de satisfação da equipa de motoristas." },
+            "sat_motorista": { name: "Satisfação do motorista", type: "color-indicator", linkType: "internal-master", url: "", tabId: "section-sat_motorista", desc: "Consolidado de satisfação da equipa de motoristas." },
             
             "controle_combustivel": { name: "CONTROLE DE COMBUSTÍVEL", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "perc_combustivel": { name: "Percentual Combustível x Faturamento líquido", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-perc_combustivel", desc: "Porcentagem do Combustível face ao faturamento líquido global." },
@@ -797,15 +797,15 @@
         };
 
         const DEFAULT_MASTER_SHEET_DATA = [
-            // Categoria 1: INDICADORES com novos indicadores e Responsáveis vinculados
-            { id: "row-disp_frota", category: "INDICADORES", name: "DISPONIBILIDADE DA FROTA", responsible: "João Ricardo", meta: "25 DIAS MÊS", type: "number", data: [22, 22, 22, 20, 24, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-preco_l", category: "INDICADORES", name: "PREÇO/LITRO", responsible: "Pablo", meta: "R$ 5,69 (2025)", type: "currency", data: [5.73, 5.68, 6.70, 7.14, 6.80, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-consumo_medio", category: "INDICADORES", name: "CONSUMO MÉDIO", responsible: "Pablo", meta: "1,86", type: "decimal", data: [1.85, 1.83, 1.82, 1.86, 1.84, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-res_liquido", category: "INDICADORES", name: "RESULTADO LÍQUIDO", responsible: "Jaqueline", meta: ">10%", type: "percentage", data: [115, 116, 81, 129, 119, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-perc_combustivel", category: "INDICADORES", name: "PORCENTAGEM COMBUSTIVEL/RESULTADO LIQUIDO", responsible: "Pablo", meta: "<35%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "combustivel_ratio" },
-            { id: "row-capitacao_sub", category: "INDICADORES", name: "CAPITAÇÃO DE SUBCONTRATADO", responsible: "Jaqueline", meta: "80%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-eficiencia_prog", category: "INDICADORES", name: "EFICIÊNCIA DE PROGRAMAÇÃO DOS GESTORES", responsible: "Jaqueline", meta: "90%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-manutencao_pos_folga", category: "INDICADORES", name: "MANUTENÇÃO PÓS FOLGA SEM ADIAR RETORNO DO MOTORISTA", responsible: "Leonardo", meta: "0", type: "number", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
+            // Categoria 1: INDICADORES
+            { id: "row-disp_frota", category: "INDICADORES", name: "DISPONIBILIDADE DA FROTA <span class='ml-2 text-[9px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider'>João Ricardo</span>", meta: "25 DIAS MÊ", type: "number", data: [22, 22, 22, 20, 24, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-preco_l", category: "INDICADORES", name: "PREÇO/LITRO <span class='ml-2 text-[9px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider'>Pablo</span>", meta: "R$ 5,69 (2025)", type: "currency", data: [5.73, 5.68, 6.70, 7.14, 6.80, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-consumo_medio", category: "INDICADORES", name: "CONSUMO MÉDIO <span class='ml-2 text-[9px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider'>Pablo</span>", meta: "1,86", type: "decimal", data: [1.85, 1.83, 1.82, 1.86, 1.84, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-perc_combustivel", category: "INDICADORES", name: "PORCENTAGEM COMBUSTIVEL/RESULTADO LIQUIDO <span class='ml-2 text-[9px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider'>Pablo</span>", meta: "<35%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "combustivel_ratio" },
+            { id: "row-res_liquido", category: "INDICADORES", name: "RESULTADO LÍQUIDO <span class='ml-2 text-[9px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider'>Jaqueline</span>", meta: ">10%", type: "percentage", data: [115, 116, 81, 129, 119, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-capitacao_sub", category: "INDICADORES", name: "CAPITAÇÃO DE SUBCONTRATADO <span class='ml-2 text-[9px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider'>Jaqueline</span>", meta: "80%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-efic-programacao", category: "INDICADORES", name: "EFICIENCIA DE PROGRAMAÇÃO DOS GESTORES <span class='ml-2 text-[9px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider'>Jaqueline</span>", meta: "90%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-manutencao-pos", category: "INDICADORES", name: "MANUTENÇÃO PÓS FOLGA SEM ADIAR RETORNO DO MOTORISTA <span class='ml-2 text-[9px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider'>Leonardo</span>", meta: "0", type: "number", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
             
             // Categoria 2: SATISFAÇÃO DO MOTORISTA
             { id: "row-sat-camila", category: "SATISFAÇÃO DO MOTORISTA", name: "CAMILA", meta: "9,00", type: "decimal", data: [9.90, 9.83, 9.83, null, 9.66, null, null, null, null, null, null, null], formula: "avg" },
@@ -859,19 +859,20 @@
             initCustomConfirm();
         };
 
-        // Persistência local no Navegador - Usamos agora _v8 para evitar caches passados e injetar os novos indicadores e responsáveis
         function saveToLocalStorage() {
-            localStorage.setItem("ProMap_Indicadores_DB_v8", JSON.stringify(systemData));
+            localStorage.setItem("ProMap_Indicadores_DB_v9", JSON.stringify(systemData));
         }
 
         function loadFromLocalStorage() {
-            // Tentamos carregar v8 primeiro
-            let saved = localStorage.getItem("ProMap_Indicadores_DB_v8");
+            // Versão v9 para assegurar a planilha limpa sem metas nas categorias e sem conflitos
+            let saved = localStorage.getItem("ProMap_Indicadores_DB_v9");
             let migrated = false;
 
             if (!saved) {
-                // Se não há v8, migramos dados de versões anteriores para manter as anotações do usuário intactas!
-                saved = localStorage.getItem("ProMap_Indicadores_DB_v7") || localStorage.getItem("ProMap_Indicadores_DB_v6") || localStorage.getItem("ProMap_Indicadores_DB_v5") || localStorage.getItem("ProMap_Indicadores_DB_v4");
+                // Tenta importar da v8, v7 ou v6 se houver
+                saved = localStorage.getItem("ProMap_Indicadores_DB_v8") || 
+                        localStorage.getItem("ProMap_Indicadores_DB_v7") || 
+                        localStorage.getItem("ProMap_Indicadores_DB_v6");
                 migrated = true;
             }
 
@@ -879,44 +880,37 @@
                 try {
                     let parsed = JSON.parse(saved);
                     
-                    // Carregamos separadores auxiliares se existirem
+                    // Carrega as abas e estrutura mantendo lançamentos manuais intactos
                     if (parsed.tabs) systemData.tabs = parsed.tabs;
-                    
-                    // Atualizamos a planilha master garantindo que os novos indicadores e responsáveis novos do v8 sejam injetados
-                    // mas preservando quaisquer dados editados que correspondam aos indicadores originais.
                     if (parsed.masterSheet) {
-                        // Preservar valores antigos inseridos nos KPIs correspondentes
-                        DEFAULT_MASTER_SHEET_DATA.forEach(newRow => {
-                            let oldRow = parsed.masterSheet.find(or => or.id === newRow.id);
-                            if (oldRow && oldRow.data) {
-                                newRow.data = oldRow.data;
+                        // Faz um mapeamento para atualizar apenas os dados, mas preservando nomes e metas fixos das linhas configuradas acima!
+                        parsed.masterSheet.forEach(row => {
+                            let match = systemData.masterSheet.find(m => m.id === row.id);
+                            if (match) {
+                                match.data = row.data; // Mantém apenas os números digitados
                             }
                         });
                     }
-                    systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
-                    
-                    // Carregamos as informações dos nós
                     if (parsed.nodes) systemData.nodes = parsed.nodes;
 
-                    // Ajustes de correção direta nos nós no português correto do Brasil
+                    // Ajusta manualmente para o controle brasileiro e faturamento correto
                     if (systemData.nodes["controle_combustivel"]) {
                         systemData.nodes["controle_combustivel"].name = "CONTROLE DE COMBUSTÍVEL";
                     }
                     if (systemData.nodes["perc_combustivel"]) {
-                        systemData.nodes["perc_combustivel"].name = "Porcentagem Combustível x Faturamento líquido";
+                        systemData.nodes["perc_combustivel"].name = "Percentagem Combustível x Faturamento líquido";
                     }
 
-                    // Se foi migrado para v8, salva imediatamente para fixar a nova estrutura com responsáveis
                     if (migrated) {
                         saveToLocalStorage();
                     }
                 } catch(e) {
-                    console.error("Erro ao carregar dados locais. Usando definições padrão.");
+                    console.error("Erro ao carregar cache do browser. Usando predefinições limpas.");
                 }
             }
         }
 
-        // Renderiza a Planilha Master com a nova coluna visual de Responsável de alta fidelidade
+        // Renderiza a Planilha Master de Alta Fidelidade (image_bfef64.png)
         function renderMasterSpreadsheet() {
             const tbody = document.getElementById("master-sheet-tbody");
             tbody.innerHTML = "";
@@ -927,15 +921,12 @@
                 // Inserir linha de cabeçalho da Categoria se mudar de seção
                 if (row.category !== currentCategory) {
                     currentCategory = row.category;
-                    let catMetaLabel = "";
-                    if (currentCategory === "SATISFAÇÃO DO MOTORISTA") catMetaLabel = "9,00";
-                    if (currentCategory === "PERFORMANCE MOTORISTA") catMetaLabel = "80%";
-                    if (currentCategory === "RESULTADO LÍQUIDO") catMetaLabel = "100%";
 
+                    // Criamos a linha de categoria sem badge verde de meta, deixando o visual totalmente limpo
                     tbody.innerHTML += `
                         <tr class="bg-slate-200 font-extrabold text-[10px] text-slate-800 uppercase tracking-wider">
                             <td class="p-2 border-r border-slate-300 pl-4 font-black">${currentCategory}</td>
-                            <td class="p-2 border-r border-slate-300 text-center font-black ${catMetaLabel ? 'bg-emerald-600 text-white border-none' : ''}">${catMetaLabel || ''}</td>
+                            <td class="p-2 border-r border-slate-300 bg-slate-200"></td>
                             <td colspan="13" class="p-2 bg-slate-200"></td>
                         </tr>
                     `;
@@ -978,13 +969,10 @@
                 if (row.meta === "90%") rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">90%</span>`;
                 if (row.meta === "0") rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">0</span>`;
 
-                // Renderizar a Linha Principal com a nova coluna de Responsável estilizada de forma elegante
+                // Renderizar a Linha Principal
                 tbody.innerHTML += `
                     <tr id="${row.id}" class="border-b border-slate-200 hover:bg-slate-50/60 transition-colors">
-                        <td class="p-2.5 border-r border-slate-200 pl-6 flex flex-col gap-1 justify-center">
-                            <span class="font-semibold text-slate-800 leading-tight">${row.name}</span>
-                            ${row.responsible ? `<span class="text-[9px] font-bold text-blue-600 bg-blue-50 border border-blue-100 rounded px-1.5 py-0.5 w-max tracking-wide uppercase shadow-2xs">${row.responsible}</span>` : ''}
-                        </td>
+                        <td class="p-2.5 border-r border-slate-200 font-semibold text-slate-800 pl-6">${row.name}</td>
                         <td class="p-2 border-r border-slate-200 text-center text-[10px] font-bold">${rowMetaHtml}</td>
                         ${monthsHtml}
                         <td class="p-2 text-center font-extrabold bg-slate-50 text-slate-800 ${valorAcumulado === '#DIV/0!' ? 'text-red-500' : ''}">
@@ -1279,7 +1267,6 @@
             }
 
             rowsToPreview.slice(0, 3).forEach(row => {
-                // Modificado para capturar o último mês preenchido em vez de puxar o cálculo acumulado
                 let valorRecente = obterUltimoMesComDados(row);
                 tbody.innerHTML += `
                     <tr class="border-b border-slate-200">
@@ -1340,6 +1327,7 @@
             }, 300);
         }
 
+        // Copiar o destino do link atual para a Área de Transferência
         function copyCurrentLink() {
             const data = systemData.nodes[activeNodeId];
             if (!data) return;
@@ -1733,7 +1721,7 @@
         }
 
         function resetAllToDefault() {
-            localStorage.removeItem("ProMap_Indicadores_DB_v8");
+            localStorage.removeItem("ProMap_Indicadores_DB_v9");
             location.reload();
         }
 
