@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProMap - Fluxo de Processos & Indicadores</title>
+    <!-- Tailwind CSS para design moderno -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para ícones robustos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -145,8 +148,10 @@
 </head>
 <body class="h-screen flex flex-col overflow-hidden select-none">
 
+    <!-- Notificações Customizadas -->
     <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
+    <!-- Modal de Confirmação Customizado -->
     <div id="confirm-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-xl w-full max-w-sm shadow-2xl overflow-hidden border border-slate-100 p-5 flex flex-col gap-4">
             <div class="flex items-start gap-3">
@@ -165,6 +170,7 @@
         </div>
     </div>
 
+    <!-- Cabeçalho Principal -->
     <header class="bg-slate-900 text-white px-6 py-3 flex items-center justify-between shadow-md shrink-0 border-b border-slate-800">
         <div class="flex items-center gap-3">
             <div class="bg-gradient-to-tr from-blue-600 to-indigo-600 text-white p-2 rounded-xl shadow-inner font-bold flex items-center justify-center">
@@ -176,6 +182,7 @@
             </div>
         </div>
 
+        <!-- Menu de Navegação Global -->
         <nav class="flex gap-1.5 bg-slate-950 p-1.5 rounded-xl border border-slate-800/80">
             <button onclick="switchTab('diagram-view')" id="btn-diagram-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold transition-all bg-blue-600 text-white shadow-sm">
                 <i class="fa-solid fa-network-wired mr-1.5"></i>Fluxograma do Processo
@@ -207,8 +214,10 @@
         </div>
     </header>
 
+    <!-- Área de Conteúdo Principal -->
     <main class="flex-grow flex overflow-hidden relative bg-slate-100">
 
+        <!-- SEPARADOR 1: DIAGRAMA INTERATIVO -->
         <div id="tab-diagram-view" class="tab-content flex-grow flex flex-col overflow-auto p-4 w-full h-full">
             <div class="mb-3 shrink-0 flex flex-wrap gap-4 justify-between items-center bg-white p-3 rounded-xl shadow-sm border border-slate-200">
                 <div class="max-w-xl">
@@ -250,6 +259,7 @@
                                         </div>
 
                                         <ul>
+                                            <!-- Coluna 1 -->
                                             <li>
                                                 <div class="tree-node-wrapper has-children">
                                                     <div id="node-prog_veiculos" onclick="handleNodeClick('prog_veiculos', event)" class="w-[175px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
@@ -309,6 +319,7 @@
                                                 </ul>
                                             </li>
 
+                                            <!-- Coluna 2 -->
                                             <li>
                                                 <div class="tree-node-wrapper has-children">
                                                     <div id="node-acomp_jornada" onclick="handleNodeClick('acomp_jornada', event)" class="w-[175px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
@@ -384,6 +395,7 @@
                                                 </ul>
                                             </li>
 
+                                            <!-- Coluna 3 -->
                                             <li>
                                                 <div class="tree-node-wrapper has-children">
                                                     <div id="node-fech_resultados" onclick="handleNodeClick('fech_resultados', event)" class="w-[175px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
@@ -443,6 +455,7 @@
                                                 </ul>
                                             </li>
 
+                                            <!-- Coluna 4 -->
                                             <li>
                                                 <div class="tree-node-wrapper has-children">
                                                     <div id="node-planejamento_frota" onclick="handleNodeClick('planejamento_frota', event)" class="w-[225px] text-center p-2 font-bold text-[10px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card leading-tight">
@@ -470,6 +483,7 @@
                                                 </ul>
                                             </li>
 
+                                            <!-- Coluna 5 -->
                                             <li>
                                                 <div class="tree-node-wrapper has-children">
                                                     <div id="node-regularizacao_frota" onclick="handleNodeClick('regularizacao_frota', event)" class="w-[220px] text-center p-2.5 font-bold text-[11px] rounded shadow-sm color-process-key hover:brightness-95 cursor-pointer min-h-[50px] flex items-center justify-center relative node-card">
@@ -506,6 +520,7 @@
                     </div>
                 </div>
 
+                <!-- BALÃO FLUTUANTE DE PRÉ-VISUALIZAÇÃO -->
                 <div id="link-preview-bubble" class="absolute bg-white shadow-2xl border border-slate-300 rounded-lg p-3 hidden z-30 w-[350px] transition-all duration-150 text-slate-800 font-sans">
                     <div class="flex items-start gap-3">
                         <div id="bubble-doc-icon-wrapper" class="bg-emerald-100 text-emerald-700 p-2 rounded-lg shrink-0 flex items-center justify-center">
@@ -548,6 +563,7 @@
             </div>
         </div>
 
+        <!-- SEPARADOR 1.5: TELA DO ORGANOGRAMA DA FROTA -->
         <div id="tab-organograma-view" class="tab-content flex-grow hidden flex-col overflow-auto p-6 w-full h-full">
             <div class="bg-white p-8 rounded-xl shadow-sm border border-slate-200 flex flex-col items-center gap-0 max-w-4xl mx-auto w-full select-none relative min-h-[580px]">
                 
@@ -555,35 +571,47 @@
                     ORGANOGRAMA FROTA
                 </h2>
 
+                <!-- Nível 1: Gerente de Operações -->
                 <div class="color-macro-top rounded-xl py-3 px-6 text-center w-[360px] border shadow-xs font-sans z-10">
                     <div class="text-[11px] font-bold tracking-wider uppercase opacity-90">GER. DE OPERAÇÕES DE TRANSPORTES</div>
                     <div class="text-base font-black tracking-wide mt-0.5">JOÃO RICARDO DA ROCHA</div>
                 </div>
 
+                <!-- Linha Vertical do Nível 1 para o Nível 2 -->
                 <div class="w-0.5 h-6 bg-slate-300"></div>
 
+                <!-- Nível 2: Frotas -->
                 <div class="color-macro-sub rounded-xl py-2 px-12 text-center border shadow-xs z-10">
                     <div class="text-sm font-black tracking-widest uppercase px-4">FROTAS</div>
                 </div>
 
+                <!-- Linha Vertical de saída de Frotas -->
                 <div class="w-0.5 h-6 bg-slate-300"></div>
 
+                <!-- Estrutura Principal Interconectada por Linhas Organizadas -->
                 <div class="relative w-full max-w-3xl flex flex-col items-center">
                     
+                    <!-- Linha Horizontal que distribui os lados -->
                     <div class="absolute top-0 left-[165px] right-[165px] h-0.5 bg-slate-300"></div>
                     
+                    <!-- Duas colunas principais -->
                     <div class="flex gap-16 justify-center w-full mt-0 items-stretch">
                         
+                        <!-- LADO ESQUERDO: Supervisora -> Programador -->
                         <div class="flex flex-col items-center w-[270px] relative">
+                            <!-- Conector vertical descendo da quina esquerda -->
                             <div class="absolute top-0 left-1/2 -translate-x-1/2 w-0.5 h-4 bg-slate-300"></div>
                             
+                            <!-- Bloco Supervisora -->
                             <div class="color-sub-process rounded-xl py-3 px-4 text-center w-full border shadow-xs mt-4 z-10">
                                 <div class="text-[10px] font-bold tracking-wider uppercase opacity-90">SUPERVISORA DE TRANSPORTES</div>
                                 <div class="text-xs font-black mt-0.5">JAQUELINE GONÇALVES</div>
                             </div>
 
+                            <!-- Linha Vertical ligando Supervisora ao Programador -->
                             <div class="w-0.5 h-8 bg-slate-300"></div>
 
+                            <!-- Bloco Programadores -->
                             <div class="color-sub-process rounded-xl py-3.5 px-4 text-center w-full border shadow-xs z-10 flex-grow flex flex-col justify-center">
                                 <div class="text-[10px] font-bold tracking-wider uppercase opacity-90">PROGRAMADOR DE TRANSP. RODOV.</div>
                                 <div class="text-xs font-bold mt-2 space-y-1 text-emerald-950/90 tracking-wide">
@@ -595,9 +623,12 @@
                             </div>
                         </div>
 
+                        <!-- LADO DIREITO: Controlador de Serviços (Nivelado perfeitamente lado a lado) -->
                         <div class="flex flex-col items-end w-[270px] relative justify-end">
+                            <!-- Conector vertical customizado -->
                             <div class="absolute top-0 left-1/2 -translate-x-1/2 w-0.5 h-[142px] bg-slate-300"></div>
                             
+                            <!-- Bloco Controlador de Serviços -->
                             <div class="color-sub-process rounded-xl py-4 px-4 text-center w-full border shadow-xs z-10 min-h-[146px] flex flex-col justify-center">
                                 <div class="text-[10px] font-bold tracking-wider uppercase opacity-90 leading-tight">CONTROLADOR DE SERVIÇOS DE MÁQUINAS E VEÍCULOS</div>
                                 <div class="text-xs font-bold mt-3 space-y-1 text-emerald-950/90 tracking-wide">
@@ -612,6 +643,7 @@
             </div>
         </div>
 
+        <!-- SEPARADOR 2: NOVO MASTER SPREADSHEET -->
         <div id="tab-master-sheet-view" class="tab-content flex-grow hidden flex-col overflow-auto p-4 md:p-6 w-full h-full">
             <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex flex-col h-full gap-4 max-w-7xl mx-auto w-full">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-3 shrink-0 gap-3">
@@ -656,6 +688,7 @@
             </div>
         </div>
 
+        <!-- SEPARADOR 3: GERIDOR DE PÁGINAS E SEPARADORES AUXILIARES -->
         <div id="tab-custom-tabs-view" class="tab-content flex-grow hidden flex-col overflow-auto p-6">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto w-full">
                 <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex flex-col gap-4">
@@ -700,6 +733,7 @@
             </div>
         </div>
 
+        <!-- SEPARADOR 4: CÓPIA DE SEGURANÇA E DADOS -->
         <div id="tab-backup-view" class="tab-content flex-grow hidden flex-col overflow-auto p-6">
             <div class="max-w-4xl mx-auto w-full bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                 <div class="flex items-center gap-4 mb-6">
@@ -736,6 +770,7 @@
             </div>
         </div>
 
+        <!-- MODAL DE CONFIGURAÇÃO DO BLOCO -->
         <div id="config-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
             <div class="bg-white rounded-xl w-full max-w-md shadow-2xl overflow-hidden flex flex-col border border-slate-100 animate-zoom-in">
                 <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
@@ -791,6 +826,7 @@
 
     <div id="sidebar-overlay" onclick="closeAllModals()" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-20 hidden"></div>
 
+    <!-- SDK do Firebase & Scripts de Operação -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -807,7 +843,7 @@
         };
 
         const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+        const auth = getAuth(app); // Corrigido: passagem correta do app instanciado
         const db = getFirestore(app);
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'promap-frota-app';
 
@@ -881,6 +917,17 @@
                 tableData: [{ "Mês / Referência": "Janeiro", "Resultado": "18", "Meta": "14" }]
             }
         ];
+
+        let systemData = {
+            nodes: JSON.parse(JSON.stringify(DEFAULT_NODES_DATA)),
+            tabs: JSON.parse(JSON.stringify(DEFAULT_TABS_DATA)),
+            masterSheet: JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA))
+        };
+
+        let currentZoom = 1.0;
+        let activeNodeId = "";
+        let selectedLinkType = "none";
+        let confirmCallback = null;
 
         function showToast(message) {
             const container = document.getElementById("toast-container");
@@ -967,6 +1014,16 @@
         }
 
         const initAuth = async () => {
+            // Garante o carregamento visual instantâneo antes da requisição da nuvem terminar
+            let saved = localStorage.getItem("ProMap_Indicadores_DB_v12");
+            if (saved) {
+                try { systemData = JSON.parse(saved); } catch(e) {}
+            }
+            applyNodeStylingAndData();
+            renderCustomTabsList();
+            renderDynamicTabsMenu();
+            renderMasterSpreadsheet();
+
             const cloudTimeout = setTimeout(() => {
                 if (!currentUser) {
                     switchToLocalFallback("Timeout de Autenticação");
@@ -996,6 +1053,7 @@
 
         function renderMasterSpreadsheet() {
             const tbody = document.getElementById("master-sheet-tbody");
+            if (!tbody) return;
             tbody.innerHTML = "";
             let currentCategory = "";
 
@@ -1076,7 +1134,7 @@
                 row.data[monthIndex] = newVal;
                 saveAllData();
                 renderMasterSpreadsheet();
-                showToast("Dados updated com sucesso!");
+                showToast("Dados atualizados com sucesso!");
             }
             input.onblur = saveValue;
             input.onkeydown = function(e) {
@@ -1240,7 +1298,7 @@
                 tbody.innerHTML += `
                     <tr class="border-b border-slate-200">
                         <td class="p-1.5 border-r border-slate-200 font-bold truncate max-w-[130px]">${row.name}</td>
-                        <td class="p-1.5 border-r border-slate-200 text-center font-semibold text-slate-700">${obterUltimoMesComDados(row)}</td>
+                        <td class="p-1.5 border-r border-slate-200 text-center font-semibold text-slate-700">${valorRecente}</td>
                         <td class="p-1.5 text-center font-bold text-emerald-600">${row.meta}</td>
                     </tr>
                 `;
@@ -1333,7 +1391,7 @@
             });
             let visualType = type === 'internal-master' ? 'internal' : type;
             const activeBtn = document.getElementById(`btn-link-${visualType}`);
-            if (activeBtn) activeBtn.className = "link-type-btn text-[10px] font-bold py-1.5 px-3 rounded text-center bg-white shadow-sm text-slate-800";
+            if (activeBtn) activeBtn.className = "btn-link style text-[10px] font-bold py-1.5 px-3 rounded text-center bg-white shadow-sm text-slate-800";
 
             document.getElementById("link-input-external").classList.add('hidden');
             document.getElementById("link-input-internal").classList.add('hidden');
@@ -1356,8 +1414,7 @@
 
             saveAllData();
             applyNodeStylingAndData();
-            closeConfigModal();
-            closePreviewBubble();
+            closeAllModals();
             showToast("Alterações salvas!");
         }
 
@@ -1376,11 +1433,12 @@
 
         function renderCustomTabsList() {
             const container = document.getElementById("custom-tabs-list");
+            if (!container) return;
             if (systemData.tabs.length === 0) { container.innerHTML = `<div class="text-slate-400 text-xs text-center py-8">Nenhum.</div>`; return; }
             container.innerHTML = systemData.tabs.map(tab => `
                 <div class="flex items-center justify-between p-3 bg-slate-50 border rounded-lg">
                     <div class="flex items-center gap-3">
-                        <span class="w-8 h-8 rounded bg-blue-50 text-blue-600 flex items-center justify-center text-sm"><i class="fa-solid ${tab.icon}"></i></span>
+                        <span class="w-8 h-8 rounded bg-blue-50 text-blue-600 flex items-center justify-center"><i class="fa-solid ${tab.icon}"></i></span>
                         <div><h4 class="font-bold text-xs">${tab.name}</h4></div>
                     </div>
                     <button onclick="switchTab('${tab.id}')" class="bg-blue-50 text-blue-600 px-2 py-1 rounded text-[10px] font-bold">Abrir</button>
@@ -1392,6 +1450,7 @@
             document.querySelectorAll(".dynamic-header-tab, .dynamic-tab-section").forEach(el => el.remove());
             const nav = document.querySelector("nav");
             const main = document.querySelector("main");
+            if (!nav || !main) return;
 
             systemData.tabs.forEach(tab => {
                 const btn = document.createElement("button");
