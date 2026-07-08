@@ -664,7 +664,7 @@
                     </div>
                     <div>
                         <h3 class="text-sm font-bold text-slate-800">Criar Nova Página / Separador</h3>
-                        <p class="text-[11px] text-slate-500 mt-1">Crie páginas de trabalho auxiliares e associe-as aos blocos do fluxo.</p>
+                        <p class="text-[11px] text-slate-500 mt-1">Crie páginas de trabalho auxiliares e associe-as aos blocks do fluxo.</p>
                     </div>
                     <hr class="border-slate-100">
                     <form onsubmit="createCustomTab(event)" class="flex flex-col gap-3">
@@ -854,16 +854,17 @@
             "gestao_sinistro": { name: "GESTÃO DE SINISTRO", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "Controle operacional de sinistros." }
         };
 
+        // --- BANCO DE DADOS ALINHADO 100% COM A SUA NOVA IMAGEM PLANILHA ---
         const DEFAULT_MASTER_SHEET_DATA = [
-            { id: "row-disp_frota", category: "INDICADORES", name: "DISPONIBILIDADE DA FROTA", responsible: "JOÃO RICARDO", meta: "25 DIAS MÊS", type: "number", data: [22, 22, 22, 20, 24, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-preco_l", category: "INDICADORES", name: "PREÇO/LITRO", responsible: "PABLO", meta: "R$ 5,69 (2025)", type: "currency", data: [5.73, 5.68, 6.70, 7.14, 6.80, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-consumo_medio", category: "INDICADORES", name: "CONSUMO MÉDIO", responsible: "PABLO", meta: "1,86", type: "decimal", data: [1.85, 1.83, 1.82, 1.86, 1.84, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-res_liquido", category: "INDICADORES", name: "RESULTADO LÍQUIDO", responsible: "JAQUELINE", meta: "110%", type: "percentage", data: [115, 116, 81, 129, 119, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-perc_combustivel", category: "INDICADORES", name: "PORCENTAGEM COMBUSTIVEL/RESULTADO LIQUIDO", responsible: "PABLO", meta: "<35%", type: "percentage", data: [20, 10, 1, 1, null, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-capitacao_sub", category: "INDICADORES", name: "CAPTAÇÃO DE SUBCONTRATADO", responsible: "JAQUELINE", meta: "1", type: "number", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-eficiencia_gestores", category: "INDICADORES", name: "EFICIÊNCIA RESULTADO GESTORES", responsible: "JAQUELINE", meta: "0", type: "number", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-manutencao_folga", category: "INDICADORES", name: "MANUTENÇÃO PÓS FOLGA SEM ADIAR RETORNO DO MOTORISTA", responsible: "LEONARDO", meta: "0", type: "number", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-analise_rotas", category: "INDICADORES", name: "ANÁLISE DE ROTAS SUBCONTRATADAS", responsible: "JAQUELINE", meta: "70%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-disp_frota", category: "INDICADORES", name: "DISPONIBILIDADE DA FROTA", responsible: "JOÃO RICARDO", meta: "25 DIAS MÊS", type: "number", data: [22, 22, 22, 20, 24, 23, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-res_liquido", category: "INDICADORES", name: "RESULTADO LÍQUIDO", responsible: "JAQUELINE", meta: "110%", type: "currency", data: [5.73, 5.68, 6.70, 7.14, 6.80, 6.70, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-eficiencia_gestores", category: "INDICADORES", name: "EFICIÊNCIA RESULTADO GESTORES", responsible: "JAQUELINE", meta: "0", type: "decimal", data: [1.85, 1.83, 1.82, 1.86, 1.84, 1.83, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-capitacao_sub", category: "INDICADORES", name: "CAPTAÇÃO DE SUBCONTRATADO", responsible: "JAQUELINE", meta: "1", type: "percentage", data: [115, 116, 81, 131, 115, 123, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-perc_combustivel", category: "INDICADORES", name: "PORCENTAGEM COMBUSTIVEL/RESULTADO LIQUIDO", responsible: "PABLO", meta: "<35%", type: "percentage", data: [65, 62, 85, 61, 61, 54, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-preco_l", category: "INDICADORES", name: "PREÇO/LITRO", responsible: "PABLO", meta: "R$ 5,69 (2025)", type: "decimal", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-consumo_medio", category: "INDICADORES", name: "CONSUMO MÉDIO", responsible: "PABLO", meta: "1,86", type: "decimal", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-analise_rotas", category: "INDICADORES", name: "ANÁLISE DE ROTAS SUBCONTRATADAS", responsible: "PABLO", meta: "70%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-manutencao_folga", category: "INDICADORES", name: "MANUTENÇÃO PÓS FOLGA SEM ADIAR RETORNO", responsible: "LEONARDO", meta: "0", type: "number", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
             
             { id: "row-sat-camila", category: "SATISFAÇÃO DO MOTORISTA", name: "CAMILA", responsible: "", meta: "9,00", type: "decimal", data: [9.90, 9.83, 9.83, null, 9.66, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-sat-fabio", category: "SATISFAÇÃO DO MOTORISTA", name: "FABIO", responsible: "", meta: "9,00", type: "decimal", data: [9.04, 9.48, 9.48, 8.93, 9.50, null, null, null, null, null, null, null], formula: "avg" },
@@ -875,10 +876,10 @@
             { id: "row-perf-guilherme", category: "PERFORMANCE MOTORISTA", name: "GUILHERME", responsible: "", meta: "80%", type: "percentage", data: [100, 90, 92, 77, 80, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-perf-lorena", category: "PERFORMANCE MOTORISTA", name: "LORENA", responsible: "", meta: "80%", type: "percentage", data: [77, 75, 67, 43, 63, null, null, null, null, null, null, null], formula: "avg" },
             
-            { id: "row-res-camila", category: "RESULTADO LÍQUIDO OPERACIONAL", name: "CAMILA", responsible: "", meta: "100%", type: "percentage", data: [85, 83, 69, null, 106, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-res-fabio", category: "RESULTADO LÍQUIDO OPERACIONAL", name: "FABIO", responsible: "", meta: "100%", type: "percentage", data: [93, 81, 98, 118, 121, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-res-guilherme", category: "RESULTADO LÍQUIDO OPERACIONAL", name: "GUILHERME", responsible: "", meta: "100%", type: "percentage", data: [103, 117, 80, 93, 92, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-res-lorena", category: "RESULTADO LÍQUIDO OPERACIONAL", name: "LORENA", responsible: "", meta: "100%", type: "percentage", data: [92, 99, 83, 124, 101, null, null, null, null, null, null, null], formula: "avg" }
+            { id: "row-res-camila", category: "RESULTADO LÍQUIDO", name: "CAMILA", responsible: "", meta: "100%", type: "percentage", data: [85, 83, 69, null, 106, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-res-fabio", category: "RESULTADO LÍQUIDO", name: "FABIO", responsible: "", meta: "100%", type: "percentage", data: [93, 81, 98, 118, 121, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-res-guilherme", category: "RESULTADO LÍQUIDO", name: "GUILHERME", responsible: "", meta: "100%", type: "percentage", data: [103, 117, 80, 93, 92, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-res-lorena", category: "RESULTADO LÍQUIDO", name: "LORENA", responsible: "", meta: "100%", type: "percentage", data: [92, 99, 83, 124, 101, null, null, null, null, null, null, null], formula: "avg" }
         ];
 
         const DEFAULT_TABS_DATA = [
@@ -1058,11 +1059,13 @@
                         } else if (metaString.includes(">")) {
                             let metaValue = parseFloat(metaString.replace(">", "").replace("%", "").trim());
                             if (val < metaValue) isMetaAtingida = false;
-                        } else if (metaString.includes("%") && metaString !== "100%" && metaString !== "70%" && metaString !== "80%" && metaString !== "90%") {
+                        } else if (metaString.includes("%") && metaString !== "100%" && metaString !== "110%" && metaString !== "70%" && metaString !== "80%" && metaString !== "90%") {
                             let metaValue = parseFloat(metaString.replace("%", "").trim());
                             if (val < metaValue) isMetaAtingida = false;
-                        } else if (metaString === "100%" || metaString === ">10%") {
-                            if (val < 100 && val < 10) isMetaAtingida = false;
+                        } else if (metaString === "110%") {
+                            if (val < 110) isMetaAtingida = false;
+                        } else if (metaString === "100%") {
+                            if (val < 100) isMetaAtingida = false;
                         } else if (metaString === "70%") {
                             if (val < 70) isMetaAtingida = false;
                         } else if (metaString === "80%") {
@@ -1073,7 +1076,7 @@
                             if (val < 1) isMetaAtingida = false;
                         } else if (metaString === "0") {
                             if (val > 0) isMetaAtingida = false;
-                        } else if (row.category === "SATISFAÇÃO DO MOTORISTA" || row.id === "row-consumo_medio") {
+                        } else if (row.category === "SATISFAÇÃO DO MOTORISTA" || row.id === "row-consumo_medio" || row.id === "row-eficiencia_gestores") {
                             let metaValue = parseFloat(row.meta.replace(",", "."));
                             if (val < metaValue) isMetaAtingida = false;
                         } else if (row.id === "row-disp_frota") {
@@ -1089,9 +1092,8 @@
                     monthsHtml += `<td class="${cellClass}" ondblclick="editMasterCell(${rowIndex}, ${i}, this)">${displayVal}</td>`;
                 }
 
-                // --- SUPORTE COMPLETO PARA PINTAR TODAS AS METAS OPERACIONAIS EM VERDE ---
                 let rowMetaHtml = `<span class="font-bold text-slate-700">${row.meta}</span>`;
-                if (["25 DIAS MÊS", "R$ 5,69 (2025)", "1,86", "100%", "80%", "90%", ">10%", "<35%", "0", "1", "70%", "9,00"].includes(row.meta)) {
+                if (["25 DIAS MÊS", "R$ 5,69 (2025)", "1,86", "100%", "110%", "80%", "90%", "0", "1", "70%", "9,00"].includes(row.meta)) {
                     rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">${row.meta}</span>`;
                 }
                 let respHtml = row.responsible ? `<span class="bg-blue-100 text-blue-700 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">${row.responsible}</span>` : "";
