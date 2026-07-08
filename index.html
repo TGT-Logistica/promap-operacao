@@ -201,8 +201,8 @@
                 <button onclick="adjustZoom(0.1)" class="px-2 py-1 hover:text-white transition-colors" title="Aumentar Zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
                 <button onclick="resetZoom()" class="px-2 py-1 hover:text-white transition-colors border-l border-slate-800 ml-0.5" title="Resetar"><i class="fa-solid fa-arrows-to-eye"></i></button>
             </div>
-            <span id="sync-status-indicator" class="bg-red-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-red-400 border border-red-500/20 animate-none">
-                <i class="fa-solid fa-triangle-exclamation mr-1"></i>Modo Offline (Local)
+            <span id="sync-status-indicator" class="bg-amber-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-amber-500 border border-amber-500/20 animate-pulse">
+                <i class="fa-solid fa-spinner animate-spin mr-1"></i>Conectando Nuvem...
             </span>
         </div>
     </header>
@@ -853,7 +853,7 @@
             { id: "row-disp_frota", category: "INDICADORES", name: "DISPONIBILIDADE DA FROTA", responsible: "JOÃO RICARDO", meta: "25 DIAS MÊS", type: "number", data: [22, 22, 22, 20, 24, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-res_liquido", category: "INDICADORES", name: "RESULTADO LÍQUIDO", responsible: "JAQUELINE", meta: ">10%", type: "percentage", data: [115, 116, 81, 129, 119, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-eficiencia_gestores", category: "INDICADORES", name: "EFICIENCIA DE PROGRAMAÇÃO DOS GESTORES", responsible: "JAQUELINE", meta: "90%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-capitacao_sub", category: "INDICADORES", name: "CAPITAÇÃO DE SUBCONTRATADO", responsible: "JAQUELINE", meta: "80%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-capitacao_sub", category: "INDICADORES", name: "CAPITAÇÃO DE SUBCONTRATADO", responsible: "JAQUELINE", meta: "80%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-perc_combustivel", category: "INDICADORES", name: "PORCENTAGEM COMBUSTIVEL/RESULTADO LIQUIDO", responsible: "PABLO", meta: "<35%", type: "percentage", data: [20, 10, 1, 1, null, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-preco_l", category: "INDICADORES", name: "PREÇO/LITRO", responsible: "PABLO", meta: "R$ 5,69 (2025)", type: "currency", data: [5.73, 5.68, 6.70, 7.14, 6.80, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-consumo_medio", category: "INDICADORES", name: "CONSUMO MÉDIO", responsible: "PABLO", meta: "1,86", type: "decimal", data: [1.85, 1.83, 1.82, 1.86, 1.84, null, null, null, null, null, null, null], formula: "avg" },
@@ -912,6 +912,7 @@
 
         async function pushToCloud() {
             if (isOfflineMode || !currentUser) return;
+            updateNetworkStatus(null, "Atualizando...");
             const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'promap_store', 'systemData');
             try {
                 await setDoc(docRef, { payload: JSON.stringify(systemData), updatedAt: new Date().toISOString() });
@@ -931,7 +932,14 @@
                     if (cloudData && cloudData.payload) {
                         try {
                             const parsed = JSON.parse(cloudData.payload);
-                            systemData = parsed;
+                            
+                            // Força integridade dos dados para impedir tabelas em branco causadas por payloads incompletos na nuvem
+                            if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet) && parsed.masterSheet.length > 0) {
+                                systemData = parsed;
+                            } else {
+                                console.log("Nuvem retornou dados incompletos. Mantendo cópia local íntegra.");
+                            }
+                            
                             applyNodeStylingAndData();
                             renderCustomTabsList();
                             renderDynamicTabsMenu();
@@ -954,7 +962,10 @@
             let saved = localStorage.getItem("ProMap_Indicadores_DB_v12");
             if (saved) {
                 try {
-                    systemData = JSON.parse(saved);
+                    let parsed = JSON.parse(saved);
+                    if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet) && parsed.masterSheet.length > 0) {
+                        systemData = parsed;
+                    }
                 } catch(e) {}
             }
             applyNodeStylingAndData();
@@ -965,17 +976,23 @@
         }
 
         const initAuth = async () => {
-            // Inicialização Instantânea Local Confiável
+            // Inicialização blindada instantânea com dados padrão locais de fábrica
             let saved = localStorage.getItem("ProMap_Indicadores_DB_v12");
             if (saved) {
-                try { systemData = JSON.parse(saved); } catch(e) {}
+                try {
+                    let parsed = JSON.parse(saved);
+                    if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet) && parsed.masterSheet.length > 0) {
+                        systemData = parsed;
+                    }
+                } catch(e) {}
             }
+            
             applyNodeStylingAndData();
             renderCustomTabsList();
             renderDynamicTabsMenu();
             renderMasterSpreadsheet();
 
-            // Começa em offline para não ficar a mensagem piscando na tela por padrão
+            // Começa no modo offline seguro por padrão para não travar telas nem animações
             updateNetworkStatus(false, "Local");
 
             try {
@@ -1001,6 +1018,12 @@
             const tbody = document.getElementById("master-sheet-tbody");
             if (!tbody) return;
             tbody.innerHTML = "";
+            
+            // Verificação de segurança absoluta: Se a lista de indicadores sumir, força o reset para o padrão de fábrica local
+            if (!systemData.masterSheet || !Array.isArray(systemData.masterSheet) || systemData.masterSheet.length === 0) {
+                systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
+            }
+
             let currentCategory = "";
 
             systemData.masterSheet.forEach((row, rowIndex) => {
@@ -1017,7 +1040,7 @@
                 let valorAcumulado = calcularAcumulado(row);
                 let monthsHtml = "";
                 
-                // Validador Dinâmico por Linha Baseado nas Metas Reais
+                // Validador Dinâmico de Metas
                 let metaString = row.meta.toUpperCase();
                 
                 for (let i = 0; i < 12; i++) {
@@ -1248,6 +1271,7 @@
 
         function renderMasterPreviewMiniTable(targetId) {
             const tbody = document.getElementById("bubble-preview-table-body");
+            if (!tbody) return;
             tbody.innerHTML = "";
             let rowsToPreview = [];
 
@@ -1271,7 +1295,7 @@
                 tbody.innerHTML += `
                     <tr class="border-b border-slate-200">
                         <td class="p-1.5 border-r border-slate-200 font-bold truncate max-w-[130px]">${row.name}</td>
-                        <td class="p-1.5 border-r border-slate-200 text-center font-semibold text-slate-700">${obterUltimoMesComDados(row)}</td>
+                        <td class="p-1.5 border-r border-slate-200 text-center font-semibold text-slate-700">${valorRecente}</td>
                         <td class="p-1.5 text-center font-bold text-emerald-600">${row.meta}</td>
                     </tr>
                 `;
@@ -1280,6 +1304,7 @@
 
         function renderMiniPreviewTable(tab) {
             const tbody = document.getElementById("bubble-preview-table-body");
+            if (!tbody) return;
             tbody.innerHTML = "";
             if (!tab.tableData || tab.tableData.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="3" class="p-2 text-center text-slate-400 italic">Vazio.</td></tr>`;
@@ -1412,7 +1437,7 @@
             container.innerHTML = systemData.tabs.map(tab => `
                 <div class="flex items-center justify-between p-3 bg-slate-50 border rounded-lg">
                     <div class="flex items-center gap-3">
-                        <span class="w-8 h-8 rounded bg-blue-50 text-blue-600 flex items-center justify-center"><i class="fa-solid ${tab.icon}"></i></span>
+                        <span class="w-8 h-8 rounded bg-blue-50 text-blue-600 flex items-center justify-center text-sm"><i class="fa-solid ${tab.icon}"></i></span>
                         <div><h4 class="font-bold text-xs">${tab.name}</h4></div>
                     </div>
                     <button onclick="switchTab('${tab.id}')" class="bg-blue-50 text-blue-600 px-2 py-1 rounded text-[10px] font-bold">Abrir</button>
@@ -1552,6 +1577,12 @@
             }
             return "Sem dados";
         }
+
+        function triggerResetDefault() {
+            localStorage.removeItem("ProMap_Indicadores_DB_v12");
+            location.reload();
+        }
+        window.triggerResetDefault = triggerResetDefault;
 
         initAuth();
     </script>
