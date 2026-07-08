@@ -201,8 +201,8 @@
                 <button onclick="adjustZoom(0.1)" class="px-2 py-1 hover:text-white transition-colors" title="Aumentar Zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
                 <button onclick="resetZoom()" class="px-2 py-1 hover:text-white transition-colors border-l border-slate-800 ml-0.5" title="Resetar"><i class="fa-solid fa-arrows-to-eye"></i></button>
             </div>
-            <span id="sync-status-indicator" class="bg-red-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-red-400 border border-red-500/20 animate-none">
-                <i class="fa-solid fa-triangle-exclamation mr-1"></i>Modo Offline (Local)
+            <span id="sync-status-indicator" class="bg-amber-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-amber-500 border border-amber-500/20 animate-pulse">
+                <i class="fa-solid fa-spinner animate-spin mr-1"></i>Conectando Nuvem...
             </span>
         </div>
     </header>
@@ -273,7 +273,7 @@
                                                                 </div>
                                                             </li>
                                                         </ul>
-                                                    </li>
+                                                    </td>
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
                                                             <div id="node-prog_folgas" onclick="handleNodeClick('prog_folgas', event)" class="w-[140px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
@@ -289,7 +289,7 @@
                                                                 </div>
                                                             </li>
                                                         </ul>
-                                                    </li>
+                                                    </td>
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
                                                             <div id="node-gestao_clientes" onclick="handleNodeClick('gestao_clientes', event)" class="w-[140px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
@@ -305,7 +305,7 @@
                                                                 </div>
                                                             </li>
                                                         </ul>
-                                                    </li>
+                                                    </td>
                                                 </ul>
                                             </li>
 
@@ -332,7 +332,7 @@
                                                                 </div>
                                                             </li>
                                                         </ul>
-                                                    </li>
+                                                    </td>
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
                                                             <div id="node-controle_combustivel" onclick="handleNodeClick('controle_combustivel', event)" class="w-[140px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
@@ -364,7 +364,7 @@
                                                                 </ul>
                                                             </li>
                                                         </ul>
-                                                    </li>
+                                                    </td>
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
                                                             <div id="node-controle_pedagio" onclick="handleNodeClick('controle_pedagio', event)" class="w-[140px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
@@ -380,7 +380,7 @@
                                                                 </div>
                                                             </li>
                                                         </ul>
-                                                    </li>
+                                                    </td>
                                                 </ul>
                                             </li>
 
@@ -407,7 +407,7 @@
                                                                 </div>
                                                             </li>
                                                         </ul>
-                                                    </li>
+                                                    </td>
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
                                                             <div id="node-fech_mensal_frota" onclick="handleNodeClick('fech_mensal_frota', event)" class="w-[135px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
@@ -423,7 +423,7 @@
                                                                 </div>
                                                             </li>
                                                         </ul>
-                                                    </li>
+                                                    </td>
                                                     <li>
                                                         <div class="tree-node-wrapper has-children">
                                                             <div id="node-fech_clientes_frota" onclick="handleNodeClick('fech_clientes_frota', event)" class="w-[135px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
@@ -439,7 +439,7 @@
                                                                 </div>
                                                             </li>
                                                         </ul>
-                                                    </li>
+                                                    </td>
                                                 </ul>
                                             </li>
 
@@ -466,7 +466,7 @@
                                                                 </div>
                                                             </li>
                                                         </ul>
-                                                    </li>
+                                                    </td>
                                                 </ul>
                                             </li>
 
@@ -483,19 +483,19 @@
                                                             <span class="node-text">LICENCIAMENTO E ADEQUAÇÕES FROTA</span>
                                                             <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                         </div>
-                                                    </li>
+                                                    </td>
                                                     <li>
                                                         <div id="node-adeq_admin" onclick="handleNodeClick('adeq_admin', event)" class="w-[135px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                             <span class="node-text">ADEQUAÇÕES ADMINISTRATIVAS</span>
                                                             <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                         </div>
-                                                    </li>
+                                                    </td>
                                                     <li>
                                                         <div id="node-gestao_sinistro" onclick="handleNodeClick('gestao_sinistro', event)" class="w-[135px] text-center p-2 text-[9px] font-bold rounded color-sub-process shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                             <span class="node-text">GESTÃO DE SINISTRO</span>
                                                             <span class="link-badge absolute right-1 top-1 hidden text-green-800 bg-white/90 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                         </div>
-                                                    </li>
+                                                    </td>
                                                 </ul>
                                             </li>
                                         </ul>
@@ -707,3 +707,889 @@
                     <div>
                         <h2 class="text-base font-bold text-slate-800">Gestor de Cópia de Segurança e Portabilidade</h2>
                         <p class="text-[11px] text-slate-500">Transfira as suas configurações, tabelas de indicadores e anotações para um ficheiro local.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-4 border border-slate-100 rounded-xl bg-slate-50/50">
+                        <h3 class="font-bold text-slate-800 text-xs mb-1"><i class="fa-solid fa-download mr-1.5 text-blue-600"></i>Exportar Dados Operacionais</h3>
+                        <p class="text-[11px] text-slate-500 mb-4">Gere um ficheiro `.json` contendo todos os dados inseridos.</p>
+                        <button onclick="exportDiagramData()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg text-xs shadow-sm transition-all">
+                            Descarregar Configurações (JSON)
+                        </button>
+                    </div>
+
+                    <div class="p-4 border border-slate-100 rounded-xl bg-slate-50/50">
+                        <h3 class="font-bold text-slate-800 text-xs mb-1"><i class="fa-solid fa-upload mr-1.5 text-emerald-600"></i>Importar Cópia de Segurança</h3>
+                        <p class="text-[11px] text-slate-500 mb-4">Carregue um ficheiro de backup `.json` existente.</p>
+                        <input type="file" id="import-file-input" class="hidden" accept=".json" onchange="importDiagramData(event)">
+                        <button onclick="document.getElementById('import-file-input').click()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-4 rounded-lg text-xs shadow-sm transition-all">
+                            Carregar Cópia (.json)
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-5 border-t border-slate-100 flex justify-between items-center text-[10px] text-slate-400">
+                    <span>* Os dados são armazenados de forma persistente no ecossistema local do seu navegador web atual.</span>
+                    <button onclick="triggerResetDefault()" class="text-red-500 hover:text-red-700 font-semibold"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Repor Definições de Fábrica</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="config-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-white rounded-xl w-full max-w-md shadow-2xl overflow-hidden flex flex-col border border-slate-100 animate-zoom-in">
+                <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                    <div>
+                        <span id="modal-node-type-label" class="text-[9px] font-bold uppercase tracking-wider bg-blue-100 text-blue-700 px-2 py-0.5 rounded">Painel de Controlo</span>
+                        <h3 id="modal-node-title" class="text-sm font-bold text-slate-800 mt-1">Título do Bloco</h3>
+                    </div>
+                    <button onclick="closeConfigModal()" class="text-slate-400 hover:text-slate-600 bg-white p-1 rounded-full border shadow-sm transition-transform hover:scale-110">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <form onsubmit="saveNodeConfig(event)" class="p-5 flex flex-col gap-4 overflow-auto max-h-[70vh]">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Título do Bloco</label>
+                        <input type="text" id="config-node-name" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-800 font-semibold">
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Tipo de Ligação</label>
+                        <div class="grid grid-cols-3 gap-1.5 p-1 bg-slate-100 rounded-lg">
+                            <button type="button" onclick="selectLinkType('none')" id="btn-link-none" class="link-type-btn text-[10px] font-bold py-1.5 px-3 rounded text-center transition-all bg-white shadow-sm text-slate-800">Sem Link</button>
+                            <button type="button" onclick="selectLinkType('external')" id="btn-link-external" class="link-type-btn text-[10px] font-bold py-1.5 px-3 rounded text-center transition-all text-slate-600">Sítio Web</button>
+                            <button type="button" onclick="selectLinkType('internal')" id="btn-link-internal" class="link-type-btn text-[10px] font-bold py-1.5 px-3 rounded text-center transition-all text-slate-600">Separador</button>
+                        </div>
+                    </div>
+
+                    <div id="link-input-external" class="hidden">
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">URL Externa</label>
+                        <input type="url" id="config-node-url" placeholder="https://docs.google.com/..." class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-800">
+                    </div>
+
+                    <div id="link-input-internal" class="hidden">
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Associar a uma Página Criada</label>
+                        <select id="config-node-tab" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"></select>
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Instruções e Notas Operacionais</label>
+                        <textarea id="config-node-desc" rows="3" placeholder="Insira o guia passo a passo..." class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700 leading-relaxed"></textarea>
+                    </div>
+
+                    <div class="flex gap-2.5 mt-1.5">
+                        <button type="submit" class="flex-grow bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-lg text-xs transition-all shadow-sm">
+                            Guardar Alterações
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="sidebar-overlay" onclick="closeAllModals()" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-20 hidden"></div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBzpMt8VaRiIK4NtFn_zoonc1YQIrAHBG4",
+            authDomain: "promap-frota.firebaseapp.com",
+            projectId: "promap-frota",
+            storageBucket: "promap-frota.firebasestorage.app",
+            messagingSenderId: "754288393761",
+            appId: "1:754288393761:web:b12d158d066b68f3412d60",
+            measurementId: "G-145JSZMPDP"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app); 
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'promap-frota-app';
+
+        // --- VARIÁVEIS GLOBAIS DE CONTROLE DECLARADAS ---
+        let currentUser = null;
+        let isOfflineMode = false;
+        let currentZoom = 1.0;
+        let activeNodeId = null;
+        let selectedLinkType = 'none';
+        let confirmCallback = null;
+
+        const DEFAULT_NODES_DATA = {
+            "operacao": { name: "OPERAÇÃO", type: "color-macro-top", linkType: "none", url: "", tabId: "", desc: "Fluxo Geral de Processos e Indicadores de Operação." },
+            "gestao_frota": { name: "GESTÃO DA FROTA", type: "color-macro-sub", linkType: "none", url: "", tabId: "", desc: "Gestão macro da frota." },
+            "prog_veiculos": { name: "PROGRAMAÇÃO DE VEÍCULOS", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
+            "disp_recursos": { name: "GESTÃO DE DISP. RECURSOS", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "disp_frota": { name: "Disponibilidade da frota", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-disp_frota", desc: "Acompanhamento da taxa de prontidão de veículos." },
+            "prog_folgas": { name: "PROGRAMAÇÃO DE FOLGAS", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "alinhamento_folgas": { name: "Alinhamento de início e retorno das folgas x Manutenção no período", type: "color-indicator", linkType: "internal", url: "", tabId: "internal-tab-folgas", desc: "Planilha de organization de folgas." },
+            "gestao_clientes": { name: "GESTÃO DE CLIENTES", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "objetivos_rotas": { name: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES.", type: "color-to-develop", linkType: "none", url: "", tabId: "", desc: "" },
+            "acomp_jornada": { name: "ACOMPANHAMENTO DE JORNADA", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
+            "acomp_motorista": { name: "ACOMPANHAMENTO DE MOTORISTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "sat_motorista": { name: "Satisfação do motorista", type: "color-indicator", linkType: "internal-master", url: "", tabId: "section-sat_motorista", desc: "Satisfação dos motoristas." },
+            "controle_combustivel": { name: "CONTROLE DE COMBUSTÍVEL", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "perc_combustivel": { name: "Percentual Combustível x Faturamento líquido", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-perc_combustivel", desc: "Combustível face ao faturamento líquido." },
+            "preco_l": { name: "Preço/L", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-preco_l", desc: "Preço médio por litro de combustível." },
+            "consumo_medio": { name: "Consumo médio", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-consumo_medio", desc: "Consumo médio geral da frota." },
+            "controle_pedagio": { name: "CONTROLE DE PEDÁGIO", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "Subprocesso de monitoramento de despesas de pedágios." },
+            "conferencia_pedagio": { name: "Conferência de pedágio", type: "color-indicator", linkType: "none", url: "", tabId: "", desc: "Mapeamento da conferência periódica de pedágio." },
+            "fech_resultados": { name: "FECHAMENTO DE RESULTADOS", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
+            "fech_jornada": { name: "FECHAMENTO JORNADA MOTORISTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "perf_motorista": { name: "Performance motorista", type: "color-indicator", linkType: "internal-master", url: "section-perf_motorista", tabId: "", desc: "Performance operacional." },
+            "fech_mensal_frota": { name: "FECHAMENTO MENSAL FROTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "res_liquido": { name: "Resultado líquido", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-res_liquido", desc: "Resultado líquido operacional acumulado." },
+            "fech_clientes_frota": { name: "FECHAMENTO MENSAL CLIENTES/FROTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "ineficiencias_carga": { name: "Ineficiências de carga e descarga e diárias", type: "color-to-develop", linkType: "none", url: "", tabId: "", desc: "" },
+            "planejamento_frota": { name: "PLANEAMENTO/DESENVOLVIMENTO - FROTA", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
+            "gestao_eficiencia": { name: "GESTÃO DE EFICIÊNCIA E PROCESSO", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "definir_cronograma": { name: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO...", type: "color-to-develop", linkType: "none", url: "", tabId: "", desc: "" },
+            "regularizacao_frota": { name: "GESTÃO ADMINISTRATIVA DA FROTA", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "Processo-chave administrativo." },
+            "licenciamento": { name: "LICENCIAMENTO E ADEQUAÇÕES FROTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "adeq_admin": { name: "ADEQUAÇÕES ADMINISTRATIVAS", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "gestao_sinistro": { name: "GESTÃO DE SINISTRO", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "Controle operacional de sinistros." }
+        };
+
+        const DEFAULT_MASTER_SHEET_DATA = [
+            { id: "row-disp_frota", category: "INDICADORES", name: "DISPONIBILIDADE DA FROTA", responsible: "JOÃO RICARDO", meta: "25 DIAS MÊS", type: "number", data: [22, 22, 22, 20, 24, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-res_liquido", category: "INDICADORES", name: "RESULTADO LÍQUIDO", responsible: "JAQUELINE", meta: ">10%", type: "percentage", data: [115, 116, 81, 129, 119, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-eficiencia_gestores", category: "INDICADORES", name: "EFICIENCIA DE PROGRAMAÇÃO DOS GESTORES", responsible: "JAQUELINE", meta: "90%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-capitacao_sub", category: "INDICADORES", name: "CAPITAÇÃO DE SUBCONTRATADO", responsible: "JAQUELINE", meta: "80%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-perc_combustivel", category: "INDICADORES", name: "PORCENTAGEM COMBUSTIVEL/RESULTADO LIQUIDO", responsible: "PABLO", meta: "<35%", type: "percentage", data: [20, 10, 1, 1, null, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-preco_l", category: "INDICADORES", name: "PREÇO/LITRO", responsible: "PABLO", meta: "R$ 5,69 (2025)", type: "currency", data: [5.73, 5.68, 6.70, 7.14, 6.80, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-consumo_medio", category: "INDICADORES", name: "CONSUMO MÉDIO", responsible: "PABLO", meta: "1,86", type: "decimal", data: [1.85, 1.83, 1.82, 1.86, 1.84, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-manutencao_folga", category: "INDICADORES", name: "MANUTENÇÃO PÓS FOLGA SEM ADIAR RETORNO DO MOTORISTA", responsible: "LEONARDO", meta: "0", type: "number", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-sat-camila", category: "SATISFAÇÃO DO MOTORISTA", name: "CAMILA", responsible: "", meta: "9,00", type: "decimal", data: [9.90, 9.83, 9.83, null, 9.66, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-sat-fabio", category: "SATISFAÇÃO DO MOTORISTA", name: "FABIO", responsible: "", meta: "9,00", type: "decimal", data: [9.04, 9.48, 9.48, 8.93, 9.50, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-sat-guilherme", category: "SATISFAÇÃO DO MOTORISTA", name: "GUILHERME", responsible: "", meta: "9,00", type: "decimal", data: [9.60, 9.77, 9.77, 9.05, 9.63, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-sat-lorena", category: "SATISFAÇÃO DO MOTORISTA", name: "LORENA", responsible: "", meta: "9,00", type: "decimal", data: [9.75, 9.61, 9.61, 9.67, 9.76, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-perf-camila", category: "PERFORMANCE MOTORISTA", name: "CAMILA", responsible: "", meta: "80%", type: "percentage", data: [60, 77, 72, null, 75, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-perf-fabio", category: "PERFORMANCE MOTORISTA", name: "FABIO", responsible: "", meta: "80%", type: "percentage", data: [63, 47, 16, 50, 67, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-perf-guilherme", category: "PERFORMANCE MOTORISTA", name: "GUILHERME", responsible: "", meta: "80%", type: "percentage", data: [100, 90, 92, 77, 80, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-perf-lorena", category: "PERFORMANCE MOTORISTA", name: "LORENA", responsible: "", meta: "80%", type: "percentage", data: [77, 75, 67, 43, 63, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-res-camila", category: "RESULTADO LÍQUIDO", name: "CAMILA", responsible: "", meta: "100%", type: "percentage", data: [85, 83, 69, null, 106, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-res-fabio", category: "RESULTADO LÍQUIDO", name: "FABIO", responsible: "", meta: "100%", type: "percentage", data: [93, 81, 98, 118, 121, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-res-guilherme", category: "RESULTADO LÍQUIDO", name: "GUILHERME", responsible: "", meta: "100%", type: "percentage", data: [103, 117, 80, 93, 92, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-res-lorena", category: "RESULTADO LÍQUIDO", name: "LORENA", responsible: "", meta: "100%", type: "percentage", data: [92, 99, 83, 124, 101, null, null, null, null, null, null, null], formula: "avg" }
+        ];
+
+        const DEFAULT_TABS_DATA = [
+            {
+                id: "internal-tab-folgas",
+                name: "Indicadores Frota",
+                icon: "fa-chart-pie",
+                notes: "Tabela de acompanhamento das escalas das folgas.",
+                tableData: [{ "Mês / Referência": "Janeiro", "Resultado": "18", "Meta": "14" }]
+            }
+        ];
+
+        // --- INSTANCIAÇÃO DINÂMICA DO SYSTEMDATA ---
+        let systemData = {
+            nodes: DEFAULT_NODES_DATA,
+            masterSheet: DEFAULT_MASTER_SHEET_DATA,
+            tabs: DEFAULT_TABS_DATA
+        };
+
+        function showToast(message) {
+            const container = document.getElementById("toast-container");
+            const toast = document.createElement("div");
+            toast.className = "bg-slate-900 text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-xl border border-slate-700/50 flex items-center gap-2 transition-all duration-300 transform translate-y-2 opacity-0 pointer-events-auto";
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> <span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.remove("translate-y-2", "opacity-0"), 10);
+            setTimeout(() => {
+                toast.classList.add("translate-y-2", "opacity-0");
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function updateNetworkStatus(status, customMsg) {
+            const indicator = document.getElementById("sync-status-indicator");
+            if (!indicator) return;
+            if (status === true) {
+                indicator.className = "bg-emerald-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-emerald-400 border border-emerald-500/20 animate-none";
+                indicator.innerHTML = `<i class="fa-solid fa-cloud-arrow-up mr-1"></i>Nuvem Sincronizada`;
+            } else if (status === false) {
+                indicator.className = "bg-red-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-red-400 border border-red-500/20 animate-none";
+                indicator.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1"></i>Modo Offline (${customMsg || 'Local'})`;
+            } else {
+                indicator.className = "bg-amber-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-amber-500 border border-amber-500/20 animate-pulse";
+                indicator.innerHTML = `<i class="fa-solid fa-spinner animate-spin mr-1"></i>${customMsg || 'Gravando...'}`;
+            }
+        }
+
+        async function pushToCloud() {
+            if (isOfflineMode || !currentUser) return;
+            updateNetworkStatus(null, "Atualizando...");
+            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'promap_store', 'systemData');
+            try {
+                await setDoc(docRef, { payload: JSON.stringify(systemData), updatedAt: new Date().toISOString() });
+                updateNetworkStatus(true);
+            } catch (err) {
+                updateNetworkStatus(false, "Falha de Escrita");
+            }
+        }
+
+        function startSync() {
+            if (isOfflineMode || !currentUser) return;
+            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'promap_store', 'systemData');
+            onSnapshot(docRef, (docSnap) => {
+                if (isOfflineMode) return;
+                if (docSnap.exists()) {
+                    const cloudData = docSnap.data();
+                    if (cloudData && cloudData.payload) {
+                        try {
+                            const parsed = JSON.parse(cloudData.payload);
+                            if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet) && parsed.masterSheet.length > 0) {
+                                systemData = parsed;
+                            } else {
+                                console.log("Nuvem retornou dados incompletos. Mantendo cópia local íntegra.");
+                            }
+                            applyNodeStylingAndData();
+                            renderCustomTabsList();
+                            renderDynamicTabsMenu();
+                            renderMasterSpreadsheet();
+                            updateNetworkStatus(true);
+                        } catch(e) {
+                            console.error(e);
+                        }
+                    }
+                } else {
+                    pushToCloud();
+                }
+            }, (error) => {
+                switchToLocalFallback("Erro de Rede");
+            });
+        }
+
+        function switchToLocalFallback(reason) {
+            isOfflineMode = true;
+            let saved = localStorage.getItem("ProMap_Indicadores_DB_v12");
+            if (saved) {
+                try {
+                    let parsed = JSON.parse(saved);
+                    if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet) && parsed.masterSheet.length > 0) {
+                        systemData = parsed;
+                    }
+                } catch(e) {}
+            }
+            applyNodeStylingAndData();
+            renderCustomTabsList();
+            renderDynamicTabsMenu();
+            renderMasterSpreadsheet();
+            updateNetworkStatus(false, "Local Cache");
+        }
+
+        const initAuth = async () => {
+            let saved = localStorage.getItem("ProMap_Indicadores_DB_v12");
+            if (saved) {
+                try {
+                    let parsed = JSON.parse(saved);
+                    if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet) && parsed.masterSheet.length > 0) {
+                        systemData = parsed;
+                    }
+                } catch(e) {}
+            }
+            
+            applyNodeStylingAndData();
+            renderCustomTabsList();
+            renderDynamicTabsMenu();
+            renderMasterSpreadsheet();
+            updateNetworkStatus(false, "Local");
+
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    const cred = await signInWithCustomToken(auth, __initial_auth_token);
+                    currentUser = cred.user;
+                } else {
+                    const cred = await signInAnonymously(auth);
+                    currentUser = cred.user;
+                }
+                if (!isOfflineMode) startSync();
+            } catch (err) {
+                switchToLocalFallback("Modo Local Ativo");
+            }
+        };
+
+        function saveAllData() {
+            localStorage.setItem("ProMap_Indicadores_DB_v12", JSON.stringify(systemData));
+            if (!isOfflineMode) pushToCloud();
+        }
+
+        function renderMasterSpreadsheet() {
+            const tbody = document.getElementById("master-sheet-tbody");
+            if (!tbody) return;
+            tbody.innerHTML = "";
+            
+            if (!systemData.masterSheet || !Array.isArray(systemData.masterSheet) || systemData.masterSheet.length === 0) {
+                systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
+            }
+
+            let currentCategory = "";
+
+            systemData.masterSheet.forEach((row, rowIndex) => {
+                if (row.category !== currentCategory) {
+                    currentCategory = row.category;
+                    tbody.innerHTML += `
+                        <tr class="bg-slate-200 font-extrabold text-[10px] text-slate-800 uppercase tracking-wider">
+                            <td class="p-2 border-r border-slate-300 pl-4 font-black" colspan="2">${currentCategory}</td>
+                            <td colspan="13" class="p-2 bg-slate-200"></td>
+                        </tr>
+                    `;
+                }
+
+                let valorAcumulado = calcularAcumulado(row);
+                let monthsHtml = "";
+                let metaString = row.meta.toUpperCase();
+                
+                for (let i = 0; i < 12; i++) {
+                    let val = row.data[i];
+                    let displayVal = formatCellValue(val, row.type);
+                    let cellClass = "p-2 border-r border-slate-200 text-center cursor-pointer hover:bg-slate-50 transition-colors font-medium";
+                    
+                    if (val !== null) {
+                        let isMetaAtingida = true;
+                        
+                        if (metaString.includes("<")) {
+                            let metaValue = parseFloat(metaString.replace("<", "").replace("%", "").trim());
+                            if (val > metaValue) isMetaAtingida = false;
+                        } else if (metaString.includes(">")) {
+                            let metaValue = parseFloat(metaString.replace(">", "").replace("%", "").trim());
+                            if (val < metaValue) isMetaAtingida = false;
+                        } else if (metaString.includes("%")) {
+                            let metaValue = parseFloat(metaString.replace("%", "").trim());
+                            if (val < metaValue) isMetaAtingida = false;
+                        } else if (row.category === "SATISFAÇÃO DO MOTORISTA" || row.id === "row-consumo_medio") {
+                            let metaValue = parseFloat(row.meta.replace(",", "."));
+                            if (val < metaValue) isMetaAtingida = false;
+                        } else if (row.id === "row-disp_frota") {
+                            if (val < 25) isMetaAtingida = false;
+                        } else if (row.id === "row-preco_l") {
+                            if (val > 5.69) isMetaAtingida = false;
+                        } else if (row.id === "row-manutencao_folga") {
+                            if (val > 0) isMetaAtingida = false;
+                        }
+
+                        if (!isMetaAtingida) {
+                            cellClass += " bg-red-100 text-red-800 font-bold";
+                        }
+                    }
+                    monthsHtml += `<td class="${cellClass}" ondblclick="editMasterCell(${rowIndex}, ${i}, this)">${displayVal}</td>`;
+                }
+
+                let rowMetaHtml = `<span class="font-bold text-slate-700">${row.meta}</span>`;
+                if (["25 DIAS MÊS", "R$ 5,69 (2025)", "1,86", "100%", "80%", "90%", ">10%", "<35%", "0", "9,00"].includes(row.meta)) {
+                    rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">${row.meta}</span>`;
+                }
+                let respHtml = row.responsible ? `<span class="bg-blue-100 text-blue-700 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">${row.responsible}</span>` : "";
+
+                tbody.innerHTML += `
+                    <tr id="${row.id}" class="border-b border-slate-200 hover:bg-slate-50/60 transition-colors">
+                        <td class="p-2.5 border-r border-slate-200 font-semibold text-slate-800 pl-6">
+                            <div class="flex flex-wrap items-center gap-1.5">
+                                <span>${row.name}</span>${respHtml}
+                            </div>
+                        </td>
+                        <td class="p-2 border-r border-slate-200 text-center text-[10px] font-bold">${rowMetaHtml}</td>
+                        ${monthsHtml}
+                        <td class="p-2 text-center font-extrabold bg-slate-50 text-slate-800 ${valorAcumulado === '#DIV/0!' ? 'text-red-500' : ''}">${valorAcumulado}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function formatCellValue(val, type) {
+            if (val === null || val === undefined || isNaN(val)) return "";
+            if (type === "currency") return "R$ " + val.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            if (type === "percentage") return val.toLocaleString('pt-BR') + "%";
+            if (type === "decimal") return val.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            return val.toLocaleString('pt-BR');
+        }
+
+        function calcularAcumulado(row) {
+            let activeValues = row.data.filter(v => v !== null && v !== undefined && !isNaN(v));
+            if (activeValues.length === 0) return "#DIV/0!";
+            if (row.formula === "avg") {
+                let sum = activeValues.reduce((a, b) => a + b, 0);
+                return formatCellValue(sum / activeValues.length, row.type);
+            }
+            return "";
+        }
+
+        function editMasterCell(rowIndex, monthIndex, element) {
+            let row = systemData.masterSheet[rowIndex];
+            let val = row.data[monthIndex];
+            element.innerHTML = `<input type="number" step="any" class="w-full text-center bg-white border border-blue-500 rounded px-1 py-0.5 text-xs focus:outline-none" value="${val !== null ? val : ''}">`;
+            let input = element.querySelector('input');
+            input.focus();
+            input.select();
+
+            function saveValue() {
+                let newVal = input.value.trim() === "" ? null : parseFloat(input.value);
+                row.data[monthIndex] = newVal;
+                saveAllData();
+                renderMasterSpreadsheet();
+                showToast("Dados updated com sucesso!");
+            }
+            input.onblur = saveValue;
+            input.onkeydown = function(e) {
+                if (e.key === "Enter") saveValue();
+                if (e.key === "Escape") renderMasterSpreadsheet();
+            };
+        }
+
+        function showCustomConfirm(title, message, callback) {
+            document.getElementById("confirm-title").innerText = title;
+            document.getElementById("confirm-message").innerText = message;
+            confirmCallback = callback;
+            document.getElementById("confirm-modal").classList.remove("hidden");
+        }
+
+        function closeConfirmModal() {
+            document.getElementById("confirm-modal").classList.add("hidden");
+            confirmCallback = null;
+        }
+
+        document.getElementById("btn-confirm-action").onclick = function() {
+            if (confirmCallback) confirmCallback();
+            closeConfirmModal();
+        };
+        document.getElementById("btn-confirm-cancel").onclick = closeConfirmModal;
+
+        function applyNodeStylingAndData() {
+            Object.keys(systemData.nodes).forEach(nodeId => {
+                const nodeEl = document.getElementById(`node-${nodeId}`);
+                if (!nodeEl) return;
+                const data = systemData.nodes[nodeId];
+                const textEl = nodeEl.querySelector('.node-text');
+                if (textEl && data.name !== undefined) textEl.innerText = data.name;
+
+                const badgeEl = nodeEl.querySelector('.link-badge');
+                if (badgeEl) {
+                    if (data.linkType && data.linkType !== 'none') badgeEl.classList.remove('hidden');
+                    else badgeEl.classList.add('hidden');
+                }
+            });
+        }
+
+        function adjustZoom(factor) {
+            currentZoom = Math.max(0.4, Math.min(1.5, currentZoom + factor));
+            const container = document.getElementById("diagram-scale-container");
+            if(container) container.style.transform = `scale(${currentZoom})`;
+            document.getElementById("zoom-indicator").innerText = `${Math.round(currentZoom * 100)}%`;
+        }
+
+        function resetZoom() {
+            currentZoom = 1.0;
+            adjustZoom(0);
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+            const activeContent = document.getElementById(`tab-${tabId}`);
+            if (activeContent) activeContent.classList.remove('hidden');
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all";
+            });
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            if (activeBtn) {
+                activeBtn.className = "tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold transition-all bg-blue-600 text-white shadow-sm";
+            }
+            closePreviewBubble();
+        }
+
+        function handleNodeClick(nodeId, event) {
+            event.stopPropagation();
+            activeNodeId = nodeId;
+            document.querySelectorAll('.node-card').forEach(n => n.classList.remove('node-selected'));
+            const targetEl = document.getElementById(`node-${nodeId}`);
+            if (targetEl) targetEl.classList.add('node-selected');
+            showPreviewBubble(nodeId, targetEl);
+        }
+
+        function showPreviewBubble(nodeId, element) {
+            const nodeData = systemData.nodes[nodeId];
+            const bubble = document.getElementById("link-preview-bubble");
+            document.getElementById("bubble-node-title").innerText = nodeData.name || "Sem Nome";
+
+            const iconWrapper = document.getElementById("bubble-doc-icon-wrapper");
+            const iconEl = document.getElementById("bubble-doc-icon");
+            const subTypeEl = document.getElementById("bubble-sub-type");
+            const btnAction = document.getElementById("bubble-btn-action");
+            const tableContainer = document.getElementById("bubble-preview-table-container");
+
+            if (nodeData.linkType === 'none') {
+                iconWrapper.className = "bg-slate-100 text-slate-600 p-2 rounded-lg shrink-0 flex items-center justify-center";
+                iconEl.className = "fa-solid fa-file-lines text-lg";
+                subTypeEl.innerText = "Anotação Simples do Processo";
+                tableContainer.classList.add('hidden');
+                btnAction.className = "bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold px-2.5 py-1 rounded transition-colors flex items-center gap-1";
+                btnAction.innerHTML = `Configurar <i class="fa-solid fa-pen text-[8px]"></i>`;
+                btnAction.onclick = () => openConfigModal();
+            } else if (nodeData.linkType === 'external') {
+                iconWrapper.className = "bg-blue-100 text-blue-700 p-2 rounded-lg shrink-0 flex items-center justify-center";
+                iconEl.className = "fa-solid fa-earth-americas text-lg";
+                subTypeEl.innerText = "Sítio Web Externo Associado";
+                tableContainer.classList.add('hidden');
+                btnAction.className = "bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold px-2.5 py-1 rounded transition-colors flex items-center gap-1";
+                btnAction.innerHTML = `Ir para Link <i class="fa-solid fa-up-right-from-square text-[8px]"></i>`;
+                btnAction.onclick = () => window.open(nodeData.url, '_blank');
+            } else if (nodeData.linkType === 'internal-master') {
+                iconWrapper.className = "bg-emerald-100 text-emerald-700 p-2 rounded-lg shrink-0 flex items-center justify-center";
+                iconEl.className = "fa-solid fa-table text-lg";
+                subTypeEl.innerText = "Planilha Master de Indicadores";
+                tableContainer.classList.remove('hidden');
+                renderMasterPreviewMiniTable(nodeData.tabId);
+                btnAction.className = "bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold px-2.5 py-1 rounded transition-colors flex items-center gap-1";
+                btnAction.innerHTML = `Ver Planilha <i class="fa-solid fa-table text-[8px]"></i>`;
+                btnAction.onclick = () => accessMasterRow(nodeData.tabId);
+            } else if (nodeData.linkType === 'internal') {
+                iconWrapper.className = "bg-sky-100 text-sky-700 p-2 rounded-lg shrink-0 flex items-center justify-center";
+                iconEl.className = "fa-solid fa-folder-open text-lg";
+                subTypeEl.innerText = "Separador Auxiliar Interno";
+                const linkedTab = systemData.tabs.find(t => t.id === nodeData.tabId);
+                if (linkedTab) {
+                    tableContainer.classList.remove('hidden');
+                    renderMiniPreviewTable(linkedTab);
+                    btnAction.className = "bg-sky-600 hover:bg-sky-700 text-white text-[10px] font-bold px-2.5 py-1 rounded transition-colors flex items-center gap-1";
+                    btnAction.innerHTML = `Ver Separador <i class="fa-solid fa-eye text-[8px]"></i>`;
+                    btnAction.onclick = () => switchTab(linkedTab.id);
+                } else {
+                    tableContainer.classList.add('hidden');
+                }
+            }
+
+            const rect = element.getBoundingClientRect();
+            const canvasContainer = element.closest('.bg-slate-50');
+            const canvasRect = canvasContainer.getBoundingClientRect();
+            bubble.style.top = `${(rect.bottom - canvasRect.top) + canvasContainer.scrollTop + 8}px`;
+            bubble.style.left = `${(rect.left - canvasRect.left) + canvasContainer.scrollLeft + (rect.width / 2) - 175}px`;
+            bubble.classList.remove('hidden');
+        }
+
+        function renderMasterPreviewMiniTable(targetId) {
+            const tbody = document.getElementById("bubble-preview-table-body");
+            if (!tbody) return;
+            tbody.innerHTML = "";
+            let rowsToPreview = [];
+
+            if (targetId.startsWith("row-")) {
+                let r = systemData.masterSheet.find(row => row.id === targetId);
+                if (r) rowsToPreview.push(r);
+            } else if (targetId === "section-sat_motorista") {
+                rowsToPreview = systemData.masterSheet.filter(row => row.category === "SATISFAÇÃO DO MOTORISTA");
+            } else if (targetId === "section-perf_motorista") {
+                rowsToPreview = systemData.masterSheet.filter(row => row.category === "PERFORMANCE MOTORISTA");
+            }
+
+            if (rowsToPreview.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" class="p-2 text-center text-slate-400 italic">Sem dados.</td></tr>`;
+                return;
+            }
+
+            rowsToPreview.slice(0, 3).forEach(row => {
+                let activeValues = row.data.filter(v => v !== null && v !== undefined && !isNaN(v));
+                let valorRecente = activeValues.length ? formatCellValue(activeValues[activeValues.length - 1], row.type) : "Sem dados";
+                tbody.innerHTML += `
+                    <tr class="border-b border-slate-200">
+                        <td class="p-1.5 border-r border-slate-200 font-bold truncate max-w-[130px]">${row.name}</td>
+                        <td class="p-1.5 border-r border-slate-200 text-center font-semibold text-slate-700">${valorRecente}</td>
+                        <td class="p-1.5 text-center font-bold text-emerald-600">${row.meta}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderMiniPreviewTable(tab) {
+            const tbody = document.getElementById("bubble-preview-table-body");
+            if (!tbody) return;
+            tbody.innerHTML = "";
+            if (!tab.tableData || tab.tableData.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" class="p-2 text-center text-slate-400 italic">Vazio.</td></tr>`;
+                return;
+            }
+            tab.tableData.slice(0, 3).forEach(row => {
+                const keys = Object.keys(row);
+                tbody.innerHTML += `
+                    <tr class="border-b border-slate-200">
+                        <td class="p-1.5 border-r border-slate-200 truncate max-w-[90px] font-semibold">${row[keys[0]] || ''}</td>
+                        <td class="p-1.5 border-r border-slate-200 truncate max-w-[90px]">${row[keys[1]] || ''}</td>
+                        <td class="p-1.5 truncate max-w-[90px]">${row[keys[2]] || ''}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function accessMasterRow(targetId) {
+            switchTab('master-sheet-view');
+            closePreviewBubble();
+            setTimeout(() => {
+                let targetElement = targetId.startsWith("row-") ? document.getElementById(targetId) : (targetId === "section-sat_motorista" ? document.getElementById("row-sat-camila") : document.getElementById("row-perf-camila"));
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    targetElement.classList.add('row-highlight');
+                    setTimeout(() => targetElement.classList.remove('row-highlight'), 2000);
+                }
+            }, 300);
+        }
+
+        function copyCurrentLink() {
+            const data = systemData.nodes[activeNodeId];
+            if (!data) return;
+            let linkToCopy = data.linkType === 'external' ? data.url : (data.linkType === 'internal' ? `#${data.tabId}` : (data.linkType === 'internal-master' ? `Master: ${data.tabId}` : (data.desc || "")));
+            navigator.clipboard.writeText(linkToCopy).then(() => showToast("Copiado!"));
+        }
+
+        function closePreviewBubble() {
+            document.getElementById("link-preview-bubble").classList.add('hidden');
+            document.querySelectorAll('.node-card').forEach(n => n.classList.remove('node-selected'));
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#link-preview-bubble') && !e.target.closest('.node-card')) closePreviewBubble();
+        });
+
+        function openConfigModal() {
+            const data = systemData.nodes[activeNodeId];
+            if (!data) return;
+            document.getElementById("modal-node-title").innerText = data.name || "Configurar";
+            document.getElementById("config-node-name").value = data.name || "";
+            document.getElementById("config-node-desc").value = data.desc || "";
+
+            const tabSelect = document.getElementById("config-node-tab");
+            let selectOptions = `<optgroup label="Planilha Master">
+                <option value="row-disp_frota">Disponibilidade da Frota</option>
+                <option value="row-preco_l">Preço/Litro</option>
+                <option value="row-consumo_medio">Consumo Médio</option>
+                <option value="row-res_liquido">Resultado Líquido</option>
+                <option value="row-perc_combustivel">Porcentagem Combustível</option>
+            </optgroup>`;
+            if (systemData.tabs.length > 0) {
+                selectOptions += `<optgroup label="Auxiliares">`;
+                systemData.tabs.forEach(t => { selectOptions += `<option value="${t.id}">${t.name}</option>`; });
+                selectOptions += `</optgroup>`;
+            }
+            tabSelect.innerHTML = selectOptions;
+            selectLinkType(data.linkType);
+            document.getElementById("config-modal").classList.remove('hidden');
+            document.getElementById("sidebar-overlay").classList.remove('hidden');
+        }
+
+        function closeConfigModal() {
+            document.getElementById("config-modal").classList.add('hidden');
+            document.getElementById("sidebar-overlay").classList.add('hidden');
+        }
+
+        function selectLinkType(type) {
+            selectedLinkType = type;
+            document.querySelectorAll('.link-type-btn').forEach(btn => {
+                btn.className = "link-type-btn text-[10px] font-bold py-1.5 px-3 rounded text-center text-slate-600";
+            });
+            let visualType = type === 'internal-master' ? 'internal' : type;
+            const activeBtn = document.getElementById(`btn-link-${visualType}`);
+            if (activeBtn) activeBtn.className = "link-type-btn text-[10px] font-bold py-1.5 px-3 rounded text-center bg-white shadow-sm text-slate-800";
+
+            document.getElementById("link-input-external").classList.add('hidden');
+            document.getElementById("link-input-internal").classList.add('hidden');
+            if (type === 'external') document.getElementById("link-input-external").classList.remove('hidden');
+            if (['internal', 'internal-master'].includes(type)) document.getElementById("link-input-internal").classList.remove('hidden');
+        }
+
+        function saveNodeConfig(event) {
+            event.preventDefault();
+            const data = systemData.nodes[activeNodeId];
+            if (!data) return;
+            data.name = document.getElementById("config-node-name").value;
+            data.desc = document.getElementById("config-node-desc").value;
+            let finalLinkType = selectedLinkType;
+            let val = document.getElementById("config-node-tab").value;
+            if (selectedLinkType === 'internal' && (val.startsWith("row-") || val.startsWith("section-"))) finalLinkType = "internal-master";
+            data.linkType = finalLinkType;
+            if (finalLinkType === 'external') data.url = document.getElementById("config-node-url").value;
+            else data.tabId = val;
+
+            saveAllData();
+            applyNodeStylingAndData();
+            closeConfigModal();
+            closePreviewBubble();
+            showToast("Alterações salvas!");
+        }
+
+        function createCustomTab(event) {
+            event.preventDefault();
+            const name = document.getElementById("new-tab-name").value.trim();
+            const icon = document.getElementById("new-tab-icon").value;
+            if (!name) return;
+            systemData.tabs.push({ id: `custom-tab-${Date.now()}`, name: name, icon: icon, notes: "", tableData: [] });
+            saveAllData();
+            renderCustomTabsList();
+            renderDynamicTabsMenu();
+            document.getElementById("new-tab-name").value = "";
+            showToast("Criado!");
+        }
+
+        function renderCustomTabsList() {
+            const container = document.getElementById("custom-tabs-list");
+            if (!container) return;
+            if (systemData.tabs.length === 0) { container.innerHTML = `<div class="text-slate-400 text-xs text-center py-8">Nenhum.</div>`; return; }
+            container.innerHTML = systemData.tabs.map(tab => `
+                <div class="flex items-center justify-between p-3 bg-slate-50 border rounded-lg">
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded bg-blue-50 text-blue-600 flex items-center justify-center text-sm"><i class="fa-solid ${tab.icon}"></i></span>
+                        <div><h4 class="font-bold text-xs">${tab.name}</h4></div>
+                    </div>
+                    <button onclick="switchTab('${tab.id}')" class="bg-blue-50 text-blue-600 px-2 py-1 rounded text-[10px] font-bold">Abrir</button>
+                </div>
+            `).join('');
+        }
+
+        function renderDynamicTabsMenu() {
+            document.querySelectorAll(".dynamic-header-tab, .dynamic-tab-section").forEach(el => el.remove());
+            const nav = document.querySelector("nav");
+            const main = document.querySelector("main");
+            if (!nav || !main) return;
+
+            systemData.tabs.forEach(tab => {
+                const btn = document.createElement("button");
+                btn.id = `btn-${tab.id}`;
+                btn.className = "tab-btn dynamic-header-tab px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all";
+                btn.onclick = () => switchTab(tab.id);
+                btn.innerHTML = `<i class="fa-solid ${tab.icon} mr-1.5"></i>${tab.name}`;
+                nav.appendChild(btn);
+
+                const section = document.createElement("div");
+                section.id = `tab-${tab.id}`;
+                section.className = "tab-content dynamic-tab-section flex-grow hidden flex-col overflow-auto p-5";
+                section.innerHTML = `
+                    <div class="bg-white p-5 rounded-xl border flex flex-col h-full gap-4 max-w-7xl mx-auto w-full">
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <h2 class="text-sm font-bold">${tab.name}</h2>
+                            <button onclick="switchTab('diagram-view')" class="bg-slate-100 text-slate-700 text-[10px] font-bold px-2.5 py-1.5 rounded-lg">Voltar</button>
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 flex-grow overflow-auto">
+                            <div class="bg-slate-50 p-4 border rounded-lg flex flex-col gap-2">
+                                <textarea id="custom-notes-${tab.id}" class="flex-grow w-full text-xs bg-white border border-slate-200 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700 leading-relaxed resize-none">${tab.notes || ""}</textarea>
+                                <button onclick="saveCustomTabNotes('${tab.id}')" class="bg-slate-800 text-white text-[10px] font-bold py-2 rounded-lg">Salvar Notas</button>
+                            </div>
+                            <div class="lg:col-span-2 flex flex-col gap-3">
+                                <form onsubmit="addTableRow(event, '${tab.id}')" class="grid grid-cols-3 gap-2 bg-slate-50 p-3 border rounded-lg">
+                                    <input type="text" placeholder="Ref" required name="col1" class="border text-xs rounded p-1.5">
+                                    <input type="text" placeholder="Result" required name="col2" class="border text-xs rounded p-1.5">
+                                    <input type="text" placeholder="Meta" required name="col3" class="border text-xs rounded p-1.5">
+                                    <button type="submit" class="col-span-3 bg-blue-600 text-white py-1 rounded text-[10px]">Adicionar Registo</button>
+                                </form>
+                                <div class="border rounded-lg overflow-auto flex-grow"><table class="w-full text-[11px]" id="table-custom-${tab.id}"></table></div>
+                            </div>
+                        </div>
+                    </div>`;
+                main.appendChild(section);
+                renderCustomTabTable(tab.id);
+            });
+        }
+
+        function saveCustomTabNotes(tabId) {
+            const tab = systemData.tabs.find(t => t.id === tabId);
+            if (tab) { tab.notes = document.getElementById(`custom-notes-${tabId}`).value; saveAllData(); showToast("Salvo!"); }
+        }
+
+        function addTableRow(event, tabId) {
+            event.preventDefault();
+            const form = event.target;
+            const tab = systemData.tabs.find(t => t.id === tabId);
+            if (!tab) return;
+            const formData = new FormData(form);
+            tab.tableData.push({ "Mês / Referência": formData.get("col1"), "Resultado": formData.get("col2"), "Meta": formData.get("col3") });
+            saveAllData(); form.reset(); renderCustomTabTable(tabId); showToast("Adicionado!");
+        }
+
+        function renderCustomTabTable(tabId) {
+            const table = document.getElementById(`table-custom-${tabId}`);
+            const tab = systemData.tabs.find(t => t.id === tabId);
+            if (!tab || !table) return;
+            if (tab.tableData.length === 0) { table.innerHTML = `<tr><td class="p-4 text-center text-slate-400 italic text-xs">Vazio.</td></tr>`; return; }
+            const headers = Object.keys(tab.tableData[0]);
+            let html = `<tr class="bg-slate-100 font-bold border-b text-[10px]">`;
+            headers.forEach(h => html += `<th class="p-2 border-r">${h}</th>`);
+            html += `<th class="p-2 text-center">Ações</th></tr>`;
+            tab.tableData.forEach((row, rIdx) => {
+                html += `<tr class="border-b bg-white text-slate-600">`;
+                headers.forEach(h => html += `<td class="p-2 border-r">${row[h] || ''}</td>`);
+                html += `<td class="p-1 text-center"><button onclick="removeTableRow('${tabId}', ${rIdx})" class="text-slate-400 hover:text-red-600"><i class="fa-solid fa-trash-can"></i></button></td></tr>`;
+            });
+            table.innerHTML = html;
+        }
+
+        function removeTableRow(tabId, index) {
+            const tab = systemData.tabs.find(t => t.id === tabId);
+            if (tab) { tab.tableData.splice(index, 1); saveAllData(); renderCustomTabTable(tabId); }
+        }
+
+        function exportDiagramData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(systemData, null, 2));
+            const a = document.createElement('a'); a.setAttribute("href", dataStr); a.setAttribute("download", "promap_backup.json"); a.click();
+        }
+
+        function importDiagramData(event) {
+            const file = event.target.files[0]; if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function() {
+                try {
+                    let parsed = JSON.parse(reader.result);
+                    if (parsed.nodes && parsed.tabs) {
+                        systemData = parsed; saveAllData(); applyNodeStylingAndData();
+                        renderCustomTabsList(); renderDynamicTabsMenu(); renderMasterSpreadsheet();
+                        showToast("Importado!"); switchTab('diagram-view');
+                    }
+                } catch (e) { showToast("Erro."); }
+            };
+            reader.readAsText(file);
+        }
+
+        function closeAllModals() { closeConfigModal(); closeConfirmModal(); }
+
+        function obterUltimoMesComDados(row) {
+            const mesesNomes = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+            for (let i = 11; i >= 0; i--) {
+                let val = row.data[i];
+                if (val !== null && val !== undefined && !isNaN(val)) {
+                    return formatCellValue(val, row.type) + ` (${mesesNomes[i]})`;
+                }
+            }
+            return "Sem dados";
+        }
+
+        function triggerResetDefault() {
+            localStorage.removeItem("ProMap_Indicadores_DB_v12");
+            location.reload();
+        }
+
+        // EXPOSIÇÃO DAS FUNÇÕES PARA O ESCOPO WINDOW
+        window.switchTab = switchTab;
+        window.adjustZoom = adjustZoom;
+        window.resetZoom = resetZoom;
+        window.handleNodeClick = handleNodeClick;
+        window.copyCurrentLink = copyCurrentLink;
+        window.openConfigModal = openConfigModal;
+        window.closePreviewBubble = closePreviewBubble;
+        window.editMasterCell = editMasterCell;
+        window.saveNodeConfig = saveNodeConfig;
+        window.createCustomTab = createCustomTab;
+        window.saveCustomTabNotes = saveCustomTabNotes;
+        window.addTableRow = addTableRow;
+        window.removeTableRow = removeTableRow;
+        window.exportDiagramData = exportDiagramData;
+        window.importDiagramData = importDiagramData;
+        window.closeAllModals = closeAllModals;
+        window.accessMasterRow = accessMasterRow;
+        window.obterUltimoMesComDados = obterUltimoMesComDados;
+        window.triggerResetDefault = triggerResetDefault;
+
+        initAuth();
+    </script>
+</body>
+</html>
