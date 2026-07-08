@@ -835,7 +835,7 @@
             "controle_combustivel": { name: "CONTROLE DE COMBUSTÍVEL", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "perc_combustivel": { name: "Percentual Combustível x Faturamento líquido", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-perc_combustivel", desc: "Combustível face ao faturamento líquido." },
             "preco_l": { name: "Preço/L", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-preco_l", desc: "Preço médio por litro de combustível." },
-            "consumo_medio": { name: "Consumo médio", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-consumo_medio", desc: "Consumo médio geral da frota." },
+            "consumo_medio": { name: "Consumo médio", type: "color-indicator", linkType: "internal-master", url: "row-consumo_medio", tabId: "", desc: "Consumo médio geral da frota." },
             "controle_pedagio": { name: "CONTROLE DE PEDÁGIO", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "Subprocesso de monitoramento de despesas de pedágios." },
             "conferencia_pedagio": { name: "Conferência de pedágio", type: "color-indicator", linkType: "none", url: "", tabId: "", desc: "Mapeamento da conferência periódica de pedágio." },
             "fech_resultados": { name: "FECHAMENTO DE RESULTADOS", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
@@ -854,7 +854,6 @@
             "gestao_sinistro": { name: "GESTÃO DE SINISTRO", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "Controle operacional de sinistros." }
         };
 
-        // --- PLANILHA ATUALIZADA EXATAMENTE IGUAL À IMAGEM ---
         const DEFAULT_MASTER_SHEET_DATA = [
             { id: "row-disp_frota", category: "INDICADORES", name: "DISPONIBILIDADE DA FROTA", responsible: "JOÃO RICARDO", meta: "25 DIAS MÊS", type: "number", data: [22, 22, 22, 20, 24, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-preco_l", category: "INDICADORES", name: "PREÇO/LITRO", responsible: "PABLO", meta: "R$ 5,69 (2025)", type: "currency", data: [5.73, 5.68, 6.70, 7.14, 6.80, null, null, null, null, null, null, null], formula: "avg" },
@@ -1059,13 +1058,17 @@
                         } else if (metaString.includes(">")) {
                             let metaValue = parseFloat(metaString.replace(">", "").replace("%", "").trim());
                             if (val < metaValue) isMetaAtingida = false;
-                        } else if (metaString.includes("%") && metaString !== "100%" && metaString !== "70%") {
+                        } else if (metaString.includes("%") && metaString !== "100%" && metaString !== "70%" && metaString !== "80%" && metaString !== "90%") {
                             let metaValue = parseFloat(metaString.replace("%", "").trim());
                             if (val < metaValue) isMetaAtingida = false;
-                        } else if (metaString === "100%") {
-                            if (val < 100) isMetaAtingida = false;
+                        } else if (metaString === "100%" || metaString === ">10%") {
+                            if (val < 100 && val < 10) isMetaAtingida = false;
                         } else if (metaString === "70%") {
                             if (val < 70) isMetaAtingida = false;
+                        } else if (metaString === "80%") {
+                            if (val < 80) isMetaAtingida = false;
+                        } else if (metaString === "90%") {
+                            if (val < 90) isMetaAtingida = false;
                         } else if (metaString === "1") {
                             if (val < 1) isMetaAtingida = false;
                         } else if (metaString === "0") {
@@ -1086,8 +1089,9 @@
                     monthsHtml += `<td class="${cellClass}" ondblclick="editMasterCell(${rowIndex}, ${i}, this)">${displayVal}</td>`;
                 }
 
+                // --- SUPORTE COMPLETO PARA PINTAR TODAS AS METAS OPERACIONAIS EM VERDE ---
                 let rowMetaHtml = `<span class="font-bold text-slate-700">${row.meta}</span>`;
-                if (["25 DIAS MÊS", "R$ 5,69 (2025)", "1,86", "100%", "80%", "90%", "0", "1", "70%", "9,00"].includes(row.meta)) {
+                if (["25 DIAS MÊS", "R$ 5,69 (2025)", "1,86", "100%", "80%", "90%", ">10%", "<35%", "0", "1", "70%", "9,00"].includes(row.meta)) {
                     rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">${row.meta}</span>`;
                 }
                 let respHtml = row.responsible ? `<span class="bg-blue-100 text-blue-700 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">${row.responsible}</span>` : "";
