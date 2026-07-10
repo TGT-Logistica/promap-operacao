@@ -825,7 +825,6 @@
             "fech_resultados": { name: "FECHAMENTO DE RESULTADOS", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
             "fech_jornada": { name: "FECHAMENTO JORNADA MOTORISTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "perf_motorista": { name: "Performance motorista", type: "color-indicator", linkType: "internal-master", url: "section-perf_motorista", tabId: "", desc: "Performance operacional." },
-            "fech_mensal_frota": { name: "FECHAMENTO MENSAL FROTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "res_liquido": { name: "Resultado líquido", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-res_liquido", desc: "Resultado líquido operacional acumulado." },
             "fech_clientes_frota": { name: "FECHAMENTO MENSAL CLIENTES/FROTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "ineficiencias_carga": { name: "Ineficiências de carga e descarga e diárias", type: "color-to-develop", linkType: "none", url: "", tabId: "", desc: "" },
@@ -838,7 +837,7 @@
             "gestao_sinistro": { name: "GESTÃO DE SINISTRO", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "Controle operacional de sinistros." }
         };
 
-        // --- METAS ALINHADAS PARA 110% E 1 ---
+        // --- BANCO DE DADOS ATUALIZADO ---
         const DEFAULT_MASTER_SHEET_DATA = [
             { id: "row-disp_frota", category: "INDICADORES", name: "DISPONIBILIDADE DA FROTA", responsible: "JOÃO RICARDO", meta: "25 DIAS MÊS", type: "number", data: [22, 22, 22, 20, 24, 23, null, null, null, null, null, null], formula: "avg" },
             { id: "row-res_liquido", category: "INDICADORES", name: "RESULTADO LÍQUIDO", responsible: "JAQUELINE", meta: "110%", type: "currency", data: [5.73, 5.68, 6.70, 7.14, 6.80, 6.70, null, null, null, null, null, null], formula: "avg" },
@@ -920,6 +919,33 @@
             }
         }
 
+        function forceDataIntegrity() {
+            let hasChanges = false;
+            if (systemData && systemData.masterSheet && Array.isArray(systemData.masterSheet)) {
+                // Remove as linhas antigas que persistiram na nuvem
+                let cleanList = systemData.masterSheet.filter(row => row.id !== "row-preco_l" && row.id !== "row-consumo_medio");
+                if (cleanList.length !== systemData.masterSheet.length) {
+                    systemData.masterSheet = cleanList;
+                    hasChanges = true;
+                }
+                
+                // Força as novas metas diretamente no objeto se ele vier com o histórico desatualizado
+                let rowRes = systemData.masterSheet.find(r => r.id === "row-res_liquido");
+                if (rowRes && (rowRes.meta === "100%" || rowRes.meta === ">10%")) {
+                    rowRes.meta = "110%";
+                    hasChanges = true;
+                }
+                let rowCap = systemData.masterSheet.find(r => r.id === "row-capitacao_sub");
+                if (rowCap && (rowCap.meta === "80%" || rowCap.meta === "80%")) {
+                    rowCap.meta = "1";
+                    hasChanges = true;
+                }
+            }
+            if (hasChanges) {
+                saveAllData();
+            }
+        }
+
         function startSync() {
             if (isOfflineMode || !currentUser) return;
             const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'promap_store', 'systemData');
@@ -931,8 +957,8 @@
                         try {
                             const parsed = JSON.parse(cloudData.payload);
                             if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet)) {
-                                parsed.masterSheet = parsed.masterSheet.filter(row => row.id !== "row-preco_l" && row.id !== "row-consumo_medio");
                                 systemData = parsed;
+                                forceDataIntegrity();
                             }
                             applyNodeStylingAndData();
                             renderCustomTabsList();
@@ -958,8 +984,8 @@
                 try {
                     let parsed = JSON.parse(saved);
                     if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet)) {
-                        parsed.masterSheet = parsed.masterSheet.filter(row => row.id !== "row-preco_l" && row.id !== "row-consumo_medio");
                         systemData = parsed;
+                        forceDataIntegrity();
                     }
                 } catch(e) {}
             }
@@ -976,8 +1002,8 @@
                 try {
                     let parsed = JSON.parse(saved);
                     if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet)) {
-                        parsed.masterSheet = parsed.masterSheet.filter(row => row.id !== "row-preco_l" && row.id !== "row-consumo_medio");
                         systemData = parsed;
+                        forceDataIntegrity();
                     }
                 } catch(e) {}
             } else {
@@ -1081,7 +1107,7 @@
                     monthsHtml += `<td class="${cellClass}" ondblclick="editMasterCell(${rowIndex}, ${i}, this)">${displayVal}</td>`;
                 }
 
-                // --- SISTEMA BLINDADO PARA FORÇAR O VERDE ---
+                // --- SUPORTE BLINDADO PARA CORES VERDES ---
                 let rowMetaHtml = `<span class="font-bold text-slate-700">${row.meta}</span>`;
                 if (["25 DIAS MÊS", "100%", "110%", "80%", "90%", "0", "1", "70%", "9,00", "<35%", ">10%"].includes(row.meta)) {
                     rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">${row.meta}</span>`;
@@ -1531,46 +1557,7 @@
             if (tab) { tab.tableData.splice(index, 1); saveAllData(); renderCustomTabTable(tabId); }
         }
 
-        function exportDiagramData() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(systemData, null, 2));
-            const a = document.createElement('a'); a.setAttribute("href", dataStr); a.setAttribute("download", "promap_backup.json"); a.click();
-        }
-
-        function importDiagramData(event) {
-            const file = event.target.files[0]; if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function() {
-                try {
-                    let parsed = JSON.parse(reader.result);
-                    if (parsed.nodes && parsed.tabs) {
-                        systemData = parsed; saveAllData(); applyNodeStylingAndData();
-                        renderCustomTabsList(); renderDynamicTabsMenu(); renderMasterSpreadsheet();
-                        showToast("Importado!"); switchTab('diagram-view');
-                    }
-                } catch (e) { showToast("Erro."); }
-            };
-            reader.readAsText(file);
-        }
-
-        function closeAllModals() { closeConfigModal(); closeConfirmModal(); }
-
-        function obterUltimoMesComDados(row) {
-            const mesesNomes = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
-            for (let i = 11; i >= 0; i--) {
-                let val = row.data[i];
-                if (val !== null && val !== undefined && !isNaN(val)) {
-                    return formatCellValue(val, row.type) + ` (${mesesNomes[i]})`;
-                }
-            }
-            return "Sem dados";
-        }
-
-        function triggerResetDefault() {
-            localStorage.removeItem("ProMap_Indicadores_DB_v12");
-            location.reload();
-        }
-
-        // EXPOSIÇÃO DAS FUNÇÕES PARA O ESCOPO WINDOW
+        // NOVO CORRETOR AUTOMÁTICO DE NUVEM SEGUIDO POR ENVIO FORÇADO
         window.switchTab = switchTab;
         window.adjustZoom = adjustZoom;
         window.resetZoom = resetZoom;
@@ -1588,7 +1575,6 @@
         window.importDiagramData = importDiagramData;
         window.closeAllModals = closeAllModals;
         window.accessMasterRow = accessMasterRow;
-        window.obterUltimoMesComDados = obterUltimoMesComDados;
         window.triggerResetDefault = triggerResetDefault;
 
         initAuth();
