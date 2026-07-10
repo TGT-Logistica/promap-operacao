@@ -348,20 +348,6 @@
                                                                         <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                                     </div>
                                                                 </div>
-                                                                <ul>
-                                                                    <li>
-                                                                        <div id="node-preco_l" onclick="handleNodeClick('preco_l', event)" class="w-[75px] text-center p-1 text-[8px] font-bold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer relative node-card leading-tight">
-                                                                            <span class="node-text">Preço/L</span>
-                                                                            <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                                                                        </div>
-                                                                    </li>
-                                                                    <li>
-                                                                        <div id="node-consumo_medio" onclick="handleNodeClick('consumo_medio', event)" class="w-[75px] text-center p-1 text-[8px] font-bold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer relative node-card leading-tight">
-                                                                            <span class="node-text">Consumo médio</span>
-                                                                            <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                                                                        </div>
-                                                                    </li>
-                                                                </ul>
                                                             </li>
                                                         </ul>
                                                     </td>
@@ -834,8 +820,6 @@
             "sat_motorista": { name: "Satisfação do motorista", type: "color-indicator", linkType: "internal-master", url: "section-sat_motorista", tabId: "", desc: "Satisfação dos motoristas." },
             "controle_combustivel": { name: "CONTROLE DE COMBUSTÍVEL", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "perc_combustivel": { name: "Percentual Combustível x Faturamento líquido", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-perc_combustivel", desc: "Combustível face ao faturamento líquido." },
-            "preco_l": { name: "Preço/L", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-preco_l", desc: "Preço médio por litro de combustível." },
-            "consumo_medio": { name: "Consumo médio", type: "color-indicator", linkType: "internal-master", url: "row-consumo_medio", tabId: "", desc: "Consumo médio geral da frota." },
             "controle_pedagio": { name: "CONTROLE DE PEDÁGIO", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "Subprocesso de monitoramento de despesas de pedágios." },
             "conferencia_pedagio": { name: "Conferência de pedágio", type: "color-indicator", linkType: "none", url: "", tabId: "", desc: "Mapeamento da conferência periódica de pedágio." },
             "fech_resultados": { name: "FECHAMENTO DE RESULTADOS", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
@@ -854,15 +838,13 @@
             "gestao_sinistro": { name: "GESTÃO DE SINISTRO", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "Controle operacional de sinistros." }
         };
 
-        // --- BANCO DE DADOS RECALIBRADO CONFORME A SUA TABELA ---
+        // --- BANCO DE DADOS ATUALIZADO SEM PREÇO/LITRO E SEM CONSUMO MÉDIO ---
         const DEFAULT_MASTER_SHEET_DATA = [
             { id: "row-disp_frota", category: "INDICADORES", name: "DISPONIBILIDADE DA FROTA", responsible: "JOÃO RICARDO", meta: "25 DIAS MÊS", type: "number", data: [22, 22, 22, 20, 24, 23, null, null, null, null, null, null], formula: "avg" },
             { id: "row-res_liquido", category: "INDICADORES", name: "RESULTADO LÍQUIDO", responsible: "JAQUELINE", meta: "110%", type: "currency", data: [5.73, 5.68, 6.70, 7.14, 6.80, 6.70, null, null, null, null, null, null], formula: "avg" },
             { id: "row-eficiencia_gestores", category: "INDICADORES", name: "EFICIÊNCIA RESULTADO GESTORES", responsible: "JAQUELINE", meta: "0", type: "decimal", data: [1.85, 1.83, 1.82, 1.86, 1.84, 1.83, null, null, null, null, null, null], formula: "avg" },
             { id: "row-capitacao_sub", category: "INDICADORES", name: "CAPTAÇÃO DE SUBCONTRATADO", responsible: "JAQUELINE", meta: "1", type: "percentage", data: [115, 116, 81, 131, 115, 123, null, null, null, null, null, null], formula: "avg" },
             { id: "row-perc_combustivel", category: "INDICADORES", name: "PORCENTAGEM COMBUSTIVEL/RESULTADO LIQUIDO", responsible: "PABLO", meta: "<35%", type: "percentage", data: [65, 62, 85, 61, 61, 54, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-preco_l", category: "INDICADORES", name: "PREÇO/LITRO", responsible: "PABLO", meta: "R$ 5,69 (2025)", type: "decimal", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-consumo_medio", category: "INDICADORES", name: "CONSUMO MÉDIO", responsible: "PABLO", meta: "1,86", type: "decimal", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-analise_rotas", category: "INDICADORES", name: "ANÁLISE DE ROTAS SUBCONTRATADAS", responsible: "PABLO", meta: "70%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-manutencao_folga", category: "INDICADORES", name: "MANUTENÇÃO PÓS FOLGA SEM ADIAR RETORNO", responsible: "LEONARDO", meta: "0", type: "number", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
             
@@ -948,7 +930,9 @@
                     if (cloudData && cloudData.payload) {
                         try {
                             const parsed = JSON.parse(cloudData.payload);
-                            if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet) && parsed.masterSheet.length > 0) {
+                            // Filtro de segurança forçado para garantir remoção definitiva dos campos excluídos na nuvem
+                            if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet)) {
+                                parsed.masterSheet = parsed.masterSheet.filter(row => row.id !== "row-preco_l" && row.id !== "row-consumo_medio");
                                 systemData = parsed;
                             }
                             applyNodeStylingAndData();
@@ -974,7 +958,8 @@
             if (saved) {
                 try {
                     let parsed = JSON.parse(saved);
-                    if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet) && parsed.masterSheet.length > 0) {
+                    if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet)) {
+                        parsed.masterSheet = parsed.masterSheet.filter(row => row.id !== "row-preco_l" && row.id !== "row-consumo_medio");
                         systemData = parsed;
                     }
                 } catch(e) {}
@@ -987,15 +972,20 @@
         }
 
         const initAuth = async () => {
+            // Inicialização blindada local ignorando as chaves deletadas do histórico anterior
             let saved = localStorage.getItem("ProMap_Indicadores_DB_v12");
             if (saved) {
                 try {
                     let parsed = JSON.parse(saved);
-                    if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet) && parsed.masterSheet.length > 0) {
+                    if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet)) {
+                        parsed.masterSheet = parsed.masterSheet.filter(row => row.id !== "row-preco_l" && row.id !== "row-consumo_medio");
                         systemData = parsed;
                     }
                 } catch(e) {}
+            } else {
+                systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
             }
+            
             applyNodeStylingAndData();
             renderCustomTabsList();
             renderDynamicTabsMenu();
@@ -1026,6 +1016,11 @@
             if (!tbody) return;
             tbody.innerHTML = "";
             
+            // Filtro dinâmico para garantir que as linhas deletadas nunca apareçam por falha de cache local
+            if (systemData.masterSheet && Array.isArray(systemData.masterSheet)) {
+                systemData.masterSheet = systemData.masterSheet.filter(row => row.id !== "row-preco_l" && row.id !== "row-consumo_medio");
+            }
+
             if (!systemData.masterSheet || !Array.isArray(systemData.masterSheet) || systemData.masterSheet.length === 0) {
                 systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
             }
@@ -1063,7 +1058,6 @@
                             let metaValue = parseFloat(metaString.replace("%", "").trim());
                             if (val < metaValue) isMetaAtingida = false;
                         } else if (metaString === "110%") {
-                            // No caso de dinheiro ou contagem direta, aceita o valor original sem multiplicar
                             if (val < 110 && val < 5.5) isMetaAtingida = false;
                         } else if (metaString === "100%") {
                             if (val < 100) isMetaAtingida = false;
@@ -1077,13 +1071,11 @@
                             if (val < 1) isMetaAtingida = false;
                         } else if (metaString === "0") {
                             if (val > 0) isMetaAtingida = false;
-                        } else if (row.category === "SATISFAÇÃO DO MOTORISTA" || row.id === "row-consumo_medio" || row.id === "row-eficiencia_gestores") {
+                        } else if (row.category === "SATISFAÇÃO DO MOTORISTA") {
                             let metaValue = parseFloat(row.meta.replace(",", "."));
                             if (val < metaValue) isMetaAtingida = false;
                         } else if (row.id === "row-disp_frota") {
                             if (val < 25) isMetaAtingida = false;
-                        } else if (row.id === "row-preco_l") {
-                            if (val > 5.69) isMetaAtingida = false;
                         }
 
                         if (!isMetaAtingida) {
@@ -1093,8 +1085,9 @@
                     monthsHtml += `<td class="${cellClass}" ondblclick="editMasterCell(${rowIndex}, ${i}, this)">${displayVal}</td>`;
                 }
 
+                // --- SUPORTE COMPLETO PARA GARANTIR TODAS AS METAS EM VERDE (INCLUINDO AS CAIXAS ANTIGAS DO SEU PRINT) ---
                 let rowMetaHtml = `<span class="font-bold text-slate-700">${row.meta}</span>`;
-                if (["25 DIAS MÊS", "R$ 5,69 (2025)", "1,86", "100%", "110%", "80%", "90%", "0", "1", "70%", "9,00"].includes(row.meta)) {
+                if (["25 DIAS MÊS", "100%", "110%", "80%", "90%", "0", "1", "70%", "9,00", "<35%"].includes(row.meta)) {
                     rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">${row.meta}</span>`;
                 }
                 let respHtml = row.responsible ? `<span class="bg-blue-100 text-blue-700 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">${row.responsible}</span>` : "";
@@ -1376,8 +1369,6 @@
             const tabSelect = document.getElementById("config-node-tab");
             let selectOptions = `<optgroup label="Planilha Master">
                 <option value="row-disp_frota">Disponibilidade da Frota</option>
-                <option value="row-preco_l">Preço/Litro</option>
-                <option value="row-consumo_medio">Consumo Médio</option>
                 <option value="row-res_liquido">Resultado Líquido</option>
                 <option value="row-perc_combustivel">Porcentagem Combustível</option>
                 <option value="row-capitacao_sub">Captação de Subcontratado</option>
