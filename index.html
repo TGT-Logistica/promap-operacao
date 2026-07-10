@@ -922,16 +922,14 @@
         function forceDataIntegrity() {
             let hasChanges = false;
             if (systemData && systemData.masterSheet && Array.isArray(systemData.masterSheet)) {
-                // Remove as linhas antigas que persistiram na nuvem
                 let cleanList = systemData.masterSheet.filter(row => row.id !== "row-preco_l" && row.id !== "row-consumo_medio");
                 if (cleanList.length !== systemData.masterSheet.length) {
                     systemData.masterSheet = cleanList;
                     hasChanges = true;
                 }
                 
-                // Força as novas metas diretamente no objeto se ele vier com o histórico desatualizado
                 let rowRes = systemData.masterSheet.find(r => r.id === "row-res_liquido");
-                if (rowRes && (rowRes.meta === "100%" || rowRes.meta === ">10%")) {
+                if (rowRes && (rowRes.meta === "100%" || rowRes.meta === ">10%" || rowRes.meta === "90%")) {
                     rowRes.meta = "110%";
                     hasChanges = true;
                 }
@@ -1080,15 +1078,14 @@
                         } else if (metaString.includes("%") && metaString !== "100%" && metaString !== "110%" && metaString !== "70%" && metaString !== "80%" && metaString !== "90%") {
                             let metaValue = parseFloat(metaString.replace("%", "").trim());
                             if (val < metaValue) isMetaAtingida = false;
-                        } else if (metaString === "110%" || metaString === ">10%") {
+                        } else if (metaString === "110%" || metaString === ">10%" || metaString === "90%") {
                             if (val < 110 && val < 10) isMetaAtingida = false;
                         } else if (metaString === "100%") {
                             if (val < 100) isMetaAtingida = false;
                         } else if (metaString === "70%") {
                             if (val < 70) isMetaAtingida = false;
-                        } else if (metaString === "80%" || metaString === "90%") {
-                            let numMeta = parseFloat(metaString.replace("%", ""));
-                            if (val < numMeta) isMetaAtingida = false;
+                        } else if (metaString === "80%") {
+                            if (val < 80) isMetaAtingida = false;
                         } else if (metaString === "1") {
                             if (val < 1) isMetaAtingida = false;
                         } else if (metaString === "0") {
@@ -1107,7 +1104,6 @@
                     monthsHtml += `<td class="${cellClass}" ondblclick="editMasterCell(${rowIndex}, ${i}, this)">${displayVal}</td>`;
                 }
 
-                // --- SUPORTE BLINDADO PARA CORES VERDES ---
                 let rowMetaHtml = `<span class="font-bold text-slate-700">${row.meta}</span>`;
                 if (["25 DIAS MÊS", "100%", "110%", "80%", "90%", "0", "1", "70%", "9,00", "<35%", ">10%"].includes(row.meta)) {
                     rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">${row.meta}</span>`;
@@ -1557,7 +1553,46 @@
             if (tab) { tab.tableData.splice(index, 1); saveAllData(); renderCustomTabTable(tabId); }
         }
 
-        // NOVO CORRETOR AUTOMÁTICO DE NUVEM SEGUIDO POR ENVIO FORÇADO
+        function exportDiagramData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(systemData, null, 2));
+            const a = document.createElement('a'); a.setAttribute("href", dataStr); a.setAttribute("download", "promap_backup.json"); a.click();
+        }
+
+        function importDiagramData(event) {
+            const file = event.target.files[0]; if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function() {
+                try {
+                    let parsed = JSON.parse(reader.result);
+                    if (parsed.nodes && parsed.tabs) {
+                        systemData = parsed; saveAllData(); applyNodeStylingAndData();
+                        renderCustomTabsList(); renderDynamicTabsMenu(); renderMasterSpreadsheet();
+                        showToast("Importado!"); switchTab('diagram-view');
+                    }
+                } catch (e) { showToast("Erro."); }
+            };
+            reader.readAsText(file);
+        }
+
+        function closeAllModals() { closeConfigModal(); closeConfirmModal(); }
+
+        function obterUltimoMesComDados(row) {
+            const mesesNomes = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+            for (let i = 11; i >= 0; i--) {
+                let val = row.data[i];
+                if (val !== null && val !== undefined && !isNaN(val)) {
+                    return formatCellValue(val, row.type) + ` (${mesesNomes[i]})`;
+                }
+            }
+            return "Sem dados";
+        }
+
+        function triggerResetDefault() {
+            localStorage.removeItem("ProMap_Indicadores_DB_v12");
+            location.reload();
+        }
+
+        // EXPOSIÇÃO CORRETA DE TODAS AS FUNÇÕES NO ESCOPO WINDOW
         window.switchTab = switchTab;
         window.adjustZoom = adjustZoom;
         window.resetZoom = resetZoom;
@@ -1575,6 +1610,7 @@
         window.importDiagramData = importDiagramData;
         window.closeAllModals = closeAllModals;
         window.accessMasterRow = accessMasterRow;
+        window.obterUltimoMesComDados = obterUltimoMesComDados;
         window.triggerResetDefault = triggerResetDefault;
 
         initAuth();
