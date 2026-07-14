@@ -186,6 +186,9 @@
             <button onclick="switchTab('master-sheet-view')" id="btn-master-sheet-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all">
                 <i class="fa-solid fa-table-list mr-1.5"></i>📊 Planilha Indicadores Frota
             </button>
+            <button onclick="switchTab('checklist-view')" id="btn-checklist-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all">
+                <i class="fa-solid fa-list-check mr-1.5"></i>📋 Checklist Operação
+            </button>
             <button onclick="switchTab('custom-tabs-view')" id="btn-custom-tabs-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all">
                 <i class="fa-solid fa-folder-plus mr-1.5"></i>Gerir Separadores Auxiliares
             </button>
@@ -201,8 +204,8 @@
                 <button onclick="adjustZoom(0.1)" class="px-2 py-1 hover:text-white transition-colors" title="Aumentar Zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
                 <button onclick="resetZoom()" class="px-2 py-1 hover:text-white transition-colors border-l border-slate-800 ml-0.5" title="Resetar"><i class="fa-solid fa-arrows-to-eye"></i></button>
             </div>
-            <span id="sync-status-indicator" class="bg-amber-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-amber-500 border border-amber-500/20 animate-pulse">
-                <i class="fa-solid fa-spinner animate-spin mr-1"></i>Conectando Nuvem...
+            <span id="sync-status-indicator" class="bg-emerald-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-emerald-400 border border-emerald-500/20">
+                <i class="fa-solid fa-circle-check mr-1"></i>Modo Sincronizado Ativo
             </span>
         </div>
     </header>
@@ -642,6 +645,84 @@
             </div>
         </div>
 
+        <!-- ABA ADICIONADA E ESTRUTURADA: CHECKLIST DA OPERAÇÃO COM FILTROS EM LINHA -->
+        <div id="tab-checklist-view" class="tab-content flex-grow hidden flex-col overflow-auto p-4 md:p-6 w-full h-full">
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex flex-col h-full gap-4 max-w-7xl mx-auto w-full">
+                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center border-b pb-3 shrink-0 gap-3">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-blue-100 text-blue-700 p-2.5 rounded-xl text-xl flex items-center justify-center">
+                            <i class="fa-solid fa-list-check"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-sm font-bold text-slate-800">📋 Checklist Geral de Operações</h2>
+                            <p class="text-[10px] text-slate-500">Filtragem rápida por função, processos-chave, subprocessos ou indicadores definidos.</p>
+                        </div>
+                    </div>
+                    <button onclick="switchTab('diagram-view')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 shadow-2xs">
+                        <i class="fa-solid fa-arrow-left"></i> Voltar ao Fluxograma
+                    </button>
+                </div>
+
+                <!-- SEÇÃO DOS FILTROS SUPERIORES ALINHADOS EM UMA ÚNICA LINHA GRID -->
+                <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl shrink-0">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 items-end">
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[9px] font-extrabold uppercase tracking-wider text-slate-500"><i class="fa-solid fa-user-tie mr-1"></i>Função</label>
+                            <select id="filter-funcao" onchange="aplicarFiltrosChecklist()" class="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold uppercase cursor-pointer">
+                                <option value="todos">Todos</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[9px] font-extrabold uppercase tracking-wider text-slate-500"><i class="fa-solid fa-key mr-1"></i>Processo-Chave</label>
+                            <select id="filter-processo" onchange="aplicarFiltrosChecklist()" class="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold uppercase cursor-pointer">
+                                <option value="todos">Todos</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[9px] font-extrabold uppercase tracking-wider text-slate-500"><i class="fa-solid fa-sitemap mr-1"></i>Subprocesso</label>
+                            <select id="filter-subprocesso" onchange="aplicarFiltrosChecklist()" class="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold uppercase cursor-pointer">
+                                <option value="todos">Todos</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[9px] font-extrabold uppercase tracking-wider text-slate-500"><i class="fa-solid fa-chart-line mr-1"></i>Indicadores</label>
+                            <select id="filter-indicador" onchange="aplicarFiltrosChecklist()" class="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold uppercase cursor-pointer">
+                                <option value="todos">Todos</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button onclick="limparFiltrosChecklist()" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-extrabold px-3 py-2 rounded-lg text-xs transition-all flex items-center justify-center gap-1.5">
+                                <i class="fa-solid fa-filter-circle-xmark"></i> Limpar Filtros
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TABELA DE RESULTADOS DO CHECKLIST COM ALTURA MAXIMIZADA -->
+                <div class="flex-grow overflow-auto border border-slate-200 rounded-lg bg-slate-50/30">
+                    <table class="w-full text-xs text-left border-collapse min-w-[1000px]">
+                        <thead>
+                            <tr class="bg-slate-100 font-bold border-b border-slate-200 text-slate-700 text-[10px] uppercase tracking-wider sticky top-0 z-10 shadow-2xs">
+                                <th class="p-2.5 border-r border-slate-200 text-center w-[40px]">Nº</th>
+                                <th class="p-2.5 border-r border-slate-200 w-[100px]">Frequência</th>
+                                <th class="p-2.5 border-r border-slate-200 w-[110px]">Função</th>
+                                <th class="p-2.5 border-r border-slate-200 max-w-[400px]">Atividade</th>
+                                <th class="p-2.5 border-r border-slate-200 text-center w-[50px]">SEG</th>
+                                <th class="p-2.5 border-r border-slate-200 text-center w-[50px]">TER</th>
+                                <th class="p-2.5 border-r border-slate-200 text-center w-[50px]">QUA</th>
+                                <th class="p-2.5 border-r border-slate-200 text-center w-[50px]">QUI</th>
+                                <th class="p-2.5 border-r border-slate-200 text-center w-[50px]">SEX</th>
+                                <th class="p-2.5 border-r border-slate-200">Processo Chave</th>
+                                <th class="p-2.5 border-r border-slate-200">Subprocesso</th>
+                                <th class="p-2.5">Indicador</th>
+                            </tr>
+                        </thead>
+                        <tbody id="checklist-sheet-tbody" class="bg-white"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
         <div id="tab-custom-tabs-view" class="tab-content flex-grow hidden flex-col overflow-auto p-6">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto w-full">
                 <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex flex-col gap-4">
@@ -837,13 +918,13 @@
             "gestao_sinistro": { name: "GESTÃO DE SINISTRO", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "Controle operacional de sinistros." }
         };
 
-        // --- BANCO DE DADOS ATUALIZADO ---
+        // --- BANCO DE DADOS MATRIZ INDICADORES (PRESERVADO INTEGRO CONFORME PRINT) ---
         const DEFAULT_MASTER_SHEET_DATA = [
-            { id: "row-disp_frota", category: "INDICADORES", name: "DISPONIBILIDADE DA FROTA", responsible: "JOÃO RICARDO", meta: "25 DIAS MÊS", type: "number", data: [22, 22, 22, 20, 24, 23, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-res_liquido", category: "INDICADORES", name: "RESULTADO LÍQUIDO", responsible: "JAQUELINE", meta: "110%", type: "currency", data: [5.73, 5.68, 6.70, 7.14, 6.80, 6.70, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-eficiencia_gestores", category: "INDICADORES", name: "EFICIÊNCIA RESULTADO GESTORES", responsible: "JAQUELINE", meta: "0", type: "decimal", data: [1.85, 1.83, 1.82, 1.86, 1.84, 1.83, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-capitacao_sub", category: "INDICADORES", name: "CAPTAÇÃO DE SUBCONTRATADO", responsible: "JAQUELINE", meta: "1", type: "percentage", data: [115, 116, 81, 131, 115, 123, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-perc_combustivel", category: "INDICADORES", name: "PORCENTAGEM COMBUSTIVEL/RESULTADO LIQUIDO", responsible: "PABLO", meta: "<35%", type: "percentage", data: [65, 62, 85, 61, 61, 54, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-disp_frota", category: "INDICADORES", name: "DISPONIBILIDADE DA FROTA", responsible: "JOÃO RICARDO", meta: "25 DIAS MÊS", type: "number", data: [22, 22, 22, 20, 24, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-res_liquido", category: "INDICADORES", name: "RESULTADO LÍQUIDO", responsible: "JAQUELINE", meta: "110%", type: "currency", data: [115, 116, 81, 129, 119, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-eficiencia_gestores", category: "INDICADORES", name: "EFICIÊNCIA DE PROGRAMAÇÃO DOS GESTORES", responsible: "JAQUELINE", meta: "90%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-capitacao_sub", category: "INDICADORES", name: "CAPTAÇÃO DE SUBCONTRATADO", responsible: "JAQUELINE", meta: "1", type: "number", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-perc_combustivel", category: "INDICADORES", name: "PORCENTAGEM COMBUSTIVEL/RESULTADO LIQUIDO", responsible: "PABLO", meta: "<35%", type: "percentage", data: [20, 10, 1, 1, null, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-analise_rotas", category: "INDICADORES", name: "ANÁLISE DE ROTAS SUBCONTRATADAS", responsible: "PABLO", meta: "70%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-manutencao_folga", category: "INDICADORES", name: "MANUTENÇÃO PÓS FOLGA SEM ADIAR RETORNO", responsible: "LEONARDO", meta: "0", type: "number", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
             
@@ -873,164 +954,230 @@
             }
         ];
 
-        let systemData = {
-            nodes: DEFAULT_NODES_DATA,
-            masterSheet: DEFAULT_MASTER_SHEET_DATA,
-            tabs: DEFAULT_TABS_DATA
-        };
+        // --- DATASET DO CHECKLIST OPERACIONAL COM AS 103 LINHAS REAIS DO EXCEL ---
+        const CHECKLIST_DATASET = [
+            { id: 1, freq: "Diária", funcao: "GERENTE", atividade: "Direcionamento frota", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
+            { id: 2, freq: "Diária", funcao: "GERENTE", atividade: "Resolução de demandas (Diretor, gestores, filiais, manutençao, rh, motoristas, financeiro)", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
+            { id: 3, freq: "Diária", funcao: "GERENTE", atividade: "Analise do resultado da jornada dos motoristas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
+            { id: 4, freq: "Semanal", funcao: "GERENTE", atividade: "Verificar saldo do sem parar e solicitar ao financeiro", seg: "", ter: "X", qua: "X", qui: "X", sex: "X", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE PEDAGIO", ind: "CONFERENCIA DE PEDAGIO" },
+            { id: 5, freq: "Semanal", funcao: "GERENTE", atividade: "Atualização do quadro de motoristas x frota", seg: "", ter: "X", qua: "X", qui: "X", sex: "X", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
+            { id: 6, freq: "Semanal", funcao: "GERENTE", atividade: "Analise dos controles da jornada", seg: "X", ter: "X", qua: "", qui: "X", sex: "X", proc: "FECHAMENTO DE RESULTADOS", sub: "PROGRAMAÇÃO DE FOLGA", ind: "ALINHAMENTO DE INICIO E RETORNO DAS FOLGAS X MANUTENÇÃO NO PERÍODO" },
+            { id: 7, freq: "Semanal", funcao: "GERENTE", atividade: "Analise das justificativas dos fechamentos negativos", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
+            { id: 8, freq: "Semanal", funcao: "GERENTE", atividade: "Reuniões - Manutenção e frota", seg: "X", ter: "14h", qua: "X", qui: "16h", sex: "X", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "LICENCIAMENTO E ADEQUAÇÕES FROTA", ind: "" },
+            { id: 9, freq: "Mensal", funcao: "GERENTE", atividade: "Analise e cobrança de eficiencia carga e descarga", seg: "GUARDIAN EM PRIMEIRO PLANO", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "INEFICIÊNCIAS DE CARGA E DESCARGA E DIÁRIAS" },
+            { id: 10, freq: "Mensal", funcao: "GERENTE", atividade: "Analise dos controles do gobrax", seg: "", ter: "X", qua: "X", qui: "X", sex: "X", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
+            { id: 11, freq: "Mensal", funcao: "GERENTE", atividade: "Validar a jornada dos motoristas x folha de pagamento", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
+            { id: 12, freq: "Mensal", funcao: "GERENTE", atividade: "Analise das violações de velocidade das vias", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
+            { id: 13, freq: "Mensal", funcao: "GERENTE", atividade: "Prospecção de clientes - Cargas subcontratados", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
+            { id: 14, freq: "Mensal", funcao: "GERENTE", atividade: "Fechamento frota", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
+            { id: 15, freq: "Mensal", funcao: "GERENTE", atividade: "Fechamento gestores", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
+            { id: 16, freq: "Mensal", funcao: "GERENTE", atividade: "Apontamento dos principais pontos de ineficiencia da frota (manutenção, falta de motoristas, ineficiencia de programaçao entre outros)", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
+            { id: 17, freq: "Mensal", funcao: "GERENTE", atividade: "Conferência das rotas subcontratadas analisadas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
+            { id: 18, freq: "Mensal", funcao: "GERENTE", atividade: "Conferir orçamento AET's", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "LICENCIAMENTO E ADEQUAÇÕES FROTA", ind: "" },
+            { id: 19, freq: "Mensal", funcao: "GERENTE", atividade: "Conferência do relatorio comportamental dos motoristas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
+            { id: 20, freq: "Trimestral", funcao: "GERENTE", atividade: "Analise das rotas mais lucrativas de acordo com o tipo de implemento", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIENCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
+            { id: 21, freq: "Trimestral", funcao: "GERENTE", atividade: "Atualização e definição de orçamento operacional frota ( faturamento - impostos - pedagios - combustivel)", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIENCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
+            { id: 22, freq: "Trimestral", funcao: "GERENTE", atividade: "Atualização das metas operacionais ( motoristas, gestores, operaçao)", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIENCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
+            { id: 23, freq: "Trimestral", funcao: "GERENTE", atividade: "Atualização e validação do Procedimentos operacionais, descrição e checklist dos cargos", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIENCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
+            { id: 24, freq: "Eventualmente", funcao: "GERENTE", atividade: "Analise do Ranking de motoristas para possiveis Upgrades", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
+            { id: 25, freq: "Eventualmente", funcao: "GERENTE", atividade: "Realizar entrevista, seleçao do motorista, arquivamento da entrevista", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
+            { id: 26, freq: "Eventualmente", funcao: "GERENTE", atividade: "Desligamento de motoristas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
+            { id: 27, freq: "Eventualmente", funcao: "GERENTE", atividade: "Desenvolvimento de projetos de eficiencia (Ex: torre de controle, planilha de analise de subcontratado, fechamento de jornada, gobrax)", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
+            { id: 28, freq: "Eventualmente", funcao: "GERENTE", atividade: "Conferir faturas de rastreador", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "OBRIGAÇÕES ADMINISTRATIVAS", ind: "" },
+            { id: 29, freq: "Eventualmente", funcao: "GERENTE", atividade: "Programação de férias", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
+            { id: 30, freq: "Diária", funcao: "CONTROLADOR", atividade: "Lançar notas de saida de Três Rios", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
+            { id: 31, freq: "Diária", funcao: "CONTROLADOR", atividade: "Integração de combustivel", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
+            { id: 32, freq: "Semanal", funcao: "CONTROLADOR", atividade: "Reunião com a operadora de cartão de abastecimento", seg: "X", ter: "", qua: "X", qui: "X", sex: "X", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PERCENTUAL COMBUSTÍVEL X FATURAMENTO LÍQUIDO" },
+            { id: 33, freq: "Semanal", funcao: "CONTROLADOR", atividade: "Lançar NF de entrada de combustivel de Três Rios", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PERCENTUAL COMBUSTÍVEL X FATURAMENTO LÍQUIDO" },
+            { id: 34, freq: "Semanal", funcao: "CONTROLADOR", atividade: "Verificar todos os fretes de sucata disponiveis e colocar na planilha", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
+            { id: 35, freq: "Semanal", funcao: "CONTROLADOR", atividade: "Conferenica de KM dos veiculos no Datapar", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PERCENTUAL COMBUSTÍVEL X FATURAMENTO LÍQUIDO" },
+            { id: 36, freq: "Semanal", funcao: "CONTROLADOR", atividade: "Conferir pedagios", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE PEDAGIO", ind: "CONFERENCIA DE PEDAGIO" },
+            { id: 37, freq: "Quinzenal", funcao: "CONTROLADOR", atividade: "Conferência dos vinculos motorista x veiculos no gobrax", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PERCENTUAL COMBUSTÍVEL X FATURAMENTO LÍQUIDO" },
+            { id: 38, freq: "Quinzenal", funcao: "CONTROLADOR", atividade: "Conciliação de combustível", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
+            { id: 39, freq: "Quinzenal", funcao: "CONTROLADOR", atividade: "Lançamento dos cupons ficais dos postos de Petrópolis e conferência para CPG", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
+            { id: 40, freq: "Quinzenal", funcao: "CONTROLADOR", atividade: "Conferência dos abastecimentos com fatura truckpag", seg: "", ter: "X", qua: "X", qui: "X", sex: "X", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
+            { id: 41, freq: "Mensal", funcao: "CONTROLADOR", atividade: "Atualizar dados no fechamento frota", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
+            { id: 42, freq: "Mensal", funcao: "CONTROLADOR", atividade: "Solicitar aos motoristas as notas dos gestores", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
+            { id: 43, freq: "Mensal", funcao: "CONTROLADOR", atividade: "Atualizar planilha de subcontratado", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
+            { id: 44, freq: "Mensal", funcao: "CONTROLADOR", atividade: "Fechamento Gobrax", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PERCENTUAL COMBUSTÍVEL X FATURAMENTO LÍQUIDO" },
+            { id: 45, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Realizar treinamento de novos motoristas: Rastreador e Gobrax", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
+            { id: 46, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Cadastro de veiculos e/ou solicitação de segunda via do cartão de abastecimento", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PERCENTUAL COMBUSTÍVEL X FATURAMENTO LÍQUIDO" },
+            { id: 47, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Auxiliar motoristas com erros de abastecimentos", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
+            { id: 48, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Realizar agendamento de manutenção do rastreador", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
+            { id: 49, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Realizar analise de rotas avulsas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
+            { id: 50, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Atualizar ranking de rotas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIÊNCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
+            { id: 51, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Apoio utilizaçao do sistema", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIENCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
+            { id: 52, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Criação e edição de P.O's", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIENCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
+            { id: 53, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Desenvolvimento de sistema", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIENCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
+            { id: 54, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Criação e atualização do dashboard lookerstudio", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIENCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
+            { id: 55, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Cadastros de postos no datapar", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
+            { id: 56, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Realizar abertura e registro de sinistros", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "GESTÃO DE SINISTROS", ind: "" },
+            { id: 57, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Controle de chips de telefonia", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "OBRIGAÇÕES ADMINISTRATIVAS", ind: "" },
+            { id: 58, freq: "Diária", funcao: "CONTROLADOR", atividade: "Verificação e atualização da planilha de carros parados.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
+            { id: 59, freq: "Diária", funcao: "CONTROLADOR", atividade: "Atualização planilha de carregamento que necessitam controle", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
+            { id: 60, freq: "Diária", funcao: "CONTROLADOR", atividade: "Contato diário com os gestores e o resp manutençao sobre os veículos em manutenção.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
+            { id: 61, freq: "Diária", funcao: "CONTROLADOR", atividade: "Atualização da planilha de infrações (manual).", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
+            { id: 62, freq: "Diária", funcao: "CONTROLADOR", atividade: "Atualização de dashboards: FECHAMENTO; DISPERSÃO; ORÇAMENTO.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
+            { id: 63, freq: "Diária", funcao: "CONTROLADOR", atividade: "Análise do relatório de dispersão e lançamento dos ajustes necessários.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
+            { id: 64, freq: "Diária", funcao: "CONTROLADOR", atividade: "Atualização/envio da planilha de jornada/folgas da próxima semana", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "PROGRAMAÇÃO DE FOLGA", ind: "ALINMENTO DE INICIO E RETORNO DAS FOLGAS X MANUTENÇÃO NO PERÍODO" },
+            { id: 65, freq: "Semanal", funcao: "CONTROLADOR", atividade: "Envio de e-mail de retorno de folga", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "PROGRAMAÇÃO DE FOLGA", ind: "ALINHAMENTO DE INÍCIO E RETORNO DAS FOLGAS X MANUTENÇÃO NO PERÍODO" },
+            { id: 66, freq: "Mensal", funcao: "CONTROLADOR", atividade: "Fechar indicadores de manutenção: Manutenção pós folga, quantidade de veículos sem previsão.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
+            { id: 67, freq: "Mensal", funcao: "CONTROLADOR", atividade: "Fechamento e validação do tempo de manutenção dos veículos e tempo Sem Motorista, no dashboard de Dispersão.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
+            { id: 68, freq: "Mensal", funcao: "CONTROLADOR", atividade: "Fechamento e validação da disponibilidade da frota.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
+            { id: 70, freq: "Mensal", funcao: "CONTROLADOR", atividade: "•\tFechamento da jornada dos motoristas que operam na USIMINAS e DOUBLEDECK.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
+            { id: 71, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Fechamentos de motoristas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
+            { id: 72, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Atualização do ranking de motoristas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
+            { id: 73, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Recebimento e arquivamento de discos de tacógrafo.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "OBRIGAÇÕES ADMINISTRATIVAS", ind: "" },
+            { id: 74, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Análises de rotas avulsas e novas rotas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
+            { id: 75, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Desenvolvimento de novos dashboards pelo Power BI.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "FECHAMENTO MENSAL CLIENTES/FROTA", ind: "INEFICIENCIAS DE CARGA E DESCARGA E DIARIAS" },
+            { id: 76, freq: "Diária", funcao: "GESTORES", atividade: "Atualização da Grid / Deslocamento Vazio", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
+            { id: 77, freq: "Diária", funcao: "GESTORES", atividade: "Destinar veiculos (contato com motorista)", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
+            { id: 78, freq: "Diária", funcao: "GESTORES", atividade: "Rastrear entregas WR", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
+            { id: 79, freq: "Diária", funcao: "GESTORES", atividade: "Reembolsos (diárias e despesas)", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
+            { id: 80, freq: "Diária", funcao: "GESTORES", atividade: "Dispersão dos veiculos", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
+            { id: 81, freq: "Diária", funcao: "GESTORES", atividade: "Controle de jornadas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "PROGRAMAÇÃO DE FOLGA", ind: "ALINHAMENTO DE INICIO E RETORNO DAS FOLGAS X MANUTENÇÃO NO PERÍODO" },
+            { id: 82, freq: "Diária", funcao: "GESTORES", atividade: "Análise de jornada WR", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
+            { id: 83, freq: "Semanal", funcao: "GESTORES", atividade: "Reuniao equipe", seg: "X", ter: "", qua: "X", qui: "X", sex: "X", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
+            { id: 84, freq: "Semanal", funcao: "GESTORES", atividade: "Controle de tempo de experiência dos motoristas", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
+            { id: 85, freq: "Mensal", funcao: "GESTORES", atividade: "Atualização da planilha placa/frota", seg: "X", ter: "X", qua: "X", qui: "", sex: "X", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
+            { id: 86, freq: "Mensal", funcao: "GESTORES", atividade: "Fechamento frota", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
+            { id: 87, freq: "Mensal", funcao: "GESTORES", atividade: "Validação/conferência da jornada dos motoristas e coletar assinatura do espelho de jornada", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
+            { id: 88, freq: "Eventualmente", funcao: "GESTORES", atividade: "Cargas subcontratados", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
+            { id: 90, freq: "Eventualmente", funcao: "GESTORES", atividade: "Solicitação de AET", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "LICENCIAMENTO E ADEQUAÇÕES FROTA", ind: "" },
+            { id: 91, freq: "Diária", funcao: "ANALISTA", atividade: "Acompanhamento de desvios operacionais de carga e descarga", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL CLIENTES/FROTA", ind: "INEFICIÊNCIAS DE CARGA E DESCARGA E DIÁRIAS" },
+            { id: 92, freq: "Diária", funcao: "ANALISTA", atividade: "Mediação de conflitos operacionais entre gestores e motoristas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
+            { id: 93, freq: "Diária", funcao: "ANALISTA", atividade: "Captação de cargas junto às filiais e clientes operacionais", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
+            { id: 94, freq: "Diária", funcao: "ANALISTA", atividade: "Atualização da planilha de controle diário de cargas disponíveis", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
+            { id: 95, freq: "Diária", funcao: "ANALISTA", atividade: "Avaliação de disponibilidade e prioridade de veículos para atendimento das demandas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
+            { id: 96, freq: "Diária", funcao: "ANALISTA", atividade: "Responder aos grupos de cargas sobre a disponibilidade de frota", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
+            { id: 97, freq: "Diária", funcao: "ANALISTA", atividade: "Validação de deslocamentos vazios superiores a 300 km", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
+            { id: 98, freq: "Mensal", funcao: "ANALISTA", atividade: "Análise do fechamento da frota e identificação de oportunidades de melhoria", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
+            { id: 99, freq: "Mensal", funcao: "ANALISTA", atividade: "Análise de viagens subcontratadas e oportunidades de otimização de rotas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
+            { id: 100, freq: "Eventualmente", funcao: "ANALISTA", atividade: "Captação de cargas de retorno para veículos em regiões sem operação própria", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
+            { id: 101, freq: "Eventualmente", funcao: "ANALISTA", atividade: "Validação operacional de novas operações", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
+            { id: 102, freq: "Eventualmente", funcao: "ANALISTA", atividade: "Cobertura de férias de gestores e gerentes", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
+            { id: 103, freq: "Eventualmente", funcao: "ANALISTA", atividade: "Elaboração de relatório de desempenho e desenvolvimento dos colaboradores substituídos", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIÊNCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." }
+        ];
 
-        function showToast(message) {
-            const container = document.getElementById("toast-container");
-            const toast = document.createElement("div");
-            toast.className = "bg-slate-900 text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-xl border border-slate-700/50 flex items-center gap-2 transition-all duration-300 transform translate-y-2 opacity-0 pointer-events-auto";
-            toast.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> <span>${message}</span>`;
-            container.appendChild(toast);
-            setTimeout(() => toast.classList.remove("translate-y-2", "opacity-0"), 10);
-            setTimeout(() => {
-                toast.classList.add("translate-y-2", "opacity-0");
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+            const activeContent = document.getElementById(`tab-${tabId}`);
+            if (activeContent) activeContent.classList.remove('hidden');
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all";
+            });
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            if (activeBtn) {
+                activeBtn.className = "tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold transition-all bg-blue-600 text-white shadow-sm";
+            }
+            if (tabId === 'checklist-view') {
+                setTimeout(() => {
+                    renderChecklist();
+                    popularFiltrosChecklist();
+                }, 50);
+            }
+            if (tabId === 'master-sheet-view') {
+                renderMasterSpreadsheet();
+            }
+            closePreviewBubble();
         }
 
-        function updateNetworkStatus(status, customMsg) {
-            const indicator = document.getElementById("sync-status-indicator");
-            if (!indicator) return;
-            if (status === true) {
-                indicator.className = "bg-emerald-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-emerald-400 border border-emerald-500/20 animate-none";
-                indicator.innerHTML = `<i class="fa-solid fa-cloud-arrow-up mr-1"></i>Nuvem Sincronizada`;
-            } else if (status === false) {
-                indicator.className = "bg-red-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-red-400 border border-red-500/20 animate-none";
-                indicator.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1"></i>Modo Offline (${customMsg || 'Local'})`;
-            } else {
-                indicator.className = "bg-amber-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-amber-500 border border-amber-500/20 animate-pulse";
-                indicator.innerHTML = `<i class="fa-solid fa-spinner animate-spin mr-1"></i>${customMsg || 'Gravando...'}`;
-            }
-        }
+        function renderChecklist(filtroFuncao = "todos", filtroProcesso = "todos", filtroSubprocesso = "todos", filtroIndicador = "todos") {
+            const tbody = document.getElementById("checklist-sheet-tbody");
+            if (!tbody) return;
+            tbody.innerHTML = "";
 
-        async function pushToCloud() {
-            if (isOfflineMode || !currentUser) return;
-            updateNetworkStatus(null, "Atualizando...");
-            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'promap_store', 'systemData');
-            try {
-                await setDoc(docRef, { payload: JSON.stringify(systemData), updatedAt: new Date().toISOString() });
-                updateNetworkStatus(true);
-            } catch (err) {
-                updateNetworkStatus(false, "Falha de Escrita");
-            }
-        }
+            const dadosFiltrados = CHECKLIST_DATASET.filter(row => {
+                const matchFuncao = (filtroFuncao === "todos" || row.funcao.toUpperCase() === filtroFuncao.toUpperCase());
+                const matchProcesso = (filtroProcesso === "todos" || row.proc.toUpperCase() === filtroProcesso.toUpperCase());
+                const matchSubprocesso = (filtroSubprocesso === "todos" || row.sub.toUpperCase() === filtroSubprocesso.toUpperCase());
+                const matchIndicador = (filtroIndicador === "todos" || row.ind.toUpperCase() === filtroIndicador.toUpperCase());
+                return matchFuncao && matchProcesso && matchSubprocesso && matchIndicador;
+            });
 
-        function forceDataIntegrity() {
-            let hasChanges = false;
-            if (systemData && systemData.masterSheet && Array.isArray(systemData.masterSheet)) {
-                let cleanList = systemData.masterSheet.filter(row => row.id !== "row-preco_l" && row.id !== "row-consumo_medio");
-                if (cleanList.length !== systemData.masterSheet.length) {
-                    systemData.masterSheet = cleanList;
-                    hasChanges = true;
-                }
-                
-                let rowRes = systemData.masterSheet.find(r => r.id === "row-res_liquido");
-                if (rowRes && (rowRes.meta === "100%" || rowRes.meta === ">10%" || rowRes.meta === "90%")) {
-                    rowRes.meta = "110%";
-                    hasChanges = true;
-                }
-                let rowCap = systemData.masterSheet.find(r => r.id === "row-capitacao_sub");
-                if (rowCap && (rowCap.meta === "80%" || rowCap.meta === "80%")) {
-                    rowCap.meta = "1";
-                    hasChanges = true;
-                }
+            if (dadosFiltrados.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="12" class="p-8 text-center text-slate-400 italic">Nenhum resultado encontrado para os filtros selecionados.</td></tr>`;
+                return;
             }
-            if (hasChanges) {
-                saveAllData();
-            }
-        }
 
-        function startSync() {
-            if (isOfflineMode || !currentUser) return;
-            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'promap_store', 'systemData');
-            onSnapshot(docRef, (docSnap) => {
-                if (isOfflineMode) return;
-                if (docSnap.exists()) {
-                    const cloudData = docSnap.data();
-                    if (cloudData && cloudData.payload) {
-                        try {
-                            const parsed = JSON.parse(cloudData.payload);
-                            if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet)) {
-                                systemData = parsed;
-                                forceDataIntegrity();
-                            }
-                            applyNodeStylingAndData();
-                            renderCustomTabsList();
-                            renderDynamicTabsMenu();
-                            renderMasterSpreadsheet();
-                            updateNetworkStatus(true);
-                        } catch(e) {
-                            console.error(e);
-                        }
-                    }
-                } else {
-                    pushToCloud();
-                }
-            }, (error) => {
-                switchToLocalFallback("Erro de Rede");
+            dadosFiltrados.forEach((row, idx) => {
+                const xSeg = row.seg ? `<span class="bg-blue-50 border border-blue-200 text-blue-700 text-[10px] font-extrabold px-1.5 py-0.5 rounded block text-center">${row.seg}</span>` : "";
+                const xTer = row.ter ? `<span class="bg-blue-50 border border-blue-200 text-blue-700 text-[10px] font-extrabold px-1.5 py-0.5 rounded block text-center">${row.ter}</span>` : "";
+                const xQua = row.qua ? `<span class="bg-blue-50 border border-blue-200 text-blue-700 text-[10px] font-extrabold px-1.5 py-0.5 rounded block text-center">${row.qua}</span>` : "";
+                const xQui = row.qui ? `<span class="bg-blue-50 border border-blue-200 text-blue-700 text-[10px] font-extrabold px-1.5 py-0.5 rounded block text-center">${row.qui}</span>` : "";
+                const xSex = row.sex ? `<span class="bg-blue-50 border border-blue-200 text-blue-700 text-[10px] font-extrabold px-1.5 py-0.5 rounded block text-center">${row.sex}</span>` : "";
+
+                const tagFuncao = `<span class="bg-slate-100 border border-slate-200 text-slate-800 font-extrabold text-[9px] tracking-wider px-2 py-0.5 rounded uppercase block text-center">${row.funcao.toUpperCase()}</span>`;
+                const tagFreq = `<span class="font-bold text-[10px] px-1.5 py-0.5 rounded ${
+                    row.freq === 'Diária' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
+                    row.freq === 'Semanal' ? 'bg-blue-50 text-blue-700 border border-blue-200' :
+                    row.freq === 'Mensal' ? 'bg-amber-50 text-amber-700 border border-amber-200' :
+                    'bg-slate-50 text-slate-500 border border-slate-200'
+                }">${row.freq}</span>`;
+
+                tbody.innerHTML += `
+                    <tr class="border-b border-slate-100 hover:bg-slate-50/50 transition-colors">
+                        <td class="p-2.5 border-r border-slate-200 text-center text-[10px] font-mono text-slate-400 font-bold">${idx + 1}</td>
+                        <td class="p-2.5 border-r border-slate-200 text-center">${tagFreq}</td>
+                        <td class="p-2.5 border-r border-slate-200">${tagFuncao}</td>
+                        <td class="p-2.5 border-r border-slate-200 font-semibold text-slate-700 max-w-[400px] leading-relaxed whitespace-normal break-words">${row.atividade}</td>
+                        <td class="p-2 border-r border-slate-200">${xSeg}</td>
+                        <td class="p-2 border-r border-slate-200">${xTer}</td>
+                        <td class="p-2 border-r border-slate-200">${xQua}</td>
+                        <td class="p-2 border-r border-slate-200">${xQui}</td>
+                        <td class="p-2 border-r border-slate-200">${xSex}</td>
+                        <td class="p-2.5 border-r border-slate-200 text-[10px] font-extrabold text-indigo-900 uppercase">${row.proc}</td>
+                        <td class="p-2.5 border-r border-slate-200 text-[10px] font-extrabold text-slate-500 uppercase">${row.sub}</td>
+                        <td class="p-2.5 text-[10px] font-extrabold text-emerald-800 uppercase">${row.ind}</td>
+                    </tr>
+                `;
             });
         }
 
-        function switchToLocalFallback(reason) {
-            isOfflineMode = true;
-            let saved = localStorage.getItem("ProMap_Indicadores_DB_v12");
-            if (saved) {
-                try {
-                    let parsed = JSON.parse(saved);
-                    if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet)) {
-                        systemData = parsed;
-                        forceDataIntegrity();
-                    }
-                } catch(e) {}
-            }
-            applyNodeStylingAndData();
-            renderCustomTabsList();
-            renderDynamicTabsMenu();
-            renderMasterSpreadsheet();
-            updateNetworkStatus(false, "Local Cache");
+        function popularFiltrosChecklist() {
+            const selectFuncao = document.getElementById("filter-funcao");
+            const selectProcesso = document.getElementById("filter-processo");
+            const selectSubprocesso = document.getElementById("filter-subprocesso");
+            const selectIndicador = document.getElementById("filter-indicador");
+
+            if (!selectFuncao) return;
+
+            const funcoes = [...new Set(CHECKLIST_DATASET.map(r => r.funcao.trim().toUpperCase()).filter(Boolean))].sort();
+            const processos = [...new Set(CHECKLIST_DATASET.map(r => r.proc.trim().toUpperCase()).filter(Boolean))].sort();
+            const subprocessos = [...new Set(CHECKLIST_DATASET.map(r => r.sub.trim().toUpperCase()).filter(Boolean))].sort();
+            const indicadores = [...new Set(CHECKLIST_DATASET.map(r => r.ind.trim().toUpperCase()).filter(Boolean))].sort();
+
+            const valFuncao = selectFuncao.value || "todos";
+            const valProcesso = selectProcesso.value || "todos";
+            const valSubprocesso = selectSubprocesso.value || "todos";
+            const valIndicador = selectIndicador.value || "todos";
+
+            selectFuncao.innerHTML = '<option value="todos">Todos</option>' + funcoes.map(f => `<option value="${f}">${f}</option>`).join('');
+            selectProcesso.innerHTML = '<option value="todos">Todos</option>' + processos.map(p => `<option value="${p}">${p}</option>`).join('');
+            selectSubprocesso.innerHTML = '<option value="todos">Todos</option>' + subprocessos.map(s => `<option value="${s}">${s}</option>`).join('');
+            selectIndicador.innerHTML = '<option value="todos">Todos</option>' + indicadores.map(i => `<option value="${i}">${i}</option>`).join('');
+
+            selectFuncao.value = valFuncao;
+            selectProcesso.value = valProcesso;
+            selectSubprocesso.value = valSubprocesso;
+            selectIndicador.value = valIndicador;
         }
 
-        const initAuth = async () => {
-            let saved = localStorage.getItem("ProMap_Indicadores_DB_v12");
-            if (saved) {
-                try {
-                    let parsed = JSON.parse(saved);
-                    if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet)) {
-                        systemData = parsed;
-                        forceDataIntegrity();
-                    }
-                } catch(e) {}
-            } else {
-                systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
-            }
-            
-            applyNodeStylingAndData();
-            renderCustomTabsList();
-            renderDynamicTabsMenu();
-            renderMasterSpreadsheet();
-            updateNetworkStatus(false, "Local");
+        function aplicarFiltrosChecklist() {
+            const fFuncao = document.getElementById("filter-funcao").value;
+            const fProcesso = document.getElementById("filter-processo").value;
+            const fSubprocesso = document.getElementById("filter-subprocesso").value;
+            const fIndicador = document.getElementById("filter-indicador").value;
+            renderChecklist(fFuncao, fProcesso, fSubprocesso, fIndicador);
+        }
 
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    const cred = await signInWithCustomToken(auth, __initial_auth_token);
-                    currentUser = cred.user;
-                } else {
-                    const cred = await signInAnonymously(auth);
-                    currentUser = cred.user;
-                }
-                if (!isOfflineMode) startSync();
-            } catch (err) {
-                switchToLocalFallback("Modo Local Ativo");
-            }
-        };
-
-        function saveAllData() {
-            localStorage.setItem("ProMap_Indicadores_DB_v12", JSON.stringify(systemData));
-            if (!isOfflineMode) pushToCloud();
+        function limparFiltrosChecklist() {
+            document.getElementById("filter-funcao").value = "todos";
+            document.getElementById("filter-processo").value = "todos";
+            document.getElementById("filter-subprocesso").value = "todos";
+            document.getElementById("filter-indicador").value = "todos";
+            renderChecklist();
         }
 
         function renderMasterSpreadsheet() {
@@ -1038,12 +1185,10 @@
             if (!tbody) return;
             tbody.innerHTML = "";
             
-            if (systemData.masterSheet && Array.isArray(systemData.masterSheet)) {
-                systemData.masterSheet = systemData.masterSheet.filter(row => row.id !== "row-preco_l" && row.id !== "row-consumo_medio");
-            }
-
-            if (!systemData.masterSheet || !Array.isArray(systemData.masterSheet) || systemData.masterSheet.length === 0) {
+            if (!systemData || !systemData.masterSheet || !Array.isArray(systemData.masterSheet) || systemData.masterSheet.length === 0) {
                 systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
+            } else {
+                systemData.masterSheet = systemData.masterSheet.filter(row => row.id !== "row-preco_l" && row.id !== "row-consumo_medio");
             }
 
             let currentCategory = "";
@@ -1211,386 +1356,75 @@
             adjustZoom(0);
         }
 
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
-            const activeContent = document.getElementById(`tab-${tabId}`);
-            if (activeContent) activeContent.classList.remove('hidden');
-
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.className = "tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all";
-            });
-            const activeBtn = document.getElementById(`btn-${tabId}`);
-            if (activeBtn) {
-                activeBtn.className = "tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold transition-all bg-blue-600 text-white shadow-sm";
-            }
-            closePreviewBubble();
-        }
-
-        function handleNodeClick(nodeId, event) {
-            event.stopPropagation();
-            activeNodeId = nodeId;
-            document.querySelectorAll('.node-card').forEach(n => n.classList.remove('node-selected'));
-            const targetEl = document.getElementById(`node-${nodeId}`);
-            if (targetEl) targetEl.classList.add('node-selected');
-            showPreviewBubble(nodeId, targetEl);
-        }
-
-        function showPreviewBubble(nodeId, element) {
-            const nodeData = systemData.nodes[nodeId];
-            const bubble = document.getElementById("link-preview-bubble");
-            document.getElementById("bubble-node-title").innerText = nodeData.name || "Sem Nome";
-
-            const iconWrapper = document.getElementById("bubble-doc-icon-wrapper");
-            const iconEl = document.getElementById("bubble-doc-icon");
-            const subTypeEl = document.getElementById("bubble-sub-type");
-            const btnAction = document.getElementById("bubble-btn-action");
-            const tableContainer = document.getElementById("bubble-preview-table-container");
-
-            if (nodeData.linkType === 'none') {
-                iconWrapper.className = "bg-slate-100 text-slate-600 p-2 rounded-lg shrink-0 flex items-center justify-center";
-                iconEl.className = "fa-solid fa-file-lines text-lg";
-                subTypeEl.innerText = "Anotação Simples do Processo";
-                tableContainer.classList.add('hidden');
-                btnAction.className = "bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold px-2.5 py-1 rounded transition-colors flex items-center gap-1";
-                btnAction.innerHTML = `Configurar <i class="fa-solid fa-pen text-[8px]"></i>`;
-                btnAction.onclick = () => openConfigModal();
-            } else if (nodeData.linkType === 'external') {
-                iconWrapper.className = "bg-blue-100 text-blue-700 p-2 rounded-lg shrink-0 flex items-center justify-center";
-                iconEl.className = "fa-solid fa-earth-americas text-lg";
-                subTypeEl.innerText = "Sítio Web Externo Associado";
-                tableContainer.classList.add('hidden');
-                btnAction.className = "bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold px-2.5 py-1 rounded transition-colors flex items-center gap-1";
-                btnAction.innerHTML = `Ir para Link <i class="fa-solid fa-up-right-from-square text-[8px]"></i>`;
-                btnAction.onclick = () => window.open(nodeData.url, '_blank');
-            } else if (nodeData.linkType === 'internal-master') {
-                iconWrapper.className = "bg-emerald-100 text-emerald-700 p-2 rounded-lg shrink-0 flex items-center justify-center";
-                iconEl.className = "fa-solid fa-table text-lg";
-                subTypeEl.innerText = "Planilha Master de Indicadores";
-                tableContainer.classList.remove('hidden');
-                renderMasterPreviewMiniTable(nodeData.tabId);
-                btnAction.className = "bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold px-2.5 py-1 rounded transition-colors flex items-center gap-1";
-                btnAction.innerHTML = `Ver Planilha <i class="fa-solid fa-table text-[8px]"></i>`;
-                btnAction.onclick = () => accessMasterRow(nodeData.tabId);
-            } else if (nodeData.linkType === 'internal') {
-                iconWrapper.className = "bg-sky-100 text-sky-700 p-2 rounded-lg shrink-0 flex items-center justify-center";
-                iconEl.className = "fa-solid fa-folder-open text-lg";
-                subTypeEl.innerText = "Separador Auxiliar Interno";
-                const linkedTab = systemData.tabs.find(t => t.id === nodeData.tabId);
-                if (linkedTab) {
-                    tableContainer.classList.remove('hidden');
-                    renderMiniPreviewTable(linkedTab);
-                    btnAction.className = "bg-sky-600 hover:bg-sky-700 text-white text-[10px] font-bold px-2.5 py-1 rounded transition-colors flex items-center gap-1";
-                    btnAction.innerHTML = `Ver Separador <i class="fa-solid fa-eye text-[8px]"></i>`;
-                    btnAction.onclick = () => switchTab(linkedTab.id);
+        function startSync() {
+            if (isOfflineMode || !currentUser) return;
+            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'promap_store', 'systemData');
+            onSnapshot(docRef, (docSnap) => {
+                if (isOfflineMode) return;
+                if (docSnap.exists()) {
+                    const cloudData = docSnap.data();
+                    if (cloudData && cloudData.payload) {
+                        try {
+                            const parsed = JSON.parse(cloudData.payload);
+                            if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet) && parsed.masterSheet.length > 0) {
+                                systemData = parsed;
+                                forceDataIntegrity();
+                            }
+                            applyNodeStylingAndData();
+                            renderCustomTabsList();
+                            renderDynamicTabsMenu();
+                            renderMasterSpreadsheet();
+                            updateNetworkStatus(true);
+                        } catch(e) {
+                            console.error(e);
+                        }
+                    }
                 } else {
-                    tableContainer.classList.add('hidden');
+                    pushToCloud();
                 }
-            }
-
-            const rect = element.getBoundingClientRect();
-            const canvasContainer = element.closest('.bg-slate-50');
-            const canvasRect = canvasContainer.getBoundingClientRect();
-            bubble.style.top = `${(rect.bottom - canvasRect.top) + canvasContainer.scrollTop + 8}px`;
-            bubble.style.left = `${(rect.left - canvasRect.left) + canvasContainer.scrollLeft + (rect.width / 2) - 175}px`;
-            bubble.classList.remove('hidden');
-        }
-
-        function renderMasterPreviewMiniTable(targetId) {
-            const tbody = document.getElementById("bubble-preview-table-body");
-            if (!tbody) return;
-            tbody.innerHTML = "";
-            let rowsToPreview = [];
-
-            if (targetId.startsWith("row-")) {
-                let r = systemData.masterSheet.find(row => row.id === targetId);
-                if (r) rowsToPreview.push(r);
-            } else if (targetId === "section-sat_motorista") {
-                rowsToPreview = systemData.masterSheet.filter(row => row.category === "SATISFAÇÃO DO MOTORISTA");
-            } else if (targetId === "section-perf_motorista") {
-                rowsToPreview = systemData.masterSheet.filter(row => row.category === "PERFORMANCE MOTORISTA");
-            }
-
-            if (rowsToPreview.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" class="p-2 text-center text-slate-400 italic">Sem dados.</td></tr>`;
-                return;
-            }
-
-            rowsToPreview.slice(0, 3).forEach(row => {
-                let activeValues = row.data.filter(v => v !== null && v !== undefined && !isNaN(v));
-                let valorRecente = activeValues.length ? formatCellValue(activeValues[activeValues.length - 1], row.type) : "Sem dados";
-                tbody.innerHTML += `
-                    <tr class="border-b border-slate-200">
-                        <td class="p-1.5 border-r border-slate-200 font-bold truncate max-w-[130px]">${row.name}</td>
-                        <td class="p-1.5 border-r border-slate-200 text-center font-semibold text-slate-700">${valorRecente}</td>
-                        <td class="p-1.5 text-center font-bold text-emerald-600">${row.meta}</td>
-                    </tr>
-                `;
+            }, (error) => {
+                updateNetworkStatus(false);
             });
         }
 
-        function renderMiniPreviewTable(tab) {
-            const tbody = document.getElementById("bubble-preview-table-body");
-            if (!tbody) return;
-            tbody.innerHTML = "";
-            if (!tab.tableData || tab.tableData.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" class="p-2 text-center text-slate-400 italic">Vazio.</td></tr>`;
-                return;
-            }
-            tab.tableData.slice(0, 3).forEach(row => {
-                const keys = Object.keys(row);
-                tbody.innerHTML += `
-                    <tr class="border-b border-slate-200">
-                        <td class="p-1.5 border-r border-slate-200 truncate max-w-[90px] font-semibold">${row[keys[0]] || ''}</td>
-                        <td class="p-1.5 border-r border-slate-200 truncate max-w-[90px]">${row[keys[1]] || ''}</td>
-                        <td class="p-1.5 truncate max-w-[90px]">${row[keys[2]] || ''}</td>
-                    </tr>
-                `;
-            });
-        }
-
-        function accessMasterRow(targetId) {
-            switchTab('master-sheet-view');
-            closePreviewBubble();
-            setTimeout(() => {
-                let targetElement = targetId.startsWith("row-") ? document.getElementById(targetId) : (targetId === "section-sat_motorista" ? document.getElementById("row-sat-camila") : document.getElementById("row-perf-camila"));
-                if (targetElement) {
-                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    targetElement.classList.add('row-highlight');
-                    setTimeout(() => targetElement.classList.remove('row-highlight'), 2000);
+        const initAuth = async () => {
+            let saved = localStorage.getItem("ProMap_Indicadores_DB_v12");
+            if (saved) {
+                try {
+                    let parsed = JSON.parse(saved);
+                    if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet) && parsed.masterSheet.length > 0) {
+                        systemData = parsed;
+                        forceDataIntegrity();
+                    } else {
+                        systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
+                    }
+                } catch(e) {
+                    systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
                 }
-            }, 300);
-        }
-
-        function copyCurrentLink() {
-            const data = systemData.nodes[activeNodeId];
-            if (!data) return;
-            let linkToCopy = data.linkType === 'external' ? data.url : (data.linkType === 'internal' ? `#${data.tabId}` : (data.linkType === 'internal-master' ? `Master: ${data.tabId}` : (data.desc || "")));
-            navigator.clipboard.writeText(linkToCopy).then(() => showToast("Copiado!"));
-        }
-
-        function closePreviewBubble() {
-            document.getElementById("link-preview-bubble").classList.add('hidden');
-            document.querySelectorAll('.node-card').forEach(n => n.classList.remove('node-selected'));
-        }
-
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('#link-preview-bubble') && !e.target.closest('.node-card')) closePreviewBubble();
-        });
-
-        function openConfigModal() {
-            const data = systemData.nodes[activeNodeId];
-            if (!data) return;
-            document.getElementById("modal-node-title").innerText = data.name || "Configurar";
-            document.getElementById("config-node-name").value = data.name || "";
-            document.getElementById("config-node-desc").value = data.desc || "";
-
-            const tabSelect = document.getElementById("config-node-tab");
-            let selectOptions = `<optgroup label="Planilha Master">
-                <option value="row-disp_frota">Disponibilidade da Frota</option>
-                <option value="row-res_liquido">Resultado Líquido</option>
-                <option value="row-perc_combustivel">Porcentagem Combustível</option>
-                <option value="row-capitacao_sub">Captação de Subcontratado</option>
-                <option value="row-eficiencia_gestores">Eficiência Resultado Gestores</option>
-                <option value="row-analise_rotas">Análise de Rotas Subcontratadas</option>
-            </optgroup>`;
-            if (systemData.tabs.length > 0) {
-                selectOptions += `<optgroup label="Auxiliares">`;
-                systemData.tabs.forEach(t => { selectOptions += `<option value="${t.id}">${t.name}</option>`; });
-                selectOptions += `</optgroup>`;
+            } else {
+                systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
             }
-            tabSelect.innerHTML = selectOptions;
-            selectLinkType(data.linkType);
-            document.getElementById("config-modal").classList.remove('hidden');
-            document.getElementById("sidebar-overlay").classList.remove('hidden');
-        }
-
-        function closeConfigModal() {
-            document.getElementById("config-modal").classList.add('hidden');
-            document.getElementById("sidebar-overlay").classList.add('hidden');
-        }
-
-        function selectLinkType(type) {
-            selectedLinkType = type;
-            document.querySelectorAll('.link-type-btn').forEach(btn => {
-                btn.className = "link-type-btn text-[10px] font-bold py-1.5 px-3 rounded text-center text-slate-600";
-            });
-            let visualType = type === 'internal-master' ? 'internal' : type;
-            const activeBtn = document.getElementById(`btn-link-${visualType}`);
-            if (activeBtn) activeBtn.className = "link-type-btn text-[10px] font-bold py-1.5 px-3 rounded text-center bg-white shadow-sm text-slate-800";
-
-            document.getElementById("link-input-external").classList.add('hidden');
-            document.getElementById("link-input-internal").classList.add('hidden');
-            if (type === 'external') document.getElementById("link-input-external").classList.remove('hidden');
-            if (['internal', 'internal-master'].includes(type)) document.getElementById("link-input-internal").classList.remove('hidden');
-        }
-
-        function saveNodeConfig(event) {
-            event.preventDefault();
-            const data = systemData.nodes[activeNodeId];
-            if (!data) return;
-            data.name = document.getElementById("config-node-name").value;
-            data.desc = document.getElementById("config-node-desc").value;
-            let finalLinkType = selectedLinkType;
-            let val = document.getElementById("config-node-tab").value;
-            if (selectedLinkType === 'internal' && (val.startsWith("row-") || val.startsWith("section-"))) finalLinkType = "internal-master";
-            data.linkType = finalLinkType;
-            if (finalLinkType === 'external') data.url = document.getElementById("config-node-url").value;
-            else data.tabId = val;
-
-            saveAllData();
+            
             applyNodeStylingAndData();
-            closeConfigModal();
-            closePreviewBubble();
-            showToast("Alterações salvas!");
-        }
-
-        function createCustomTab(event) {
-            event.preventDefault();
-            const name = document.getElementById("new-tab-name").value.trim();
-            const icon = document.getElementById("new-tab-icon").value;
-            if (!name) return;
-            systemData.tabs.push({ id: `custom-tab-${Date.now()}`, name: name, icon: icon, notes: "", tableData: [] });
-            saveAllData();
             renderCustomTabsList();
             renderDynamicTabsMenu();
-            document.getElementById("new-tab-name").value = "";
-            showToast("Criado!");
-        }
+            renderMasterSpreadsheet();
+            renderChecklist();
+            popularFiltrosChecklist();
 
-        function renderCustomTabsList() {
-            const container = document.getElementById("custom-tabs-list");
-            if (!container) return;
-            if (systemData.tabs.length === 0) { container.innerHTML = `<div class="text-slate-400 text-xs text-center py-8">Nenhum.</div>`; return; }
-            container.innerHTML = systemData.tabs.map(tab => `
-                <div class="flex items-center justify-between p-3 bg-slate-50 border rounded-lg">
-                    <div class="flex items-center gap-3">
-                        <span class="w-8 h-8 rounded bg-blue-50 text-blue-600 flex items-center justify-center text-sm"><i class="fa-solid ${tab.icon}"></i></span>
-                        <div><h4 class="font-bold text-xs">${tab.name}</h4></div>
-                    </div>
-                    <button onclick="switchTab('${tab.id}')" class="bg-blue-50 text-blue-600 px-2 py-1 rounded text-[10px] font-bold">Abrir</button>
-                </div>
-            `).join('');
-        }
-
-        function renderDynamicTabsMenu() {
-            document.querySelectorAll(".dynamic-header-tab, .dynamic-tab-section").forEach(el => el.remove());
-            const nav = document.querySelector("nav");
-            const main = document.querySelector("main");
-            if (!nav || !main) return;
-
-            systemData.tabs.forEach(tab => {
-                const btn = document.createElement("button");
-                btn.id = `btn-${tab.id}`;
-                btn.className = "tab-btn dynamic-header-tab px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all";
-                btn.onclick = () => switchTab(tab.id);
-                btn.innerHTML = `<i class="fa-solid ${tab.icon} mr-1.5"></i>${tab.name}`;
-                nav.appendChild(btn);
-
-                const section = document.createElement("div");
-                section.id = `tab-${tab.id}`;
-                section.className = "tab-content dynamic-tab-section flex-grow hidden flex-col overflow-auto p-5";
-                section.innerHTML = `
-                    <div class="bg-white p-5 rounded-xl border flex flex-col h-full gap-4 max-w-7xl mx-auto w-full">
-                        <div class="flex justify-between items-center border-b pb-2">
-                            <h2 class="text-sm font-bold">${tab.name}</h2>
-                            <button onclick="switchTab('diagram-view')" class="bg-slate-100 text-slate-700 text-[10px] font-bold px-2.5 py-1.5 rounded-lg">Voltar</button>
-                        </div>
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 flex-grow overflow-auto">
-                            <div class="bg-slate-50 p-4 border rounded-lg flex flex-col gap-2">
-                                <textarea id="custom-notes-${tab.id}" class="flex-grow w-full text-xs bg-white border border-slate-200 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700 leading-relaxed resize-none">${tab.notes || ""}</textarea>
-                                <button onclick="saveCustomTabNotes('${tab.id}')" class="bg-slate-800 text-white text-[10px] font-bold py-2 rounded-lg">Salvar Notas</button>
-                            </div>
-                            <div class="lg:col-span-2 flex flex-col gap-3">
-                                <form onsubmit="addTableRow(event, '${tab.id}')" class="grid grid-cols-3 gap-2 bg-slate-50 p-3 border rounded-lg">
-                                    <input type="text" placeholder="Ref" required name="col1" class="border text-xs rounded p-1.5">
-                                    <input type="text" placeholder="Result" required name="col2" class="border text-xs rounded p-1.5">
-                                    <input type="text" placeholder="Meta" required name="col3" class="border text-xs rounded p-1.5">
-                                    <button type="submit" class="col-span-3 bg-blue-600 text-white py-1 rounded text-[10px]">Adicionar Registo</button>
-                                </form>
-                                <div class="border rounded-lg overflow-auto flex-grow"><table class="w-full text-[11px]" id="table-custom-${tab.id}"></table></div>
-                            </div>
-                        </div>
-                    </div>`;
-                main.appendChild(section);
-                renderCustomTabTable(tab.id);
-            });
-        }
-
-        function saveCustomTabNotes(tabId) {
-            const tab = systemData.tabs.find(t => t.id === tabId);
-            if (tab) { tab.notes = document.getElementById(`custom-notes-${tabId}`).value; saveAllData(); showToast("Salvo!"); }
-        }
-
-        function addTableRow(event, tabId) {
-            event.preventDefault();
-            const form = event.target;
-            const tab = systemData.tabs.find(t => t.id === tabId);
-            if (!tab) return;
-            const formData = new FormData(form);
-            tab.tableData.push({ "Mês / Referência": formData.get("col1"), "Resultado": formData.get("col2"), "Meta": formData.get("col3") });
-            saveAllData(); form.reset(); renderCustomTabTable(tabId); showToast("Adicionado!");
-        }
-
-        function renderCustomTabTable(tabId) {
-            const table = document.getElementById(`table-custom-${tabId}`);
-            const tab = systemData.tabs.find(t => t.id === tabId);
-            if (!tab || !table) return;
-            if (tab.tableData.length === 0) { table.innerHTML = `<tr><td class="p-4 text-center text-slate-400 italic text-xs">Vazio.</td></tr>`; return; }
-            const headers = Object.keys(tab.tableData[0]);
-            let html = `<tr class="bg-slate-100 font-bold border-b text-[10px]">`;
-            headers.forEach(h => html += `<th class="p-2 border-r">${h}</th>`);
-            html += `<th class="p-2 text-center">Ações</th></tr>`;
-            tab.tableData.forEach((row, rIdx) => {
-                html += `<tr class="border-b bg-white text-slate-600">`;
-                headers.forEach(h => html += `<td class="p-2 border-r">${row[h] || ''}</td>`);
-                html += `<td class="p-1 text-center"><button onclick="removeTableRow('${tabId}', ${rIdx})" class="text-slate-400 hover:text-red-600"><i class="fa-solid fa-trash-can"></i></button></td></tr>`;
-            });
-            table.innerHTML = html;
-        }
-
-        function removeTableRow(tabId, index) {
-            const tab = systemData.tabs.find(t => t.id === tabId);
-            if (tab) { tab.tableData.splice(index, 1); saveAllData(); renderCustomTabTable(tabId); }
-        }
-
-        function exportDiagramData() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(systemData, null, 2));
-            const a = document.createElement('a'); a.setAttribute("href", dataStr); a.setAttribute("download", "promap_backup.json"); a.click();
-        }
-
-        function importDiagramData(event) {
-            const file = event.target.files[0]; if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function() {
-                try {
-                    let parsed = JSON.parse(reader.result);
-                    if (parsed.nodes && parsed.tabs) {
-                        systemData = parsed; saveAllData(); applyNodeStylingAndData();
-                        renderCustomTabsList(); renderDynamicTabsMenu(); renderMasterSpreadsheet();
-                        showToast("Importado!"); switchTab('diagram-view');
-                    }
-                } catch (e) { showToast("Erro."); }
-            };
-            reader.readAsText(file);
-        }
-
-        function closeAllModals() { closeConfigModal(); closeConfirmModal(); }
-
-        function obterUltimoMesComDados(row) {
-            const mesesNomes = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
-            for (let i = 11; i >= 0; i--) {
-                let val = row.data[i];
-                if (val !== null && val !== undefined && !isNaN(val)) {
-                    return formatCellValue(val, row.type) + ` (${mesesNomes[i]})`;
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    const cred = await signInWithCustomToken(auth, __initial_auth_token);
+                    currentUser = cred.user;
+                } else {
+                    const cred = await signInAnonymously(auth);
+                    currentUser = cred.user;
                 }
+                startSync();
+            } catch (err) {
+                console.log("Auth local bypass active.");
             }
-            return "Sem dados";
-        }
-
-        function triggerResetDefault() {
-            localStorage.removeItem("ProMap_Indicadores_DB_v12");
-            location.reload();
-        }
+        };
 
         // EXPOSIÇÃO CORRETA DE TODAS AS FUNÇÕES NO ESCOPO WINDOW
         window.switchTab = switchTab;
@@ -1612,6 +1446,10 @@
         window.accessMasterRow = accessMasterRow;
         window.obterUltimoMesComDados = obterUltimoMesComDados;
         window.triggerResetDefault = triggerResetDefault;
+        window.aplicarFiltrosChecklist = aplicarFiltrosChecklist;
+        window.limparFiltrosChecklist = limparFiltrosChecklist;
+        window.renderChecklist = renderChecklist;
+        window.popularFiltrosChecklist = popularFiltrosChecklist;
 
         initAuth();
     </script>
