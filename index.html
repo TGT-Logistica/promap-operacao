@@ -186,9 +186,6 @@
             <button onclick="switchTab('master-sheet-view')" id="btn-master-sheet-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all">
                 <i class="fa-solid fa-table-list mr-1.5"></i>📊 Planilha Indicadores Frota
             </button>
-            <button onclick="switchTab('checklist-view')" id="btn-checklist-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all">
-                <i class="fa-solid fa-list-check mr-1.5"></i>📋 Checklist Operação
-            </button>
             <button onclick="switchTab('custom-tabs-view')" id="btn-custom-tabs-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all">
                 <i class="fa-solid fa-folder-plus mr-1.5"></i>Gerir Separadores Auxiliares
             </button>
@@ -204,8 +201,8 @@
                 <button onclick="adjustZoom(0.1)" class="px-2 py-1 hover:text-white transition-colors" title="Aumentar Zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
                 <button onclick="resetZoom()" class="px-2 py-1 hover:text-white transition-colors border-l border-slate-800 ml-0.5" title="Resetar"><i class="fa-solid fa-arrows-to-eye"></i></button>
             </div>
-            <span id="sync-status-indicator" class="bg-emerald-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-emerald-400 border border-emerald-500/20">
-                <i class="fa-solid fa-circle-check mr-1"></i>Modo Sincronizado Ativo
+            <span id="sync-status-indicator" class="bg-amber-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-amber-500 border border-amber-500/20 animate-pulse">
+                <i class="fa-solid fa-spinner animate-spin mr-1"></i>Conectando Nuvem...
             </span>
         </div>
     </header>
@@ -645,81 +642,6 @@
             </div>
         </div>
 
-        <div id="tab-checklist-view" class="tab-content flex-grow hidden flex-col overflow-auto p-4 md:p-6 w-full h-full">
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex flex-col h-full gap-4 max-w-7xl mx-auto w-full">
-                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center border-b pb-3 shrink-0 gap-3">
-                    <div class="flex items-center gap-3">
-                        <div class="bg-blue-100 text-blue-700 p-2.5 rounded-xl text-xl flex items-center justify-center">
-                            <i class="fa-solid fa-list-check"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-sm font-bold text-slate-800">📋 Checklist Geral de Operações</h2>
-                            <p class="text-[10px] text-slate-500">Filtragem rápida por função, processos-chave, subprocessos ou indicadores definidos.</p>
-                        </div>
-                    </div>
-                    <button onclick="switchTab('diagram-view')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 shadow-2xs">
-                        <i class="fa-solid fa-arrow-left"></i> Voltar ao Fluxograma
-                    </button>
-                </div>
-
-                <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl shrink-0">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 items-end">
-                        <div class="flex flex-col gap-1">
-                            <label class="text-[9px] font-extrabold uppercase tracking-wider text-slate-500"><i class="fa-solid fa-user-tie mr-1"></i>Função</label>
-                            <select id="filter-funcao" onchange="aplicarFiltrosChecklist()" class="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold uppercase cursor-pointer">
-                                <option value="todos">Todos</option>
-                            </select>
-                        </div>
-                        <div class="flex flex-col gap-1">
-                            <label class="text-[9px] font-extrabold uppercase tracking-wider text-slate-500"><i class="fa-solid fa-key mr-1"></i>Processo-Chave</label>
-                            <select id="filter-processo" onchange="aplicarFiltrosChecklist()" class="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold uppercase cursor-pointer">
-                                <option value="todos">Todos</option>
-                            </select>
-                        </div>
-                        <div class="flex flex-col gap-1">
-                            <label class="text-[9px] font-extrabold uppercase tracking-wider text-slate-500"><i class="fa-solid fa-sitemap mr-1"></i>Subprocesso</label>
-                            <select id="filter-subprocesso" onchange="aplicarFiltrosChecklist()" class="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold uppercase cursor-pointer">
-                                <option value="todos">Todos</option>
-                            </select>
-                        </div>
-                        <div class="flex flex-col gap-1">
-                            <label class="text-[9px] font-extrabold uppercase tracking-wider text-slate-500"><i class="fa-solid fa-chart-line mr-1"></i>Indicadores</label>
-                            <select id="filter-indicador" onchange="aplicarFiltrosChecklist()" class="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold uppercase cursor-pointer">
-                                <option value="todos">Todos</option>
-                            </select>
-                        </div>
-                        <div>
-                            <button onclick="limparFiltrosChecklist()" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-extrabold px-3 py-2 rounded-lg text-xs transition-all flex items-center justify-center gap-1.5">
-                                <i class="fa-solid fa-filter-circle-xmark"></i> Limpar Filtros
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex-grow overflow-auto border border-slate-200 rounded-lg bg-slate-50/30">
-                    <table class="w-full text-xs text-left border-collapse min-w-[1000px]">
-                        <thead>
-                            <tr class="bg-slate-100 font-bold border-b border-slate-200 text-slate-700 text-[10px] uppercase tracking-wider sticky top-0 z-10 shadow-2xs">
-                                <th class="p-2.5 border-r border-slate-200 text-center w-[40px]">Nº</th>
-                                <th class="p-2.5 border-r border-slate-200 w-[100px]">Frequência</th>
-                                <th class="p-2.5 border-r border-slate-200 w-[110px]">Função</th>
-                                <th class="p-2.5 border-r border-slate-200 max-w-[400px]">Atividade</th>
-                                <th class="p-2.5 border-r border-slate-200 text-center w-[50px]">SEG</th>
-                                <th class="p-2.5 border-r border-slate-200 text-center w-[50px]">TER</th>
-                                <th class="p-2.5 border-r border-slate-200 text-center w-[50px]">QUA</th>
-                                <th class="p-2.5 border-r border-slate-200 text-center w-[50px]">QUI</th>
-                                <th class="p-2.5 border-r border-slate-200 text-center w-[50px]">SEX</th>
-                                <th class="p-2.5 border-r border-slate-200">Processo Chave</th>
-                                <th class="p-2.5 border-r border-slate-200">Subprocesso</th>
-                                <th class="p-2.5">Indicador</th>
-                            </tr>
-                        </thead>
-                        <tbody id="checklist-sheet-tbody" class="bg-white"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
         <div id="tab-custom-tabs-view" class="tab-content flex-grow hidden flex-col overflow-auto p-6">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto w-full">
                 <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex flex-col gap-4">
@@ -951,230 +873,164 @@
             }
         ];
 
-        // --- DATASET DO CHECKLIST OPERACIONAL COM AS 103 LINHAS REAIS DO EXCEL ---
-        const CHECKLIST_DATASET = [
-            { id: 1, freq: "Diária", funcao: "GERENTE", atividade: "Direcionamento frota", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
-            { id: 2, freq: "Diária", funcao: "GERENTE", atividade: "Resolução de demandas (Diretor, gestores, filiais, manutençao, rh, motoristas, financeiro)", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
-            { id: 3, freq: "Diária", funcao: "GERENTE", atividade: "Analise do resultado da jornada dos motoristas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
-            { id: 4, freq: "Semanal", funcao: "GERENTE", atividade: "Verificar saldo do sem parar e solicitar ao financeiro", seg: "", ter: "X", qua: "X", qui: "X", sex: "X", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE PEDAGIO", ind: "CONFERENCIA DE PEDAGIO" },
-            { id: 5, freq: "Semanal", funcao: "GERENTE", atividade: "Atualização do quadro de motoristas x frota", seg: "", ter: "X", qua: "X", qui: "X", sex: "X", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
-            { id: 6, freq: "Semanal", funcao: "GERENTE", atividade: "Analise dos controles da jornada", seg: "X", ter: "X", qua: "", qui: "X", sex: "X", proc: "FECHAMENTO DE RESULTADOS", sub: "PROGRAMAÇÃO DE FOLGA", ind: "ALINHAMENTO DE INICIO E RETORNO DAS FOLGAS X MANUTENÇÃO NO PERÍODO" },
-            { id: 7, freq: "Semanal", funcao: "GERENTE", atividade: "Analise das justificativas dos fechamentos negativos", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
-            { id: 8, freq: "Semanal", funcao: "GERENTE", atividade: "Reuniões - Manutenção e frota", seg: "X", ter: "14h", qua: "X", qui: "16h", sex: "X", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "LICENCIAMENTO E ADEQUAÇÕES FROTA", ind: "" },
-            { id: 9, freq: "Mensal", funcao: "GERENTE", atividade: "Analise e cobrança de eficiencia carga e descarga", seg: "GUARDIAN EM PRIMEIRO PLANO", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "INEFICIÊNCIAS DE CARGA E DESCARGA E DIÁRIAS" },
-            { id: 10, freq: "Mensal", funcao: "GERENTE", atividade: "Analise dos controles do gobrax", seg: "", ter: "X", qua: "X", qui: "X", sex: "X", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
-            { id: 11, freq: "Mensal", funcao: "GERENTE", atividade: "Validar a jornada dos motoristas x folha de pagamento", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
-            { id: 12, freq: "Mensal", funcao: "GERENTE", atividade: "Analise das violações de velocidade das vias", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
-            { id: 13, freq: "Mensal", funcao: "GERENTE", atividade: "Prospecção de clientes - Cargas subcontratados", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
-            { id: 14, freq: "Mensal", funcao: "GERENTE", atividade: "Fechamento frota", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
-            { id: 15, freq: "Mensal", funcao: "GERENTE", atividade: "Fechamento gestores", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
-            { id: 16, freq: "Mensal", funcao: "GERENTE", atividade: "Apontamento dos principais pontos de ineficiencia da frota (manutenção, falta de motoristas, ineficiencia de programaçao entre outros)", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
-            { id: 17, freq: "Mensal", funcao: "GERENTE", atividade: "Conferência das rotas subcontratadas analisadas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
-            { id: 18, freq: "Mensal", funcao: "GERENTE", atividade: "Conferir orçamento AET's", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "LICENCIAMENTO E ADEQUAÇÕES FROTA", ind: "" },
-            { id: 19, freq: "Mensal", funcao: "GERENTE", atividade: "Conferência do relatorio comportamental dos motoristas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
-            { id: 20, freq: "Trimestral", funcao: "GERENTE", atividade: "Analise das rotas mais lucrativas de acordo com o tipo de implemento", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIENCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
-            { id: 21, freq: "Trimestral", funcao: "GERENTE", atividade: "Atualização e definição de orçamento operacional frota ( faturamento - impostos - pedagios - combustivel)", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIENCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
-            { id: 22, freq: "Trimestral", funcao: "GERENTE", atividade: "Atualização das metas operacionais ( motoristas, gestores, operaçao)", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIENCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
-            { id: 23, freq: "Trimestral", funcao: "GERENTE", atividade: "Atualização e validação do Procedimentos operacionais, descrição e checklist dos cargos", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIENCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
-            { id: 24, freq: "Eventualmente", funcao: "GERENTE", atividade: "Analise do Ranking de motoristas para possiveis Upgrades", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
-            { id: 25, freq: "Eventualmente", funcao: "GERENTE", atividade: "Realizar entrevista, seleçao do motorista, arquivamento da entrevista", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
-            { id: 26, freq: "Eventualmente", funcao: "GERENTE", atividade: "Desligamento de motoristas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
-            { id: 27, freq: "Eventualmente", funcao: "GERENTE", atividade: "Desenvolvimento de projetos de eficiencia (Ex: torre de controle, planilha de analise de subcontratado, fechamento de jornada, gobrax)", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
-            { id: 28, freq: "Eventualmente", funcao: "GERENTE", atividade: "Conferir faturas de rastreador", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "OBRIGAÇÕES ADMINISTRATIVAS", ind: "" },
-            { id: 29, freq: "Eventualmente", funcao: "GERENTE", atividade: "Programação de férias", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
-            { id: 30, freq: "Diária", funcao: "CONTROLADOR", atividade: "Lançar notas de saida de Três Rios", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
-            { id: 31, freq: "Diária", funcao: "CONTROLADOR", atividade: "Integração de combustivel", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
-            { id: 32, freq: "Semanal", funcao: "CONTROLADOR", atividade: "Reunião com a operadora de cartão de abastecimento", seg: "X", ter: "", qua: "X", qui: "X", sex: "X", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PERCENTUAL COMBUSTÍVEL X FATURAMENTO LÍQUIDO" },
-            { id: 33, freq: "Semanal", funcao: "CONTROLADOR", atividade: "Lançar NF de entrada de combustivel de Três Rios", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PERCENTUAL COMBUSTÍVEL X FATURAMENTO LÍQUIDO" },
-            { id: 34, freq: "Semanal", funcao: "CONTROLADOR", atividade: "Verificar todos os fretes de sucata disponiveis e colocar na planilha", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
-            { id: 35, freq: "Semanal", funcao: "CONTROLADOR", atividade: "Conferenica de KM dos veiculos no Datapar", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PERCENTUAL COMBUSTÍVEL X FATURAMENTO LÍQUIDO" },
-            { id: 36, freq: "Semanal", funcao: "CONTROLADOR", atividade: "Conferir pedagios", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE PEDAGIO", ind: "CONFERENCIA DE PEDAGIO" },
-            { id: 37, freq: "Quinzenal", funcao: "CONTROLADOR", atividade: "Conferência dos vinculos motorista x veiculos no gobrax", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PERCENTUAL COMBUSTÍVEL X FATURAMENTO LÍQUIDO" },
-            { id: 38, freq: "Quinzenal", funcao: "CONTROLADOR", atividade: "Conciliação de combustível", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
-            { id: 39, freq: "Quinzenal", funcao: "CONTROLADOR", atividade: "Lançamento dos cupons ficais dos postos de Petrópolis e conferência para CPG", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
-            { id: 40, freq: "Quinzenal", funcao: "CONTROLADOR", atividade: "Conferência dos abastecimentos com fatura truckpag", seg: "", ter: "X", qua: "X", qui: "X", sex: "X", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
-            { id: 41, freq: "Mensal", funcao: "CONTROLADOR", atividade: "Atualizar dados no fechamento frota", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
-            { id: 42, freq: "Mensal", funcao: "CONTROLADOR", atividade: "Solicitar aos motoristas as notas dos gestores", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
-            { id: 43, freq: "Mensal", funcao: "CONTROLADOR", atividade: "Atualizar planilha de subcontratado", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
-            { id: 44, freq: "Mensal", funcao: "CONTROLADOR", atividade: "Fechamento Gobrax", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PERCENTUAL COMBUSTÍVEL X FATURAMENTO LÍQUIDO" },
-            { id: 45, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Realizar treinamento de novos motoristas: Rastreador e Gobrax", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
-            { id: 46, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Cadastro de veiculos e/ou solicitação de segunda via do cartão de abastecimento", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PERCENTUAL COMBUSTÍVEL X FATURAMENTO LÍQUIDO" },
-            { id: 47, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Auxiliar motoristas com erros de abastecimentos", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
-            { id: 48, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Realizar agendamento de manutenção do rastreador", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
-            { id: 49, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Realizar analise de rotas avulsas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
-            { id: 50, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Atualizar ranking de rotas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIÊNCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
-            { id: 51, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Apoio utilizaçao do sistema", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIENCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
-            { id: 52, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Criação e edição de P.O's", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIENCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
-            { id: 53, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Desenvolvimento de sistema", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIENCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
-            { id: 54, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Criação e atualização do dashboard lookerstudio", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIENCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
-            { id: 55, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Cadastros de postos no datapar", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
-            { id: 56, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Realizar abertura e registro de sinistros", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "GESTÃO DE SINISTROS", ind: "" },
-            { id: 57, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Controle de chips de telefonia", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "OBRIGAÇÕES ADMINISTRATIVAS", ind: "" },
-            { id: 58, freq: "Diária", funcao: "CONTROLADOR", atividade: "Verificação e atualização da planilha de carros parados.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
-            { id: 59, freq: "Diária", funcao: "CONTROLADOR", atividade: "Atualização planilha de carregamento que necessitam controle", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
-            { id: 60, freq: "Diária", funcao: "CONTROLADOR", atividade: "Contato diário com os gestores e o resp manutençao sobre os veículos em manutenção.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
-            { id: 61, freq: "Diária", funcao: "CONTROLADOR", atividade: "Atualização da planilha de infrações (manual).", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
-            { id: 62, freq: "Diária", funcao: "CONTROLADOR", atividade: "Atualização de dashboards: FECHAMENTO; DISPERSÃO; ORÇAMENTO.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
-            { id: 63, freq: "Diária", funcao: "CONTROLADOR", atividade: "Análise do relatório de dispersão e lançamento dos ajustes necessários.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
-            { id: 64, freq: "Diária", funcao: "CONTROLADOR", atividade: "Atualização/envio da planilha de jornada/folgas da próxima semana", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "PROGRAMAÇÃO DE FOLGA", ind: "ALINMENTO DE INICIO E RETORNO DAS FOLGAS X MANUTENÇÃO NO PERÍODO" },
-            { id: 65, freq: "Semanal", funcao: "CONTROLADOR", atividade: "Envio de e-mail de retorno de folga", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "PROGRAMAÇÃO DE FOLGA", ind: "ALINHAMENTO DE INÍCIO E RETORNO DAS FOLGAS X MANUTENÇÃO NO PERÍODO" },
-            { id: 66, freq: "Mensal", funcao: "CONTROLADOR", atividade: "Fechar indicadores de manutenção: Manutenção pós folga, quantidade de veículos sem previsão.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
-            { id: 67, freq: "Mensal", funcao: "CONTROLADOR", atividade: "Fechamento e validação do tempo de manutenção dos veículos e tempo Sem Motorista, no dashboard de Dispersão.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
-            { id: 68, freq: "Mensal", funcao: "CONTROLADOR", atividade: "Fechamento e validação da disponibilidade da frota.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
-            { id: 70, freq: "Mensal", funcao: "CONTROLADOR", atividade: "•\tFechamento da jornada dos motoristas que operam na USIMINAS e DOUBLEDECK.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
-            { id: 71, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Fechamentos de motoristas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
-            { id: 72, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Atualização do ranking de motoristas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
-            { id: 73, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Recebimento e arquivamento de discos de tacógrafo.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "OBRIGAÇÕES ADMINISTRATIVAS", ind: "" },
-            { id: 74, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Análises de rotas avulsas e novas rotas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
-            { id: 75, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Desenvolvimento de novos dashboards pelo Power BI.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "FECHAMENTO MENSAL CLIENTES/FROTA", ind: "INEFICIENCIAS DE CARGA E DESCARGA E DIARIAS" },
-            { id: 76, freq: "Diária", funcao: "GESTORES", atividade: "Atualização da Grid / Deslocamento Vazio", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
-            { id: 77, freq: "Diária", funcao: "GESTORES", atividade: "Destinar veiculos (contato com motorista)", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
-            { id: 78, freq: "Diária", funcao: "GESTORES", atividade: "Rastrear entregas WR", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
-            { id: 79, freq: "Diária", funcao: "GESTORES", atividade: "Reembolsos (diárias e despesas)", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
-            { id: 80, freq: "Diária", funcao: "GESTORES", atividade: "Dispersão dos veiculos", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
-            { id: 81, freq: "Diária", funcao: "GESTORES", atividade: "Controle de jornadas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "PROGRAMAÇÃO DE FOLGA", ind: "ALINHAMENTO DE INICIO E RETORNO DAS FOLGAS X MANUTENÇÃO NO PERÍODO" },
-            { id: 82, freq: "Diária", funcao: "GESTORES", atividade: "Análise de jornada WR", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
-            { id: 83, freq: "Semanal", funcao: "GESTORES", atividade: "Reuniao equipe", seg: "X", ter: "", qua: "X", qui: "X", sex: "X", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
-            { id: 84, freq: "Semanal", funcao: "GESTORES", atividade: "Controle de tempo de experiência dos motoristas", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
-            { id: 85, freq: "Mensal", funcao: "GESTORES", atividade: "Atualização da planilha placa/frota", seg: "X", ter: "X", qua: "X", qui: "", sex: "X", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
-            { id: 86, freq: "Mensal", funcao: "GESTORES", atividade: "Fechamento frota", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
-            { id: 87, freq: "Mensal", funcao: "GESTORES", atividade: "Validação/conferência da jornada dos motoristas e coletar assinatura do espelho de jornada", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
-            { id: 88, freq: "Eventualmente", funcao: "GESTORES", atividade: "Cargas subcontratados", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
-            { id: 90, freq: "Eventualmente", funcao: "GESTORES", atividade: "Solicitação de AET", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "LICENCIAMENTO E ADEQUAÇÕES FROTA", ind: "" },
-            { id: 91, freq: "Diária", funcao: "ANALISTA", atividade: "Acompanhamento de desvios operacionais de carga e descarga", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL CLIENTES/FROTA", ind: "INEFICIÊNCIAS DE CARGA E DESCARGA E DIÁRIAS" },
-            { id: 92, freq: "Diária", funcao: "ANALISTA", atividade: "Mediação de conflitos operacionais entre gestores e motoristas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
-            { id: 93, freq: "Diária", funcao: "ANALISTA", atividade: "Captação de cargas junto às filiais e clientes operacionais", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
-            { id: 94, freq: "Diária", funcao: "ANALISTA", atividade: "Atualização da planilha de controle diário de cargas disponíveis", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
-            { id: 95, freq: "Diária", funcao: "ANALISTA", atividade: "Avaliação de disponibilidade e prioridade de veículos para atendimento das demandas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
-            { id: 96, freq: "Diária", funcao: "ANALISTA", atividade: "Responder aos grupos de cargas sobre a disponibilidade de frota", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
-            { id: 97, freq: "Diária", funcao: "ANALISTA", atividade: "Validação de deslocamentos vazios superiores a 300 km", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
-            { id: 98, freq: "Mensal", funcao: "ANALISTA", atividade: "Análise do fechamento da frota e identificação de oportunidades de melhoria", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
-            { id: 99, freq: "Mensal", funcao: "ANALISTA", atividade: "Análise de viagens subcontratadas e oportunidades de otimização de rotas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
-            { id: 100, freq: "Eventualmente", funcao: "ANALISTA", atividade: "Captação de cargas de retorno para veículos em regiões sem operação própria", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
-            { id: 101, freq: "Eventualmente", funcao: "ANALISTA", atividade: "Validação operacional de novas operações", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
-            { id: 102, freq: "Eventualmente", funcao: "ANALISTA", atividade: "Cobertura de férias de gestores e gerentes", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
-            { id: 103, freq: "Eventualmente", funcao: "ANALISTA", atividade: "Elaboração de relatório de desempenho e desenvolvimento dos colaboradores substituídos", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIÊNCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." }
-        ];
+        let systemData = {
+            nodes: DEFAULT_NODES_DATA,
+            masterSheet: DEFAULT_MASTER_SHEET_DATA,
+            tabs: DEFAULT_TABS_DATA
+        };
 
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
-            const activeContent = document.getElementById(`tab-${tabId}`);
-            if (activeContent) activeContent.classList.remove('hidden');
-
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.className = "tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all";
-            });
-            const activeBtn = document.getElementById(`btn-${tabId}`);
-            if (activeBtn) {
-                activeBtn.className = "tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold transition-all bg-blue-600 text-white shadow-sm";
-            }
-            if (tabId === 'checklist-view') {
-                setTimeout(() => {
-                    renderChecklist();
-                    popularFiltrosChecklist();
-                }, 50);
-            }
-            if (tabId === 'master-sheet-view') {
-                renderMasterSpreadsheet();
-            }
-            closePreviewBubble();
+        function showToast(message) {
+            const container = document.getElementById("toast-container");
+            const toast = document.createElement("div");
+            toast.className = "bg-slate-900 text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-xl border border-slate-700/50 flex items-center gap-2 transition-all duration-300 transform translate-y-2 opacity-0 pointer-events-auto";
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> <span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.remove("translate-y-2", "opacity-0"), 10);
+            setTimeout(() => {
+                toast.classList.add("translate-y-2", "opacity-0");
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
         }
 
-        function renderChecklist(filtroFuncao = "todos", filtroProcesso = "todos", filtroSubprocesso = "todos", filtroIndicador = "todos") {
-            const tbody = document.getElementById("checklist-sheet-tbody");
-            if (!tbody) return;
-            tbody.innerHTML = "";
-
-            const dadosFiltrados = CHECKLIST_DATASET.filter(row => {
-                const matchFuncao = (filtroFuncao === "todos" || row.funcao.toUpperCase() === filtroFuncao.toUpperCase());
-                const matchProcesso = (filtroProcesso === "todos" || row.proc.toUpperCase() === filtroProcesso.toUpperCase());
-                const matchSubprocesso = (filtroSubprocesso === "todos" || row.sub.toUpperCase() === filtroSubprocesso.toUpperCase());
-                const matchIndicador = (filtroIndicador === "todos" || row.ind.toUpperCase() === filtroIndicador.toUpperCase());
-                return matchFuncao && matchProcesso && matchSubprocesso && matchIndicador;
-            });
-
-            if (dadosFiltrados.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="12" class="p-8 text-center text-slate-400 italic">Nenhum resultado encontrado para os filtros selecionados.</td></tr>`;
-                return;
+        function updateNetworkStatus(status, customMsg) {
+            const indicator = document.getElementById("sync-status-indicator");
+            if (!indicator) return;
+            if (status === true) {
+                indicator.className = "bg-emerald-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-emerald-400 border border-emerald-500/20 animate-none";
+                indicator.innerHTML = `<i class="fa-solid fa-cloud-arrow-up mr-1"></i>Nuvem Sincronizada`;
+            } else if (status === false) {
+                indicator.className = "bg-red-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-red-400 border border-red-500/20 animate-none";
+                indicator.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1"></i>Modo Offline (${customMsg || 'Local'})`;
+            } else {
+                indicator.className = "bg-amber-500/10 px-3 py-1.5 rounded-full text-[11px] font-semibold text-amber-500 border border-amber-500/20 animate-pulse";
+                indicator.innerHTML = `<i class="fa-solid fa-spinner animate-spin mr-1"></i>${customMsg || 'Gravando...'}`;
             }
+        }
 
-            dadosFiltrados.forEach((row, idx) => {
-                const xSeg = row.seg ? `<span class="bg-blue-50 border border-blue-200 text-blue-700 text-[10px] font-extrabold px-1.5 py-0.5 rounded block text-center">${row.seg}</span>` : "";
-                const xTer = row.ter ? `<span class="bg-blue-50 border border-blue-200 text-blue-700 text-[10px] font-extrabold px-1.5 py-0.5 rounded block text-center">${row.ter}</span>` : "";
-                const xQua = row.qua ? `<span class="bg-blue-50 border border-blue-200 text-blue-700 text-[10px] font-extrabold px-1.5 py-0.5 rounded block text-center">${row.qua}</span>` : "";
-                const xQui = row.qui ? `<span class="bg-blue-50 border border-blue-200 text-blue-700 text-[10px] font-extrabold px-1.5 py-0.5 rounded block text-center">${row.qui}</span>` : "";
-                const xSex = row.sex ? `<span class="bg-blue-50 border border-blue-200 text-blue-700 text-[10px] font-extrabold px-1.5 py-0.5 rounded block text-center">${row.sex}</span>` : "";
+        async function pushToCloud() {
+            if (isOfflineMode || !currentUser) return;
+            updateNetworkStatus(null, "Atualizando...");
+            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'promap_store', 'systemData');
+            try {
+                await setDoc(docRef, { payload: JSON.stringify(systemData), updatedAt: new Date().toISOString() });
+                updateNetworkStatus(true);
+            } catch (err) {
+                updateNetworkStatus(false, "Falha de Escrita");
+            }
+        }
 
-                const tagFuncao = `<span class="bg-slate-100 border border-slate-200 text-slate-800 font-extrabold text-[9px] tracking-wider px-2 py-0.5 rounded uppercase block text-center">${row.funcao.toUpperCase()}</span>`;
-                const tagFreq = `<span class="font-bold text-[10px] px-1.5 py-0.5 rounded ${
-                    row.freq === 'Diária' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
-                    row.freq === 'Semanal' ? 'bg-blue-50 text-blue-700 border border-blue-200' :
-                    row.freq === 'Mensal' ? 'bg-amber-50 text-amber-700 border border-amber-200' :
-                    'bg-slate-50 text-slate-500 border border-slate-200'
-                }">${row.freq}</span>`;
+        function forceDataIntegrity() {
+            let hasChanges = false;
+            if (systemData && systemData.masterSheet && Array.isArray(systemData.masterSheet)) {
+                let cleanList = systemData.masterSheet.filter(row => row.id !== "row-preco_l" && row.id !== "row-consumo_medio");
+                if (cleanList.length !== systemData.masterSheet.length) {
+                    systemData.masterSheet = cleanList;
+                    hasChanges = true;
+                }
+                
+                let rowRes = systemData.masterSheet.find(r => r.id === "row-res_liquido");
+                if (rowRes && (rowRes.meta === "100%" || rowRes.meta === ">10%" || rowRes.meta === "90%")) {
+                    rowRes.meta = "110%";
+                    hasChanges = true;
+                }
+                let rowCap = systemData.masterSheet.find(r => r.id === "row-capitacao_sub");
+                if (rowCap && (rowCap.meta === "80%" || rowCap.meta === "80%")) {
+                    rowCap.meta = "1";
+                    hasChanges = true;
+                }
+            }
+            if (hasChanges) {
+                saveAllData();
+            }
+        }
 
-                tbody.innerHTML += `
-                    <tr class="border-b border-slate-100 hover:bg-slate-50/50 transition-colors">
-                        <td class="p-2.5 border-r border-slate-200 text-center text-[10px] font-mono text-slate-400 font-bold">${idx + 1}</td>
-                        <td class="p-2.5 border-r border-slate-200 text-center">${tagFreq}</td>
-                        <td class="p-2.5 border-r border-slate-200">${tagFuncao}</td>
-                        <td class="p-2.5 border-r border-slate-200 font-semibold text-slate-700 max-w-[400px] leading-relaxed whitespace-normal break-words">${row.atividade}</td>
-                        <td class="p-2 border-r border-slate-200">${xSeg}</td>
-                        <td class="p-2 border-r border-slate-200">${xTer}</td>
-                        <td class="p-2 border-r border-slate-200">${xQua}</td>
-                        <td class="p-2 border-r border-slate-200">${xQui}</td>
-                        <td class="p-2 border-r border-slate-200">${xSex}</td>
-                        <td class="p-2.5 border-r border-slate-200 text-[10px] font-extrabold text-indigo-900 uppercase">${row.proc}</td>
-                        <td class="p-2.5 border-r border-slate-200 text-[10px] font-extrabold text-slate-500 uppercase">${row.sub}</td>
-                        <td class="p-2.5 text-[10px] font-extrabold text-emerald-800 uppercase">${row.ind}</td>
-                    </tr>
-                `;
+        function startSync() {
+            if (isOfflineMode || !currentUser) return;
+            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'promap_store', 'systemData');
+            onSnapshot(docRef, (docSnap) => {
+                if (isOfflineMode) return;
+                if (docSnap.exists()) {
+                    const cloudData = docSnap.data();
+                    if (cloudData && cloudData.payload) {
+                        try {
+                            const parsed = JSON.parse(cloudData.payload);
+                            if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet)) {
+                                systemData = parsed;
+                                forceDataIntegrity();
+                            }
+                            applyNodeStylingAndData();
+                            renderCustomTabsList();
+                            renderDynamicTabsMenu();
+                            renderMasterSpreadsheet();
+                            updateNetworkStatus(true);
+                        } catch(e) {
+                            console.error(e);
+                        }
+                    }
+                } else {
+                    pushToCloud();
+                }
+            }, (error) => {
+                switchToLocalFallback("Erro de Rede");
             });
         }
 
-        function popularFiltrosChecklist() {
-            const selectFuncao = document.getElementById("filter-funcao");
-            const selectProcesso = document.getElementById("filter-processo");
-            const selectSubprocesso = document.getElementById("filter-subprocesso");
-            const selectIndicador = document.getElementById("filter-indicador");
-
-            if (!selectFuncao) return;
-
-            const funcoes = [...new Set(CHECKLIST_DATASET.map(r => r.funcao.trim().toUpperCase()).filter(Boolean))].sort();
-            const processos = [...new Set(CHECKLIST_DATASET.map(r => r.proc.trim().toUpperCase()).filter(Boolean))].sort();
-            const subprocessos = [...new Set(CHECKLIST_DATASET.map(r => r.sub.trim().toUpperCase()).filter(Boolean))].sort();
-            const indicadores = [...new Set(CHECKLIST_DATASET.map(r => r.ind.trim().toUpperCase()).filter(Boolean))].sort();
-
-            const valFuncao = selectFuncao.value || "todos";
-            const valProcesso = selectProcesso.value || "todos";
-            const valSubprocesso = selectSubprocesso.value || "todos";
-            const valIndicador = selectIndicador.value || "todos";
-
-            selectFuncao.innerHTML = '<option value="todos">Todos</option>' + funcoes.map(f => `<option value="${f}">${f}</option>`).join('');
-            selectProcesso.innerHTML = '<option value="todos">Todos</option>' + processos.map(p => `<option value="${p}">${p}</option>`).join('');
-            selectSubprocesso.innerHTML = '<option value="todos">Todos</option>' + subprocessos.map(s => `<option value="${s}">${s}</option>`).join('');
-            selectIndicador.innerHTML = '<option value="todos">Todos</option>' + indicadores.map(i => `<option value="${i}">${i}</option>`).join('');
-
-            selectFuncao.value = valFuncao;
-            selectProcesso.value = valProcesso;
-            selectSubprocesso.value = valSubprocesso;
-            selectIndicador.value = valIndicador;
+        function switchToLocalFallback(reason) {
+            isOfflineMode = true;
+            let saved = localStorage.getItem("ProMap_Indicadores_DB_v12");
+            if (saved) {
+                try {
+                    let parsed = JSON.parse(saved);
+                    if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet)) {
+                        systemData = parsed;
+                        forceDataIntegrity();
+                    }
+                } catch(e) {}
+            }
+            applyNodeStylingAndData();
+            renderCustomTabsList();
+            renderDynamicTabsMenu();
+            renderMasterSpreadsheet();
+            updateNetworkStatus(false, "Local Cache");
         }
 
-        function aplicarFiltrosChecklist() {
-            const fFuncao = document.getElementById("filter-funcao").value;
-            const fProcesso = document.getElementById("filter-processo").value;
-            const fSubprocesso = document.getElementById("filter-subprocesso").value;
-            const fIndicador = document.getElementById("filter-indicador").value;
-            renderChecklist(fFuncao, fProcesso, fSubprocesso, fIndicador);
-        }
+        const initAuth = async () => {
+            let saved = localStorage.getItem("ProMap_Indicadores_DB_v12");
+            if (saved) {
+                try {
+                    let parsed = JSON.parse(saved);
+                    if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet)) {
+                        systemData = parsed;
+                        forceDataIntegrity();
+                    }
+                } catch(e) {}
+            } else {
+                systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
+            }
+            
+            applyNodeStylingAndData();
+            renderCustomTabsList();
+            renderDynamicTabsMenu();
+            renderMasterSpreadsheet();
+            updateNetworkStatus(false, "Local");
 
-        function limparFiltrosChecklist() {
-            document.getElementById("filter-funcao").value = "todos";
-            document.getElementById("filter-processo").value = "todos";
-            document.getElementById("filter-subprocesso").value = "todos";
-            document.getElementById("filter-indicador").value = "todos";
-            renderChecklist();
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    const cred = await signInWithCustomToken(auth, __initial_auth_token);
+                    currentUser = cred.user;
+                } else {
+                    const cred = await signInAnonymously(auth);
+                    currentUser = cred.user;
+                }
+                if (!isOfflineMode) startSync();
+            } catch (err) {
+                switchToLocalFallback("Modo Local Ativo");
+            }
+        };
+
+        function saveAllData() {
+            localStorage.setItem("ProMap_Indicadores_DB_v12", JSON.stringify(systemData));
+            if (!isOfflineMode) pushToCloud();
         }
 
         function renderMasterSpreadsheet() {
@@ -1182,11 +1038,12 @@
             if (!tbody) return;
             tbody.innerHTML = "";
             
-            // BLINDAGEM TOTAL: Força o fallback completo aos dados padrão se masterSheet falhar
-            if (!systemData || !systemData.masterSheet || !Array.isArray(systemData.masterSheet) || systemData.masterSheet.length === 0) {
-                systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
-            } else {
+            if (systemData.masterSheet && Array.isArray(systemData.masterSheet)) {
                 systemData.masterSheet = systemData.masterSheet.filter(row => row.id !== "row-preco_l" && row.id !== "row-consumo_medio");
+            }
+
+            if (!systemData.masterSheet || !Array.isArray(systemData.masterSheet) || systemData.masterSheet.length === 0) {
+                systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
             }
 
             let currentCategory = "";
@@ -1352,6 +1209,21 @@
         function resetZoom() {
             currentZoom = 1.0;
             adjustZoom(0);
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+            const activeContent = document.getElementById(`tab-${tabId}`);
+            if (activeContent) activeContent.classList.remove('hidden');
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all";
+            });
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            if (activeBtn) {
+                activeBtn.className = "tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold transition-all bg-blue-600 text-white shadow-sm";
+            }
+            closePreviewBubble();
         }
 
         function handleNodeClick(nodeId, event) {
@@ -1720,78 +1592,6 @@
             location.reload();
         }
 
-        function startSync() {
-            if (isOfflineMode || !currentUser) return;
-            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'promap_store', 'systemData');
-            onSnapshot(docRef, (docSnap) => {
-                if (isOfflineMode) return;
-                if (docSnap.exists()) {
-                    const cloudData = docSnap.data();
-                    if (cloudData && cloudData.payload) {
-                        try {
-                            const parsed = JSON.parse(cloudData.payload);
-                            
-                            // SE A NUVEM CONTIVER UMA ESTRUTURA MÁSTER VÁLIDA, PREENCHE O LAYOUT
-                            if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet) && parsed.masterSheet.length > 0) {
-                                systemData = parsed;
-                                forceDataIntegrity();
-                            } else {
-                                systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
-                            }
-                            applyNodeStylingAndData();
-                            renderCustomTabsList();
-                            renderDynamicTabsMenu();
-                            renderMasterSpreadsheet(); 
-                        } catch(e) {
-                            console.error(e);
-                        }
-                    }
-                }
-            }, (error) => {
-                console.log("Firebase sync fallback bypass.");
-            });
-        }
-
-        const initAuth = async () => {
-            let saved = localStorage.getItem("ProMap_Indicadores_DB_v12");
-            if (saved) {
-                try {
-                    let parsed = JSON.parse(saved);
-                    if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet) && parsed.masterSheet.length > 0) {
-                        systemData = parsed;
-                        forceDataIntegrity();
-                    } else {
-                        systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
-                    }
-                } catch(e) {
-                    systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
-                }
-            } else {
-                systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
-            }
-            
-            // Força render instantâneo local da Planilha e do Checklist 103 linhas
-            applyNodeStylingAndData();
-            renderCustomTabsList();
-            renderDynamicTabsMenu();
-            renderMasterSpreadsheet();
-            renderChecklist();
-            popularFiltrosChecklist();
-
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    const cred = await signInWithCustomToken(auth, __initial_auth_token);
-                    currentUser = cred.user;
-                } else {
-                    const cred = await signInAnonymously(auth);
-                    currentUser = cred.user;
-                }
-                startSync();
-            } catch (err) {
-                console.log("Auth local bypass active.");
-            }
-        };
-
         // EXPOSIÇÃO CORRETA DE TODAS AS FUNÇÕES NO ESCOPO WINDOW
         window.switchTab = switchTab;
         window.adjustZoom = adjustZoom;
@@ -1812,10 +1612,6 @@
         window.accessMasterRow = accessMasterRow;
         window.obterUltimoMesComDados = obterUltimoMesComDados;
         window.triggerResetDefault = triggerResetDefault;
-        window.aplicarFiltrosChecklist = aplicarFiltrosChecklist;
-        window.limparFiltrosChecklist = limparFiltrosChecklist;
-        window.renderChecklist = renderChecklist;
-        window.popularFiltrosChecklist = popularFiltrosChecklist;
 
         initAuth();
     </script>
