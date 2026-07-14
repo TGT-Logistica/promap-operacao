@@ -645,7 +645,6 @@
             </div>
         </div>
 
-        <!-- ABA ATUALIZADA: CHECKLIST DA OPERAÇÃO COM FILTROS ALINHADOS E DATASET COMPLETO -->
         <div id="tab-checklist-view" class="tab-content flex-grow hidden flex-col overflow-auto p-4 md:p-6 w-full h-full">
             <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex flex-col h-full gap-4 max-w-7xl mx-auto w-full">
                 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center border-b pb-3 shrink-0 gap-3">
@@ -663,7 +662,6 @@
                     </button>
                 </div>
 
-                <!-- SEÇÃO DOS FILTROS SUPERIORES ALINHADOS EM UMA ÚNICA LINHA GRID -->
                 <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl shrink-0">
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 items-end">
                         <div class="flex flex-col gap-1">
@@ -698,7 +696,6 @@
                     </div>
                 </div>
 
-                <!-- TABELA DE RESULTADOS DO CHECKLIST COM ALTURA MAXIMIZADA -->
                 <div class="flex-grow overflow-auto border border-slate-200 rounded-lg bg-slate-50/30">
                     <table class="w-full text-xs text-left border-collapse min-w-[1000px]">
                         <thead>
@@ -1056,7 +1053,7 @@
             { id: 100, freq: "Eventualmente", funcao: "ANALISTA", atividade: "Captação de cargas de retorno para veículos em regiões sem operação própria", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
             { id: 101, freq: "Eventualmente", funcao: "ANALISTA", atividade: "Validação operacional de novas operações", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
             { id: 102, freq: "Eventualmente", funcao: "ANALISTA", atividade: "Cobertura de férias de gestores e gerentes", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
-            { id: 103, freq: "Eventualmente", funcao: "ANALISTA", atividade: "Elaboração de relatório de desempenho e desenvolvimento dos colaboradores substituídos", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFFICIÊNCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." }
+            { id: 103, freq: "Eventualmente", funcao: "ANALISTA", atividade: "Elaboração de relatório de desempenho e desenvolvimento dos colaboradores substituídos", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIÊNCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." }
         ];
 
         function switchTab(tabId) {
@@ -1185,7 +1182,7 @@
             if (!tbody) return;
             tbody.innerHTML = "";
             
-            // GARANTIA ABSOLUTA DE INTEGRIDADE: Se masterSheet vier limpa por falha de sincronização, injeta os dados originais
+            // BLINDAGEM TOTAL: Força o fallback completo aos dados padrão se masterSheet falhar
             if (!systemData || !systemData.masterSheet || !Array.isArray(systemData.masterSheet) || systemData.masterSheet.length === 0) {
                 systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
             } else {
@@ -1739,20 +1736,19 @@
                                 systemData = parsed;
                                 forceDataIntegrity();
                             } else {
-                                // FUSÃO DE SEGURANÇA SE OS INDICADORES DA NUVEM VIEREM ZERADOS
                                 systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
                             }
                             applyNodeStylingAndData();
                             renderCustomTabsList();
                             renderDynamicTabsMenu();
-                            renderMasterSpreadsheet(); // RENDERIZA AUTOMATICAMENTE OS DADOS ATUALIZADOS
+                            renderMasterSpreadsheet(); 
                         } catch(e) {
                             console.error(e);
                         }
                     }
                 }
             }, (error) => {
-                console.log("Firebase listener bypass fallback.");
+                console.log("Firebase sync fallback bypass.");
             });
         }
 
