@@ -1074,6 +1074,11 @@
                     popularFiltrosChecklist();
                 }, 50);
             }
+            if (tabId === 'master-sheet-view') {
+                setTimeout(() => {
+                    renderMasterSpreadsheet();
+                }, 50);
+            }
             closePreviewBubble();
         }
 
@@ -1197,6 +1202,53 @@
             return "";
         }
 
+        // --- RENDERIZAÇÃO DA PLANILHA MASTER DE INDICADORES (Aba "Planilha Indicadores Frota") ---
+        function renderMasterSpreadsheet() {
+            const tbody = document.getElementById("master-sheet-tbody");
+            if (!tbody) return;
+            tbody.innerHTML = "";
+
+            if (!systemData.masterSheet || systemData.masterSheet.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="15" class="p-8 text-center text-slate-400 italic">Nenhum indicador cadastrado.</td></tr>`;
+                return;
+            }
+
+            let currentCategory = null;
+            systemData.masterSheet.forEach((row, rowIndex) => {
+                if (row.category && row.category !== currentCategory) {
+                    currentCategory = row.category;
+                    tbody.innerHTML += `
+                        <tr class="bg-slate-100/80">
+                            <td colspan="15" class="p-2 font-extrabold text-[10px] uppercase tracking-wider text-slate-600 border-b border-slate-200">${currentCategory}</td>
+                        </tr>
+                    `;
+                }
+
+                let monthCells = "";
+                for (let m = 0; m < 12; m++) {
+                    const val = row.data[m];
+                    const displayVal = formatCellValue(val, row.type);
+                    monthCells += `
+                        <td class="p-1.5 border-r border-slate-200 text-center cursor-pointer hover:bg-blue-50 transition-colors" ondblclick="editMasterCell(${rowIndex}, ${m}, this)">
+                            ${displayVal}
+                        </td>
+                    `;
+                }
+
+                tbody.innerHTML += `
+                    <tr id="${row.id}" class="border-b border-slate-100 hover:bg-slate-50/50 transition-colors">
+                        <td class="p-2.5 border-r border-slate-200 font-semibold text-slate-700">
+                            ${row.name}
+                            ${row.responsible ? `<div class="text-[9px] text-slate-400 font-normal uppercase">${row.responsible}</div>` : ""}
+                        </td>
+                        <td class="p-2.5 border-r border-slate-200 text-center font-bold text-slate-600">${row.meta}</td>
+                        ${monthCells}
+                        <td class="p-2.5 text-center font-extrabold text-slate-800 bg-slate-50">${calcularAcumulado(row)}</td>
+                    </tr>
+                `;
+            });
+        }
+
         function editMasterCell(rowIndex, monthIndex, element) {
             let row = systemData.masterSheet[rowIndex];
             let val = row.data[monthIndex];
@@ -1217,6 +1269,20 @@
                 if (e.key === "Enter") saveValue();
                 if (e.key === "Escape") renderMasterSpreadsheet();
             };
+        }
+
+        function showToast(message) {
+            const container = document.getElementById("toast-container");
+            if (!container) return;
+            const toast = document.createElement("div");
+            toast.className = "bg-slate-900 text-white text-xs font-semibold px-4 py-2.5 rounded-lg shadow-lg pointer-events-auto flex items-center gap-2 animate-zoom-in";
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.transition = "opacity 0.3s ease";
+                toast.style.opacity = "0";
+                setTimeout(() => toast.remove(), 300);
+            }, 2200);
         }
 
         function showCustomConfirm(title, message, callback) {
@@ -1631,6 +1697,47 @@
             location.reload();
         }
 
+        // --- ESTADO CENTRAL DO SISTEMA (systemData) ---
+        // Esta variável guarda TUDO: os nós do fluxograma, os separadores auxiliares
+        // e a planilha master de indicadores. Sem ela declarada, nada no site funciona.
+        let systemData = {
+            nodes: JSON.parse(JSON.stringify(DEFAULT_NODES_DATA)),
+            tabs: JSON.parse(JSON.stringify(DEFAULT_TABS_DATA)),
+            masterSheet: JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA))
+        };
+
+        // Garante que dados antigos (localStorage/nuvem) continuem tendo todos os nós
+        // e que a planilha master nunca fique vazia, mesmo após updates no código.
+        function forceDataIntegrity() {
+            if (!systemData.nodes) systemData.nodes = {};
+            Object.keys(DEFAULT_NODES_DATA).forEach(key => {
+                if (!systemData.nodes[key]) {
+                    systemData.nodes[key] = JSON.parse(JSON.stringify(DEFAULT_NODES_DATA[key]));
+                }
+            });
+            if (!Array.isArray(systemData.tabs)) systemData.tabs = [];
+            if (!Array.isArray(systemData.masterSheet) || systemData.masterSheet.length === 0) {
+                systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
+            }
+        }
+
+        // Salva os dados no navegador (localStorage) e sincroniza com o Firebase quando online.
+        function saveAllData() {
+            try {
+                localStorage.setItem("ProMap_Indicadores_DB_v12", JSON.stringify(systemData));
+            } catch (e) {
+                console.error("Erro ao salvar localmente:", e);
+            }
+            if (!isOfflineMode && currentUser) {
+                try {
+                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'promap_store', 'systemData');
+                    setDoc(docRef, { payload: JSON.stringify(systemData) });
+                } catch (e) {
+                    console.log("Sincronização com a nuvem indisponível no momento.");
+                }
+            }
+        }
+
         function startSync() {
             if (isOfflineMode || !currentUser) return;
             const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'promap_store', 'systemData');
@@ -1721,6 +1828,7 @@
         window.limparFiltrosChecklist = limparFiltrosChecklist;
         window.renderChecklist = renderChecklist;
         window.popularFiltrosChecklist = popularFiltrosChecklist;
+        window.renderMasterSpreadsheet = renderMasterSpreadsheet;
 
         initAuth();
     </script>
