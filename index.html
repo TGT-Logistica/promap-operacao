@@ -645,6 +645,7 @@
             </div>
         </div>
 
+        <!-- ABA ATUALIZADA: CHECKLIST DA OPERAÇÃO COM FILTROS ALINHADOS E DATASET COMPLETO -->
         <div id="tab-checklist-view" class="tab-content flex-grow hidden flex-col overflow-auto p-4 md:p-6 w-full h-full">
             <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex flex-col h-full gap-4 max-w-7xl mx-auto w-full">
                 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center border-b pb-3 shrink-0 gap-3">
@@ -662,6 +663,7 @@
                     </button>
                 </div>
 
+                <!-- SEÇÃO DOS FILTROS SUPERIORES ALINHADOS EM UMA ÚNICA LINHA GRID -->
                 <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl shrink-0">
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 items-end">
                         <div class="flex flex-col gap-1">
@@ -696,6 +698,7 @@
                     </div>
                 </div>
 
+                <!-- TABELA DE RESULTADOS DO CHECKLIST COM ALTURA MAXIMIZADA -->
                 <div class="flex-grow overflow-auto border border-slate-200 rounded-lg bg-slate-50/30">
                     <table class="w-full text-xs text-left border-collapse min-w-[1000px]">
                         <thead>
@@ -728,7 +731,7 @@
                     </div>
                     <div>
                         <h3 class="text-sm font-bold text-slate-800">Criar Nova Página / Separador</h3>
-                        <p class="text-[11px] text-slate-500 mt-1">Crie páginas de trabalho auxiliares e associe-as aos blocks do fluxo.</p>
+                        <p class="text-[11px] text-slate-500 mt-1">Crie páginas de trabalho auxiliares e associe-as aos blocos do fluxo.</p>
                     </div>
                     <hr class="border-slate-100">
                     <form onsubmit="createCustomTab(event)" class="flex flex-col gap-3">
@@ -1053,7 +1056,7 @@
             { id: 100, freq: "Eventualmente", funcao: "ANALISTA", atividade: "Captação de cargas de retorno para veículos em regiões sem operação própria", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
             { id: 101, freq: "Eventualmente", funcao: "ANALISTA", atividade: "Validação operacional de novas operações", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
             { id: 102, freq: "Eventualmente", funcao: "ANALISTA", atividade: "Cobertura de férias de gestores e gerentes", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
-            { id: 103, freq: "Eventualmente", funcao: "ANALISTA", atividade: "Elaboração de relatório de desempenho e desenvolvimento dos colaboradores substituídos", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIÊNCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." }
+            { id: 103, freq: "Eventualmente", funcao: "ANALISTA", atividade: "Elaboração de relatório de desempenho e desenvolvimento dos colaboradores substituídos", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFFICIÊNCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." }
         ];
 
         function switchTab(tabId) {
@@ -1175,6 +1178,97 @@
             document.getElementById("filter-subprocesso").value = "todos";
             document.getElementById("filter-indicador").value = "todos";
             renderChecklist();
+        }
+
+        function renderMasterSpreadsheet() {
+            const tbody = document.getElementById("master-sheet-tbody");
+            if (!tbody) return;
+            tbody.innerHTML = "";
+            
+            // GARANTIA ABSOLUTA DE INTEGRIDADE: Se masterSheet vier limpa por falha de sincronização, injeta os dados originais
+            if (!systemData || !systemData.masterSheet || !Array.isArray(systemData.masterSheet) || systemData.masterSheet.length === 0) {
+                systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
+            } else {
+                systemData.masterSheet = systemData.masterSheet.filter(row => row.id !== "row-preco_l" && row.id !== "row-consumo_medio");
+            }
+
+            let currentCategory = "";
+            systemData.masterSheet.forEach((row, rowIndex) => {
+                if (row.category !== currentCategory) {
+                    currentCategory = row.category;
+                    tbody.innerHTML += `
+                        <tr class="bg-slate-200 font-extrabold text-[10px] text-slate-800 uppercase tracking-wider">
+                            <td class="p-2 border-r border-slate-300 pl-4 font-black" colspan="2">${currentCategory}</td>
+                            <td colspan="13" class="p-2 bg-slate-200"></td>
+                        </tr>
+                    `;
+                }
+
+                let valorAcumulado = calcularAcumulado(row);
+                let monthsHtml = "";
+                let metaString = row.meta.toUpperCase();
+                
+                for (let i = 0; i < 12; i++) {
+                    let val = row.data[i];
+                    let displayVal = formatCellValue(val, row.type);
+                    let cellClass = "p-2 border-r border-slate-200 text-center cursor-pointer hover:bg-slate-50 transition-colors font-medium";
+                    
+                    if (val !== null) {
+                        let isMetaAtingida = true;
+                        if (metaString.includes("<")) {
+                            let metaValue = parseFloat(metaString.replace("<", "").replace("%", "").trim());
+                            if (val > metaValue) isMetaAtingida = false;
+                        } else if (metaString.includes(">")) {
+                            let metaValue = parseFloat(metaString.replace(">", "").replace("%", "").trim());
+                            if (val < metaValue) isMetaAtingida = false;
+                        } else if (metaString.includes("%") && metaString !== "100%" && metaString !== "110%" && metaString !== "70%" && metaString !== "80%" && metaString !== "90%") {
+                            let metaValue = parseFloat(metaString.replace("%", "").trim());
+                            if (val < metaValue) isMetaAtingida = false;
+                        } else if (metaString === "110%" || metaString === ">10%" || metaString === "90%") {
+                            if (val < 110 && val < 10) isMetaAtingida = false;
+                        } else if (metaString === "100%") {
+                            if (val < 100) isMetaAtingida = false;
+                        } else if (metaString === "70%") {
+                            if (val < 70) isMetaAtingida = false;
+                        } else if (metaString === "80%") {
+                            if (val < 80) isMetaAtingida = false;
+                        } else if (metaString === "1") {
+                            if (val < 1) isMetaAtingida = false;
+                        } else if (metaString === "0") {
+                            if (val > 0) isMetaAtingida = false;
+                        } else if (row.category === "SATISFAÇÃO DO MOTORISTA") {
+                            let metaValue = parseFloat(row.meta.replace(",", "."));
+                            if (val < metaValue) isMetaAtingida = false;
+                        } else if (row.id === "row-disp_frota") {
+                            if (val < 25) isMetaAtingida = false;
+                        }
+
+                        if (!isMetaAtingida) {
+                            cellClass += " bg-red-100 text-red-800 font-bold";
+                        }
+                    }
+                    monthsHtml += `<td class="${cellClass}" ondblclick="editMasterCell(${rowIndex}, ${i}, this)">${displayVal}</td>`;
+                }
+
+                let rowMetaHtml = `<span class="font-bold text-slate-700">${row.meta}</span>`;
+                if (["25 DIAS MÊS", "100%", "110%", "80%", "90%", "0", "1", "70%", "9,00", "<35%", ">10%"].includes(row.meta)) {
+                    rowMetaHtml = `<span class="bg-emerald-600 text-white font-extrabold px-2 py-0.5 rounded text-[10px] block text-center">${row.meta}</span>`;
+                }
+                let respHtml = row.responsible ? `<span class="bg-blue-100 text-blue-700 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">${row.responsible}</span>` : "";
+
+                tbody.innerHTML += `
+                    <tr id="${row.id}" class="border-b border-slate-200 hover:bg-slate-50/60 transition-colors">
+                        <td class="p-2.5 border-r border-slate-200 font-semibold text-slate-800 pl-6">
+                            <div class="flex flex-wrap items-center gap-1.5">
+                                <span>${row.name}</span>${respHtml}
+                            </div>
+                        </td>
+                        <td class="p-2 border-r border-slate-200 text-center text-[10px] font-bold">${rowMetaHtml}</td>
+                        ${monthsHtml}
+                        <td class="p-2 text-center font-extrabold bg-slate-50 text-slate-800 ${valorAcumulado === '#DIV/0!' ? 'text-red-500' : ''}">${valorAcumulado}</td>
+                    </tr>
+                `;
+            });
         }
 
         function formatCellValue(val, type) {
@@ -1639,21 +1733,26 @@
                     if (cloudData && cloudData.payload) {
                         try {
                             const parsed = JSON.parse(cloudData.payload);
-                            if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet)) {
+                            
+                            // SE A NUVEM CONTIVER UMA ESTRUTURA MÁSTER VÁLIDA, PREENCHE O LAYOUT
+                            if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet) && parsed.masterSheet.length > 0) {
                                 systemData = parsed;
                                 forceDataIntegrity();
+                            } else {
+                                // FUSÃO DE SEGURANÇA SE OS INDICADORES DA NUVEM VIEREM ZERADOS
+                                systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
                             }
                             applyNodeStylingAndData();
                             renderCustomTabsList();
                             renderDynamicTabsMenu();
-                            renderMasterSpreadsheet(); // FORÇA A ATUALIZAÇÃO DA TABELA MASTER EM TEMPO REAL COM DADOS DA NUVEM
+                            renderMasterSpreadsheet(); // RENDERIZA AUTOMATICAMENTE OS DADOS ATUALIZADOS
                         } catch(e) {
                             console.error(e);
                         }
                     }
                 }
             }, (error) => {
-                console.log("Firebase sync fallback bypass.");
+                console.log("Firebase listener bypass fallback.");
             });
         }
 
@@ -1662,16 +1761,20 @@
             if (saved) {
                 try {
                     let parsed = JSON.parse(saved);
-                    if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet)) {
+                    if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet) && parsed.masterSheet.length > 0) {
                         systemData = parsed;
                         forceDataIntegrity();
+                    } else {
+                        systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
                     }
-                } catch(e) {}
+                } catch(e) {
+                    systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
+                }
             } else {
                 systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
             }
             
-            // Renderização forçada dos dados locais embutidos caso a nuvem demore
+            // Força render instantâneo local da Planilha e do Checklist 103 linhas
             applyNodeStylingAndData();
             renderCustomTabsList();
             renderDynamicTabsMenu();
@@ -1689,7 +1792,7 @@
                 }
                 startSync();
             } catch (err) {
-                console.log("Auth bypass active.");
+                console.log("Auth local bypass active.");
             }
         };
 
