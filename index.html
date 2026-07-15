@@ -663,7 +663,13 @@
                 </div>
 
                 <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl shrink-0">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 items-end">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 items-end">
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[9px] font-extrabold uppercase tracking-wider text-slate-500"><i class="fa-solid fa-calendar-days mr-1"></i>Frequência</label>
+                            <select id="filter-frequencia" onchange="aplicarFiltrosChecklist()" class="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold uppercase cursor-pointer">
+                                <option value="todos">Todos</option>
+                            </select>
+                        </div>
                         <div class="flex flex-col gap-1">
                             <label class="text-[9px] font-extrabold uppercase tracking-wider text-slate-500"><i class="fa-solid fa-user-tie mr-1"></i>Função</label>
                             <select id="filter-funcao" onchange="aplicarFiltrosChecklist()" class="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold uppercase cursor-pointer">
@@ -961,8 +967,8 @@
             { id: 6, freq: "Semanal", funcao: "GERENTE", atividade: "Analise dos controles da jornada", seg: "X", ter: "X", qua: "", qui: "X", sex: "X", proc: "FECHAMENTO DE RESULTADOS", sub: "PROGRAMAÇÃO DE FOLGA", ind: "ALINHAMENTO DE INICIO E RETORNO DAS FOLGAS X MANUTENÇÃO NO PERÍODO" },
             { id: 7, freq: "Semanal", funcao: "GERENTE", atividade: "Analise das justificativas dos fechamentos negativos", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
             { id: 8, freq: "Semanal", funcao: "GERENTE", atividade: "Reuniões - Manutenção e frota", seg: "X", ter: "14h", qua: "X", qui: "16h", sex: "X", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "LICENCIAMENTO E ADEQUAÇÕES FROTA", ind: "" },
-            { id: 9, freq: "Mensal", funcao: "GERENTE", atividade: "Analise e cobrança de eficiencia carga e descarga", seg: "GUARDIAN EM PRIMEIRO PLANO", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "INEFICIÊNCIAS DE CARGA E DESCARGA E DIÁRIAS" },
-            { id: 10, freq: "Mensal", funcao: "GERENTE", atividade: "Analise dos controles do gobrax", seg: "", ter: "X", qua: "X", qui: "X", sex: "X", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
+            { id: 9, freq: "Mensal", funcao: "GERENTE", atividade: "Analise e cobrança de eficiencia carga e descarga", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "INEFICIÊNCIAS DE CARGA E DESCARGA E DIÁRIAS" },
+            { id: 10, freq: "Mensal", funcao: "GERENTE", atividade: "Analise dos controles do gobrax", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
             { id: 11, freq: "Mensal", funcao: "GERENTE", atividade: "Validar a jornada dos motoristas x folha de pagamento", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
             { id: 12, freq: "Mensal", funcao: "GERENTE", atividade: "Analise das violações de velocidade das vias", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
             { id: 13, freq: "Mensal", funcao: "GERENTE", atividade: "Prospecção de clientes - Cargas subcontratados", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
@@ -1037,8 +1043,8 @@
             { id: 82, freq: "Diária", funcao: "GESTORES", atividade: "Análise de jornada WR", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
             { id: 83, freq: "Semanal", funcao: "GESTORES", atividade: "Reuniao equipe", seg: "X", ter: "", qua: "X", qui: "X", sex: "X", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
             { id: 84, freq: "Semanal", funcao: "GESTORES", atividade: "Controle de tempo de experiência dos motoristas", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
-            { id: 85, freq: "Mensal", funcao: "GESTORES", atividade: "Atualização da planilha placa/frota", seg: "X", ter: "X", qua: "X", qui: "", sex: "X", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
-            { id: 86, freq: "Mensal", funcao: "GESTORES", atividade: "Fechamento frota", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
+            { id: 85, freq: "Mensal", funcao: "GESTORES", atividade: "Atualização da planilha placa/frota", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
+            { id: 86, freq: "Mensal", funcao: "GESTORES", atividade: "Fechamento frota", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
             { id: 87, freq: "Mensal", funcao: "GESTORES", atividade: "Validação/conferência da jornada dos motoristas e coletar assinatura do espelho de jornada", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
             { id: 88, freq: "Eventualmente", funcao: "GESTORES", atividade: "Cargas subcontratados", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
             { id: 89, freq: "Eventualmente", funcao: "GESTORES", atividade: "Cadastro de motorista; embarque de macros nos veiculos;", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
@@ -1085,17 +1091,18 @@
         }
 
         // --- SEÇÃO DO CHECKLIST OPERACIONAL TOTALMENTE LOCAL E PROTEGIDA ---
-        function renderChecklist(filtroFuncao = "todos", filtroProcesso = "todos", filtroSubprocesso = "todos", filtroIndicador = "todos") {
+        function renderChecklist(filtroFrequencia = "todos", filtroFuncao = "todos", filtroProcesso = "todos", filtroSubprocesso = "todos", filtroIndicador = "todos") {
             const tbody = document.getElementById("checklist-sheet-tbody");
             if (!tbody) return;
             tbody.innerHTML = "";
 
             const dadosFiltrados = CHECKLIST_DATASET.filter(row => {
+                const matchFrequencia = (filtroFrequencia === "todos" || row.freq.toUpperCase() === filtroFrequencia.toUpperCase());
                 const matchFuncao = (filtroFuncao === "todos" || row.funcao.toUpperCase() === filtroFuncao.toUpperCase());
                 const matchProcesso = (filtroProcesso === "todos" || row.proc.toUpperCase() === filtroProcesso.toUpperCase());
                 const matchSubprocesso = (filtroSubprocesso === "todos" || row.sub.toUpperCase() === filtroSubprocesso.toUpperCase());
                 const matchIndicador = (filtroIndicador === "todos" || row.ind.toUpperCase() === filtroIndicador.toUpperCase());
-                return matchFuncao && matchProcesso && matchSubprocesso && matchIndicador;
+                return matchFrequencia && matchFuncao && matchProcesso && matchSubprocesso && matchIndicador;
             });
 
             if (dadosFiltrados.length === 0) {
@@ -1142,6 +1149,7 @@
         }
 
         function popularFiltrosChecklist() {
+            const selectFrequencia = document.getElementById("filter-frequencia");
             const selectFuncao = document.getElementById("filter-funcao");
             const selectProcesso = document.getElementById("filter-processo");
             const selectSubprocesso = document.getElementById("filter-subprocesso");
@@ -1149,21 +1157,28 @@
 
             if (!selectFuncao) return;
 
+            const ORDEM_FREQUENCIA = ["Diária", "Semanal", "Quinzenal", "Mensal", "Trimestral", "Eventualmente"];
+            const frequenciasPresentes = new Set(CHECKLIST_DATASET.map(r => r.freq.trim()).filter(Boolean));
+            const frequencias = ORDEM_FREQUENCIA.filter(f => frequenciasPresentes.has(f))
+                .concat([...frequenciasPresentes].filter(f => !ORDEM_FREQUENCIA.includes(f)).sort());
             const funcoes = [...new Set(CHECKLIST_DATASET.map(r => r.funcao.trim().toUpperCase()).filter(Boolean))].sort();
             const processos = [...new Set(CHECKLIST_DATASET.map(r => r.proc.trim().toUpperCase()).filter(Boolean))].sort();
             const subprocessos = [...new Set(CHECKLIST_DATASET.map(r => r.sub.trim().toUpperCase()).filter(Boolean))].sort();
             const indicadores = [...new Set(CHECKLIST_DATASET.map(r => r.ind.trim().toUpperCase()).filter(Boolean))].sort();
 
+            const valFrequencia = selectFrequencia.value || "todos";
             const valFuncao = selectFuncao.value || "todos";
             const valProcesso = selectProcesso.value || "todos";
             const valSubprocesso = selectSubprocesso.value || "todos";
             const valIndicador = selectIndicador.value || "todos";
 
+            selectFrequencia.innerHTML = '<option value="todos">Todos</option>' + frequencias.map(f => `<option value="${f}">${f}</option>`).join('');
             selectFuncao.innerHTML = '<option value="todos">Todos</option>' + funcoes.map(f => `<option value="${f}">${f}</option>`).join('');
             selectProcesso.innerHTML = '<option value="todos">Todos</option>' + processos.map(p => `<option value="${p}">${p}</option>`).join('');
             selectSubprocesso.innerHTML = '<option value="todos">Todos</option>' + subprocessos.map(s => `<option value="${s}">${s}</option>`).join('');
             selectIndicador.innerHTML = '<option value="todos">Todos</option>' + indicadores.map(i => `<option value="${i}">${i}</option>`).join('');
 
+            selectFrequencia.value = valFrequencia;
             selectFuncao.value = valFuncao;
             selectProcesso.value = valProcesso;
             selectSubprocesso.value = valSubprocesso;
@@ -1171,14 +1186,16 @@
         }
 
         function aplicarFiltrosChecklist() {
+            const fFrequencia = document.getElementById("filter-frequencia").value;
             const fFuncao = document.getElementById("filter-funcao").value;
             const fProcesso = document.getElementById("filter-processo").value;
             const fSubprocesso = document.getElementById("filter-subprocesso").value;
             const fIndicador = document.getElementById("filter-indicador").value;
-            renderChecklist(fFuncao, fProcesso, fSubprocesso, fIndicador);
+            renderChecklist(fFrequencia, fFuncao, fProcesso, fSubprocesso, fIndicador);
         }
 
         function limparFiltrosChecklist() {
+            document.getElementById("filter-frequencia").value = "todos";
             document.getElementById("filter-funcao").value = "todos";
             document.getElementById("filter-processo").value = "todos";
             document.getElementById("filter-subprocesso").value = "todos";
