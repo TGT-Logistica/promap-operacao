@@ -1192,14 +1192,28 @@
             return val.toLocaleString('pt-BR');
         }
 
-        function calcularAcumulado(row) {
+        function calcularAcumuladoRaw(row) {
             let activeValues = row.data.filter(v => v !== null && v !== undefined && !isNaN(v));
-            if (activeValues.length === 0) return "#DIV/0!";
+            if (activeValues.length === 0) return null;
             if (row.formula === "avg") {
                 let sum = activeValues.reduce((a, b) => a + b, 0);
-                return formatCellValue(sum / activeValues.length, row.type);
+                return sum / activeValues.length;
             }
-            return "";
+            return null;
+        }
+
+        function calcularAcumulado(row) {
+            let raw = calcularAcumuladoRaw(row);
+            if (raw === null) return "#DIV/0!";
+            return formatCellValue(raw, row.type);
+        }
+
+        // Extrai o número-alvo de uma string de meta como "25 DIAS MÊS", "110%", "<35%", "9,00"
+        function parseMetaNumeric(metaStr) {
+            if (!metaStr) return null;
+            let cleaned = String(metaStr).replace(/[^0-9,.-]/g, '').replace(',', '.');
+            let num = parseFloat(cleaned);
+            return isNaN(num) ? null : num;
         }
 
         // --- RENDERIZAÇÃO DA PLANILHA MASTER DE INDICADORES (Aba "Planilha Indicadores Frota") ---
@@ -1224,16 +1238,25 @@
                     `;
                 }
 
+                const metaNum = parseMetaNumeric(row.meta);
+
                 let monthCells = "";
                 for (let m = 0; m < 12; m++) {
                     const val = row.data[m];
                     const displayVal = formatCellValue(val, row.type);
+                    const temValor = val !== null && val !== undefined && !isNaN(val);
+                    const abaixoDaMeta = temValor && metaNum !== null && val < metaNum;
+                    const corValor = abaixoDaMeta ? "text-red-600 font-extrabold" : "text-slate-700 font-semibold";
                     monthCells += `
-                        <td class="p-1.5 border-r border-slate-200 text-center cursor-pointer hover:bg-blue-50 transition-colors" ondblclick="editMasterCell(${rowIndex}, ${m}, this)">
+                        <td class="p-1.5 border-r border-slate-200 text-center cursor-pointer hover:bg-blue-50 transition-colors ${corValor}" ondblclick="editMasterCell(${rowIndex}, ${m}, this)">
                             ${displayVal}
                         </td>
                     `;
                 }
+
+                const acumuladoRaw = calcularAcumuladoRaw(row);
+                const acumuladoAbaixoDaMeta = acumuladoRaw !== null && metaNum !== null && acumuladoRaw < metaNum;
+                const corAcumulado = acumuladoAbaixoDaMeta ? "text-red-600" : "text-slate-800";
 
                 tbody.innerHTML += `
                     <tr id="${row.id}" class="border-b border-slate-100 hover:bg-slate-50/50 transition-colors">
@@ -1241,9 +1264,9 @@
                             ${row.name}
                             ${row.responsible ? `<div class="text-[9px] text-slate-400 font-normal uppercase">${row.responsible}</div>` : ""}
                         </td>
-                        <td class="p-2.5 border-r border-slate-200 text-center font-bold text-slate-600">${row.meta}</td>
+                        <td class="p-2.5 border-r border-slate-200 text-center font-extrabold text-emerald-700">${row.meta}</td>
                         ${monthCells}
-                        <td class="p-2.5 text-center font-extrabold text-slate-800 bg-slate-50">${calcularAcumulado(row)}</td>
+                        <td class="p-2.5 text-center font-extrabold ${corAcumulado} bg-slate-50">${calcularAcumulado(row)}</td>
                     </tr>
                 `;
             });
