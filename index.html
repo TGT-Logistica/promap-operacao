@@ -1274,7 +1274,24 @@
             });
         }
 
+        // --- PROTEÇÃO POR SENHA PARA AÇÕES DE EDIÇÃO ---
+        // A visualização continua livre para todos. Só ações que alteram dados pedem senha,
+        // uma única vez por sessão da aba (fica liberado até a aba ser fechada).
+        const EDIT_PASSWORD = "tgt26";
+        function verificarSenhaEdicao() {
+            if (sessionStorage.getItem("promap_edit_unlocked") === "true") return true;
+            const senha = window.prompt("Digite a senha para editar:");
+            if (senha === null) return false;
+            if (senha === EDIT_PASSWORD) {
+                sessionStorage.setItem("promap_edit_unlocked", "true");
+                return true;
+            }
+            showToast("Senha incorreta.");
+            return false;
+        }
+
         function editMasterCell(rowIndex, monthIndex, element) {
+            if (!verificarSenhaEdicao()) return;
             let row = systemData.masterSheet[rowIndex];
             let val = row.data[monthIndex];
             element.innerHTML = `<input type="number" step="any" class="w-full text-center bg-white border border-blue-500 rounded px-1 py-0.5 text-xs focus:outline-none" value="${val !== null ? val : ''}">`;
@@ -1508,6 +1525,7 @@
         });
 
         function openConfigModal() {
+            if (!verificarSenhaEdicao()) return;
             const data = systemData.nodes[activeNodeId];
             if (!data) return;
             document.getElementById("modal-node-title").innerText = data.name || "Configurar";
@@ -1576,6 +1594,7 @@
 
         function createCustomTab(event) {
             event.preventDefault();
+            if (!verificarSenhaEdicao()) return;
             const name = document.getElementById("new-tab-name").value.trim();
             const icon = document.getElementById("new-tab-icon").value;
             if (!name) return;
@@ -1647,12 +1666,14 @@
         }
 
         function saveCustomTabNotes(tabId) {
+            if (!verificarSenhaEdicao()) return;
             const tab = systemData.tabs.find(t => t.id === tabId);
             if (tab) { tab.notes = document.getElementById(`custom-notes-${tabId}`).value; saveAllData(); showToast("Salvo!"); }
         }
 
         function addTableRow(event, tabId) {
             event.preventDefault();
+            if (!verificarSenhaEdicao()) return;
             const form = event.target;
             const tab = systemData.tabs.find(t => t.id === tabId);
             if (!tab) return;
@@ -1679,6 +1700,7 @@
         }
 
         function removeTableRow(tabId, index) {
+            if (!verificarSenhaEdicao()) return;
             const tab = systemData.tabs.find(t => t.id === tabId);
             if (tab) { tab.tableData.splice(index, 1); saveAllData(); renderCustomTabTable(tabId); }
         }
@@ -1689,6 +1711,7 @@
         }
 
         function importDiagramData(event) {
+            if (!verificarSenhaEdicao()) { event.target.value = ""; return; }
             const file = event.target.files[0]; if (!file) return;
             const reader = new FileReader();
             reader.onload = function() {
@@ -1718,6 +1741,7 @@
         }
 
         function triggerResetDefault() {
+            if (!verificarSenhaEdicao()) return;
             localStorage.removeItem("ProMap_Indicadores_DB_v12");
             location.reload();
         }
