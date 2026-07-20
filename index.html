@@ -527,11 +527,16 @@
                         </table>
                     </div>
 
-                    <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between">
+                    <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
                         <span class="text-[9px] text-slate-400 italic font-medium">Clique no bloco para gerir anotações</span>
-                        <button id="bubble-btn-action" class="bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold px-2.5 py-1 rounded transition-colors flex items-center gap-1">
-                            Aceder <i class="fa-solid fa-up-right-from-square text-[8px]"></i>
-                        </button>
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <button id="bubble-btn-checklist" onclick="irParaChecklistComIndicador(activeNodeId)" class="hidden bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-bold px-2.5 py-1 rounded transition-colors items-center gap-1" title="Ver tarefas deste indicador no Checklist">
+                                <i class="fa-solid fa-list-check text-[8px]"></i> Checklist
+                            </button>
+                            <button id="bubble-btn-action" class="bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold px-2.5 py-1 rounded transition-colors flex items-center gap-1">
+                                Aceder <i class="fa-solid fa-up-right-from-square text-[8px]"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -964,24 +969,24 @@
             { id: 3, freq: "Diária", funcao: "GERENTE", atividade: "Analise do resultado da jornada dos motoristas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
             { id: 4, freq: "Semanal", funcao: "GERENTE", atividade: "Verificar saldo do sem parar e solicitar ao financeiro", seg: "", ter: "X", qua: "X", qui: "X", sex: "X", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE PEDAGIO", ind: "CONFERENCIA DE PEDAGIO" },
             { id: 5, freq: "Semanal", funcao: "GERENTE", atividade: "Atualização do quadro de motoristas x frota", seg: "", ter: "X", qua: "X", qui: "X", sex: "X", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
-            { id: 6, freq: "Semanal", funcao: "GERENTE", atividade: "Analise dos controles da jornada", seg: "X", ter: "X", qua: "", qui: "X", sex: "X", proc: "FECHAMENTO DE RESULTADOS", sub: "PROGRAMAÇÃO DE FOLGA", ind: "ALINHAMENTO DE INICIO E RETORNO DAS FOLGAS X MANUTENÇÃO NO PERÍODO" },
+            { id: 6, freq: "Semanal", funcao: "GERENTE", atividade: "Analise dos controles da jornada", seg: "X", ter: "X", qua: "", qui: "X", sex: "X", proc: "FECHAMENTO DE RESULTADOS", sub: "PROGRAMAÇÃO DE FOLGA", ind: "ALINHAMENTO DE INÍCIO E RETORNO DAS FOLGAS X MANUTENÇÃO NO PERÍODO" },
             { id: 7, freq: "Semanal", funcao: "GERENTE", atividade: "Analise das justificativas dos fechamentos negativos", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
             { id: 8, freq: "Semanal", funcao: "GERENTE", atividade: "Reuniões - Manutenção e frota", seg: "X", ter: "14h", qua: "X", qui: "16h", sex: "X", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "LICENCIAMENTO E ADEQUAÇÕES FROTA", ind: "" },
             { id: 9, freq: "Mensal", funcao: "GERENTE", atividade: "Analise e cobrança de eficiencia carga e descarga", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "INEFICIÊNCIAS DE CARGA E DESCARGA E DIÁRIAS" },
             { id: 10, freq: "Mensal", funcao: "GERENTE", atividade: "Analise dos controles do gobrax", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
             { id: 11, freq: "Mensal", funcao: "GERENTE", atividade: "Validar a jornada dos motoristas x folha de pagamento", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
             { id: 12, freq: "Mensal", funcao: "GERENTE", atividade: "Analise das violações de velocidade das vias", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
-            { id: 13, freq: "Mensal", funcao: "GERENTE", atividade: "Prospecção de clientes - Cargas subcontratados", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
+            { id: 13, freq: "Mensal", funcao: "GERENTE", atividade: "Prospecção de clientes - Cargas subcontratados", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
             { id: 14, freq: "Mensal", funcao: "GERENTE", atividade: "Fechamento frota", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
             { id: 15, freq: "Mensal", funcao: "GERENTE", atividade: "Fechamento gestores", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
             { id: 16, freq: "Mensal", funcao: "GERENTE", atividade: "Apontamento dos principais pontos de ineficiencia da frota (manutenção, falta de motoristas, ineficiencia de programaçao entre outros)", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
-            { id: 17, freq: "Mensal", funcao: "GERENTE", atividade: "Conferência das rotas subcontratadas analisadas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
+            { id: 17, freq: "Mensal", funcao: "GERENTE", atividade: "Conferência das rotas subcontratadas analisadas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
             { id: 18, freq: "Mensal", funcao: "GERENTE", atividade: "Conferir orçamento AET's", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "LICENCIAMENTO E ADEQUAÇÕES FROTA", ind: "" },
             { id: 19, freq: "Mensal", funcao: "GERENTE", atividade: "Conferência do relatorio comportamental dos motoristas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
-            { id: 20, freq: "Trimestral", funcao: "GERENTE", atividade: "Analise das rotas mais lucrativas de acordo com o tipo de implemento", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIENCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
-            { id: 21, freq: "Trimestral", funcao: "GERENTE", atividade: "Atualização e definição de orçamento operacional frota ( faturamento - impostos - pedagios - combustivel)", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIENCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
-            { id: 22, freq: "Trimestral", funcao: "GERENTE", atividade: "Atualização das metas operacionais ( motoristas, gestores, operaçao)", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIENCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
-            { id: 23, freq: "Trimestral", funcao: "GERENTE", atividade: "Atualização e validação do Procedimentos operacionais, descrição e checklist dos cargos", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIENCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
+            { id: 20, freq: "Trimestral", funcao: "GERENTE", atividade: "Analise das rotas mais lucrativas de acordo com o tipo de implemento", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIÊNCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
+            { id: 21, freq: "Trimestral", funcao: "GERENTE", atividade: "Atualização e definição de orçamento operacional frota ( faturamento - impostos - pedagios - combustivel)", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIÊNCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
+            { id: 22, freq: "Trimestral", funcao: "GERENTE", atividade: "Atualização das metas operacionais ( motoristas, gestores, operaçao)", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIÊNCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
+            { id: 23, freq: "Trimestral", funcao: "GERENTE", atividade: "Atualização e validação do Procedimentos operacionais, descrição e checklist dos cargos", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIÊNCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
             { id: 24, freq: "Eventualmente", funcao: "GERENTE", atividade: "Analise do Ranking de motoristas para possiveis Upgrades", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
             { id: 25, freq: "Eventualmente", funcao: "GERENTE", atividade: "Realizar entrevista, seleçao do motorista, arquivamento da entrevista", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
             { id: 26, freq: "Eventualmente", funcao: "GERENTE", atividade: "Desligamento de motoristas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
@@ -992,7 +997,7 @@
             { id: 31, freq: "Diária", funcao: "CONTROLADOR", atividade: "Integração de combustivel", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
             { id: 32, freq: "Semanal", funcao: "CONTROLADOR", atividade: "Reunião com a operadora de cartão de abastecimento", seg: "X", ter: "", qua: "X", qui: "X", sex: "X", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PERCENTUAL COMBUSTÍVEL X FATURAMENTO LÍQUIDO" },
             { id: 33, freq: "Semanal", funcao: "CONTROLADOR", atividade: "Lançar NF de entrada de combustivel de Três Rios", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PERCENTUAL COMBUSTÍVEL X FATURAMENTO LÍQUIDO" },
-            { id: 34, freq: "Semanal", funcao: "CONTROLADOR", atividade: "Verificar todos os fretes de sucata disponiveis e colocar na planilha", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
+            { id: 34, freq: "Semanal", funcao: "CONTROLADOR", atividade: "Verificar todos os fretes de sucata disponiveis e colocar na planilha", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
             { id: 35, freq: "Semanal", funcao: "CONTROLADOR", atividade: "Conferencia de KM dos veiculos no Datapar", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PERCENTUAL COMBUSTÍVEL X FATURAMENTO LÍQUIDO" },
             { id: 36, freq: "Semanal", funcao: "CONTROLADOR", atividade: "Conferir pedagios", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE PEDAGIO", ind: "CONFERENCIA DE PEDAGIO" },
             { id: 37, freq: "Quinzenal", funcao: "CONTROLADOR", atividade: "Conferência dos vinculos motorista x veiculos no gobrax", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PERCENTUAL COMBUSTÍVEL X FATURAMENTO LÍQUIDO" },
@@ -1009,10 +1014,10 @@
             { id: 48, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Realizar agendamento de manutenção do rastreador", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
             { id: 49, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Realizar analise de rotas avulsas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
             { id: 50, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Atualizar ranking de rotas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIÊNCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
-            { id: 51, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Apoio utilizaçao do sistema", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIENCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
-            { id: 52, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Criação e edição de P.O's", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIENCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
-            { id: 53, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Desenvolvimento de sistema", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIENCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
-            { id: 54, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Criação e atualização do dashboard lookerstudio", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIENCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
+            { id: 51, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Apoio utilizaçao do sistema", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIÊNCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
+            { id: 52, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Criação e edição de P.O's", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIÊNCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
+            { id: 53, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Desenvolvimento de sistema", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIÊNCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
+            { id: 54, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Criação e atualização do dashboard lookerstudio", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIÊNCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
             { id: 55, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Cadastros de postos no datapar", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
             { id: 56, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Realizar abertura e registro de sinistros", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "GESTÃO DE SINISTROS", ind: "" },
             { id: 57, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Controle de chips de telefonia", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "OBRIGAÇÕES ADMINISTRATIVAS", ind: "" },
@@ -1022,7 +1027,7 @@
             { id: 61, freq: "Diária", funcao: "CONTROLADOR", atividade: "Atualização da planilha de infrações (manual).", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
             { id: 62, freq: "Diária", funcao: "CONTROLADOR", atividade: "Atualização de dashboards: FECHAMENTO; DISPERSÃO; ORÇAMENTO.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
             { id: 63, freq: "Diária", funcao: "CONTROLADOR", atividade: "Análise do relatório de dispersão e lançamento dos ajustes necessários.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
-            { id: 64, freq: "Diária", funcao: "CONTROLADOR", atividade: "Atualização/envio da planilha de jornada/folgas da próxima semana", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "PROGRAMAÇÃO DE FOLGA", ind: "ALINMENTO DE INICIO E RETORNO DAS FOLGAS X MANUTENÇÃO NO PERÍODO" },
+            { id: 64, freq: "Diária", funcao: "CONTROLADOR", atividade: "Atualização/envio da planilha de jornada/folgas da próxima semana", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "PROGRAMAÇÃO DE FOLGA", ind: "ALINHAMENTO DE INÍCIO E RETORNO DAS FOLGAS X MANUTENÇÃO NO PERÍODO" },
             { id: 65, freq: "Semanal", funcao: "CONTROLADOR", atividade: "Envio de e-mail de retorno de folga", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "PROGRAMAÇÃO DE FOLGA", ind: "ALINHAMENTO DE INÍCIO E RETORNO DAS FOLGAS X MANUTENÇÃO NO PERÍODO" },
             { id: 66, freq: "Mensal", funcao: "CONTROLADOR", atividade: "Fechar indicadores de manutenção: Manutenção pós folga, quantidade de veículos sem previsão.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
             { id: 67, freq: "Mensal", funcao: "CONTROLADOR", atividade: "Fechamento e validação do tempo de manutenção dos veículos e tempo Sem Motorista, no dashboard de Dispersão.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
@@ -1033,36 +1038,68 @@
             { id: 72, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Atualização do ranking de motoristas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
             { id: 73, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Recebimento e arquivamento de discos de tacógrafo.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "OBRIGAÇÕES ADMINISTRATIVAS", ind: "" },
             { id: 74, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Análises de rotas avulsas e novas rotas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
-            { id: 75, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Desenvolvimento de novos dashboards pelo Power BI.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "FECHAMENTO MENSAL CLIENTES/FROTA", ind: "INEFICIENCIAS DE CARGA E DESCARGA E DIARIAS" },
+            { id: 75, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Desenvolvimento de novos dashboards pelo Power BI.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "FECHAMENTO MENSAL CLIENTES/FROTA", ind: "INEFICIÊNCIAS DE CARGA E DESCARGA E DIÁRIAS" },
             { id: 76, freq: "Diária", funcao: "GESTORES", atividade: "Atualização da Grid / Deslocamento Vazio", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
             { id: 77, freq: "Diária", funcao: "GESTORES", atividade: "Destinar veiculos (contato com motorista)", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
             { id: 78, freq: "Diária", funcao: "GESTORES", atividade: "Rastrear entregas WR", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
             { id: 79, freq: "Diária", funcao: "GESTORES", atividade: "Reembolsos (diárias e despesas)", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
             { id: 80, freq: "Diária", funcao: "GESTORES", atividade: "Dispersão dos veiculos", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
-            { id: 81, freq: "Diária", funcao: "GESTORES", atividade: "Controle de jornadas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "PROGRAMAÇÃO DE FOLGA", ind: "ALINHAMENTO DE INICIO E RETORNO DAS FOLGAS X MANUTENÇÃO NO PERÍODO" },
+            { id: 81, freq: "Diária", funcao: "GESTORES", atividade: "Controle de jornadas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "PROGRAMAÇÃO DE FOLGA", ind: "ALINHAMENTO DE INÍCIO E RETORNO DAS FOLGAS X MANUTENÇÃO NO PERÍODO" },
             { id: 82, freq: "Diária", funcao: "GESTORES", atividade: "Análise de jornada WR", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
             { id: 83, freq: "Semanal", funcao: "GESTORES", atividade: "Reuniao equipe", seg: "X", ter: "", qua: "X", qui: "X", sex: "X", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
             { id: 84, freq: "Semanal", funcao: "GESTORES", atividade: "Controle de tempo de experiência dos motoristas", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
             { id: 85, freq: "Mensal", funcao: "GESTORES", atividade: "Atualização da planilha placa/frota", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
             { id: 86, freq: "Mensal", funcao: "GESTORES", atividade: "Fechamento frota", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
             { id: 87, freq: "Mensal", funcao: "GESTORES", atividade: "Validação/conferência da jornada dos motoristas e coletar assinatura do espelho de jornada", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
-            { id: 88, freq: "Eventualmente", funcao: "GESTORES", atividade: "Cargas subcontratados", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
+            { id: 88, freq: "Eventualmente", funcao: "GESTORES", atividade: "Cargas subcontratados", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
             { id: 89, freq: "Eventualmente", funcao: "GESTORES", atividade: "Cadastro de motorista; embarque de macros nos veiculos;", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
             { id: 90, freq: "Eventualmente", funcao: "GESTORES", atividade: "Solicitação de AET", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "LICENCIAMENTO E ADEQUAÇÕES FROTA", ind: "" },
             { id: 91, freq: "Diária", funcao: "ANALISTA", atividade: "Acompanhamento de desvios operacionais de carga e descarga", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL CLIENTES/FROTA", ind: "INEFICIÊNCIAS DE CARGA E DESCARGA E DIÁRIAS" },
             { id: 92, freq: "Diária", funcao: "ANALISTA", atividade: "Mediação de conflitos operacionais entre gestores e motoristas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
-            { id: 93, freq: "Diária", funcao: "ANALISTA", atividade: "Captação de cargas junto às filiais e clientes operacionais", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
-            { id: 94, freq: "Diária", funcao: "ANALISTA", atividade: "Atualização da planilha de controle diário de cargas disponíveis", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
+            { id: 93, freq: "Diária", funcao: "ANALISTA", atividade: "Captação de cargas junto às filiais e clientes operacionais", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
+            { id: 94, freq: "Diária", funcao: "ANALISTA", atividade: "Atualização da planilha de controle diário de cargas disponíveis", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
             { id: 95, freq: "Diária", funcao: "ANALISTA", atividade: "Avaliação de disponibilidade e prioridade de veículos para atendimento das demandas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
             { id: 96, freq: "Diária", funcao: "ANALISTA", atividade: "Responder aos grupos de cargas sobre a disponibilidade de frota", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
             { id: 97, freq: "Diária", funcao: "ANALISTA", atividade: "Validação de deslocamentos vazios superiores a 300 km", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
             { id: 98, freq: "Mensal", funcao: "ANALISTA", atividade: "Análise do fechamento da frota e identificação de oportunidades de melhoria", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
-            { id: 99, freq: "Mensal", funcao: "ANALISTA", atividade: "Análise de viagens subcontratadas e oportunidades de otimização de rotas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
-            { id: 100, freq: "Eventualmente", funcao: "ANALISTA", atividade: "Captação de cargas de retorno para veículos em regiões sem operação própria", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
-            { id: 101, freq: "Eventualmente", funcao: "ANALISTA", atividade: "Validação operacional de novas operações", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "ANALISE DAS ROTAS SUBCONTRATADAS E RESULTADO POR CLIENTE" },
+            { id: 99, freq: "Mensal", funcao: "ANALISTA", atividade: "Análise de viagens subcontratadas e oportunidades de otimização de rotas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
+            { id: 100, freq: "Eventualmente", funcao: "ANALISTA", atividade: "Captação de cargas de retorno para veículos em regiões sem operação própria", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
+            { id: 101, freq: "Eventualmente", funcao: "ANALISTA", atividade: "Validação operacional de novas operações", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
             { id: 102, freq: "Eventualmente", funcao: "ANALISTA", atividade: "Cobertura de férias de gestores e gerentes", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
             { id: 103, freq: "Eventualmente", funcao: "ANALISTA", atividade: "Elaboração de relatório de desempenho e desenvolvimento dos colaboradores substituídos", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIÊNCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." }
         ];
+
+        // Mapeia cada bloco do fluxograma (indicador) para o texto exato do indicador
+        // usado no filtro do Checklist, permitindo ir direto do bloco para as tarefas dele.
+        const NODE_TO_INDICADOR = {
+            "disp_frota": "DISPONIBILIDADE DA FROTA",
+            "alinhamento_folgas": "ALINHAMENTO DE INÍCIO E RETORNO DAS FOLGAS X MANUTENÇÃO NO PERÍODO",
+            "objetivos_rotas": "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES.",
+            "sat_motorista": "SATISFAÇÃO DO MOTORISTA",
+            "perc_combustivel": "PERCENTUAL COMBUSTÍVEL X FATURAMENTO LÍQUIDO",
+            "conferencia_pedagio": "CONFERENCIA DE PEDAGIO",
+            "perf_motorista": "PERFORMANCE MOTORISTA",
+            "res_liquido": "RESULTADO LIQUIDO",
+            "ineficiencias_carga": "INEFICIÊNCIAS DE CARGA E DESCARGA E DIÁRIAS",
+            "definir_cronograma": "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..."
+        };
+
+        // Leva o usuário para a aba Checklist já filtrada pelo indicador do bloco clicado.
+        function irParaChecklistComIndicador(nodeId) {
+            const indicador = NODE_TO_INDICADOR[nodeId];
+            if (!indicador) return;
+            switchTab('checklist-view');
+            closePreviewBubble();
+            setTimeout(() => {
+                popularFiltrosChecklist();
+                document.getElementById("filter-frequencia").value = "todos";
+                document.getElementById("filter-funcao").value = "todos";
+                document.getElementById("filter-processo").value = "todos";
+                document.getElementById("filter-subprocesso").value = "todos";
+                document.getElementById("filter-indicador").value = indicador;
+                aplicarFiltrosChecklist();
+            }, 80);
+        }
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
@@ -1096,12 +1133,13 @@
             if (!tbody) return;
             tbody.innerHTML = "";
 
+            const norm = (txt) => (txt || "").trim().replace(/\s+/g, ' ').toUpperCase();
             const dadosFiltrados = CHECKLIST_DATASET.filter(row => {
                 const matchFrequencia = (filtroFrequencia === "todos" || row.freq.toUpperCase() === filtroFrequencia.toUpperCase());
-                const matchFuncao = (filtroFuncao === "todos" || row.funcao.toUpperCase() === filtroFuncao.toUpperCase());
-                const matchProcesso = (filtroProcesso === "todos" || row.proc.toUpperCase() === filtroProcesso.toUpperCase());
-                const matchSubprocesso = (filtroSubprocesso === "todos" || row.sub.toUpperCase() === filtroSubprocesso.toUpperCase());
-                const matchIndicador = (filtroIndicador === "todos" || row.ind.toUpperCase() === filtroIndicador.toUpperCase());
+                const matchFuncao = (filtroFuncao === "todos" || norm(row.funcao) === norm(filtroFuncao));
+                const matchProcesso = (filtroProcesso === "todos" || norm(row.proc) === norm(filtroProcesso));
+                const matchSubprocesso = (filtroSubprocesso === "todos" || norm(row.sub) === norm(filtroSubprocesso));
+                const matchIndicador = (filtroIndicador === "todos" || norm(row.ind) === norm(filtroIndicador));
                 return matchFrequencia && matchFuncao && matchProcesso && matchSubprocesso && matchIndicador;
             });
 
@@ -1158,13 +1196,14 @@
             if (!selectFuncao) return;
 
             const ORDEM_FREQUENCIA = ["Diária", "Semanal", "Quinzenal", "Mensal", "Trimestral", "Eventualmente"];
+            const normalizar = (txt) => txt.trim().replace(/\s+/g, ' ').toUpperCase();
             const frequenciasPresentes = new Set(CHECKLIST_DATASET.map(r => r.freq.trim()).filter(Boolean));
             const frequencias = ORDEM_FREQUENCIA.filter(f => frequenciasPresentes.has(f))
                 .concat([...frequenciasPresentes].filter(f => !ORDEM_FREQUENCIA.includes(f)).sort());
-            const funcoes = [...new Set(CHECKLIST_DATASET.map(r => r.funcao.trim().toUpperCase()).filter(Boolean))].sort();
-            const processos = [...new Set(CHECKLIST_DATASET.map(r => r.proc.trim().toUpperCase()).filter(Boolean))].sort();
-            const subprocessos = [...new Set(CHECKLIST_DATASET.map(r => r.sub.trim().toUpperCase()).filter(Boolean))].sort();
-            const indicadores = [...new Set(CHECKLIST_DATASET.map(r => r.ind.trim().toUpperCase()).filter(Boolean))].sort();
+            const funcoes = [...new Set(CHECKLIST_DATASET.map(r => normalizar(r.funcao)).filter(Boolean))].sort();
+            const processos = [...new Set(CHECKLIST_DATASET.map(r => normalizar(r.proc)).filter(Boolean))].sort();
+            const subprocessos = [...new Set(CHECKLIST_DATASET.map(r => normalizar(r.sub)).filter(Boolean))].sort();
+            const indicadores = [...new Set(CHECKLIST_DATASET.map(r => normalizar(r.ind)).filter(Boolean))].sort();
 
             const valFrequencia = selectFrequencia.value || "todos";
             const valFuncao = selectFuncao.value || "todos";
@@ -1408,7 +1447,16 @@
             const iconEl = document.getElementById("bubble-doc-icon");
             const subTypeEl = document.getElementById("bubble-sub-type");
             const btnAction = document.getElementById("bubble-btn-action");
+            const btnChecklist = document.getElementById("bubble-btn-checklist");
             const tableContainer = document.getElementById("bubble-preview-table-container");
+
+            if (NODE_TO_INDICADOR[nodeId]) {
+                btnChecklist.classList.remove('hidden');
+                btnChecklist.classList.add('inline-flex');
+            } else {
+                btnChecklist.classList.add('hidden');
+                btnChecklist.classList.remove('inline-flex');
+            }
 
             if (nodeData.linkType === 'none') {
                 iconWrapper.className = "bg-slate-100 text-slate-600 p-2 rounded-lg shrink-0 flex items-center justify-center";
@@ -1769,8 +1817,15 @@
         let systemData = {
             nodes: JSON.parse(JSON.stringify(DEFAULT_NODES_DATA)),
             tabs: JSON.parse(JSON.stringify(DEFAULT_TABS_DATA)),
-            masterSheet: JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA))
+            masterSheet: JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA)),
+            version: 0
         };
+
+        // Versão dos vínculos (linkType/url/tabId) dos blocos do fluxograma. Sempre que o
+        // mapeamento "quem liga com o quê" for corrigido no código, incrementar este número
+        // força uma realinhagem automática nos dados já salvos (localStorage/nuvem) de cada
+        // usuário, sem depender de reset manual. Título e notas personalizados não são afetados.
+        const NODE_LINKS_VERSION = 2;
 
         // Garante que dados antigos (localStorage/nuvem) continuem tendo todos os nós
         // e que a planilha master nunca fique vazia, mesmo após updates no código.
@@ -1781,10 +1836,32 @@
                     systemData.nodes[key] = JSON.parse(JSON.stringify(DEFAULT_NODES_DATA[key]));
                 }
             });
+
+            // Corrige, uma única vez por versão, vínculos de blocos que ficaram apontando
+            // para o lugar errado por causa de dados salvos antes de uma correção no código
+            // (ex: bloco de "Alinhamento de folgas" abrindo os dados de "Disponibilidade da frota").
+            let houveMigracao = false;
+            if (!systemData.version || systemData.version < NODE_LINKS_VERSION) {
+                Object.keys(DEFAULT_NODES_DATA).forEach(key => {
+                    const def = DEFAULT_NODES_DATA[key];
+                    const atual = systemData.nodes[key];
+                    if (atual) {
+                        atual.linkType = def.linkType;
+                        atual.url = def.url;
+                        atual.tabId = def.tabId;
+                        atual.type = def.type;
+                        // "name" e "desc" continuam preservados, caso tenham sido personalizados.
+                    }
+                });
+                systemData.version = NODE_LINKS_VERSION;
+                houveMigracao = true;
+            }
+
             if (!Array.isArray(systemData.tabs)) systemData.tabs = [];
             if (!Array.isArray(systemData.masterSheet) || systemData.masterSheet.length === 0) {
                 systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
             }
+            return houveMigracao;
         }
 
         // Salva os dados no navegador (localStorage) e sincroniza com o Firebase quando online.
@@ -1816,7 +1893,8 @@
                             const parsed = JSON.parse(cloudData.payload);
                             if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet)) {
                                 systemData = parsed;
-                                forceDataIntegrity();
+                                const migrou = forceDataIntegrity();
+                                if (migrou) saveAllData();
                             }
                             applyNodeStylingAndData();
                             renderCustomTabsList();
@@ -1841,7 +1919,8 @@
                     let parsed = JSON.parse(saved);
                     if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet)) {
                         systemData = parsed;
-                        forceDataIntegrity();
+                        const migrou = forceDataIntegrity();
+                        if (migrou) saveAllData();
                     }
                 } catch(e) {}
             } else {
@@ -1894,6 +1973,7 @@
         window.limparFiltrosChecklist = limparFiltrosChecklist;
         window.renderChecklist = renderChecklist;
         window.popularFiltrosChecklist = popularFiltrosChecklist;
+        window.irParaChecklistComIndicador = irParaChecklistComIndicador;
         window.renderMasterSpreadsheet = renderMasterSpreadsheet;
 
         initAuth();
