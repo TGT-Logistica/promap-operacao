@@ -530,7 +530,7 @@
                     <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
                         <span class="text-[9px] text-slate-400 italic font-medium">Clique no bloco para gerir anotações</span>
                         <div class="flex items-center gap-1.5 shrink-0">
-                            <button id="bubble-btn-checklist" onclick="irParaChecklistComIndicador(activeNodeId)" class="hidden bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-bold px-2.5 py-1 rounded transition-colors items-center gap-1" title="Ver tarefas deste indicador no Checklist">
+                            <button id="bubble-btn-checklist" class="hidden bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-bold px-2.5 py-1 rounded transition-colors items-center gap-1" title="Ver tarefas deste indicador no Checklist">
                                 <i class="fa-solid fa-list-check text-[8px]"></i> Checklist
                             </button>
                             <button id="bubble-btn-action" class="bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold px-2.5 py-1 rounded transition-colors flex items-center gap-1">
@@ -1453,9 +1453,11 @@
             if (NODE_TO_INDICADOR[nodeId]) {
                 btnChecklist.classList.remove('hidden');
                 btnChecklist.classList.add('inline-flex');
+                btnChecklist.onclick = () => irParaChecklistComIndicador(nodeId);
             } else {
                 btnChecklist.classList.add('hidden');
                 btnChecklist.classList.remove('inline-flex');
+                btnChecklist.onclick = null;
             }
 
             if (nodeData.linkType === 'none') {
