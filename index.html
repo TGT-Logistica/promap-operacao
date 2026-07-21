@@ -913,6 +913,7 @@
             "conferencia_pedagio": { name: "Conferência de pedágio", type: "color-indicator", linkType: "none", url: "", tabId: "", desc: "Mapeamento da conferência periódica de pedágio." },
             "fech_resultados": { name: "FECHAMENTO DE RESULTADOS", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
             "fech_jornada": { name: "FECHAMENTO JORNADA MOTORISTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
+            "fech_mensal_frota": { name: "FECHAMENTO MENSAL FROTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "perf_motorista": { name: "Performance motorista", type: "color-indicator", linkType: "internal-master", url: "section-perf_motorista", tabId: "", desc: "Performance operacional." },
             "res_liquido": { name: "Resultado líquido", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-res_liquido", desc: "Resultado líquido operacional acumulado." },
             "fech_clientes_frota": { name: "FECHAMENTO MENSAL CLIENTES/FROTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
@@ -1084,19 +1085,57 @@
             "definir_cronograma": "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..."
         };
 
-        // Leva o usuário para a aba Checklist já filtrada pelo indicador do bloco clicado.
-        function irParaChecklistComIndicador(nodeId) {
-            const indicador = NODE_TO_INDICADOR[nodeId];
-            if (!indicador) return;
+        // Mapeia cada bloco de PROCESSO-CHAVE do fluxograma para o texto exato usado no
+        // filtro "Processo-Chave" do Checklist.
+        const NODE_TO_PROCESSO = {
+            "prog_veiculos": "PROGRAMAÇÃO DE VEÍCULOS",
+            "acomp_jornada": "ACOMPANHAMENTO DE JORNADA",
+            "fech_resultados": "FECHAMENTO DE RESULTADOS",
+            "planejamento_frota": "PLANEJAMENTO FROTA",
+            "regularizacao_frota": "GESTÃO ADMINISTRATIVA DA FROTA"
+        };
+
+        // Mapeia cada bloco de SUBPROCESSO do fluxograma para o texto exato usado no
+        // filtro "Subprocesso" do Checklist.
+        const NODE_TO_SUBPROCESSO = {
+            "disp_recursos": "GESTÃO DE DISPONIBILIDADE DE RECURSOS",
+            "prog_folgas": "PROGRAMAÇÃO DE FOLGA",
+            "gestao_clientes": "GESTÃO DE CLIENTES",
+            "acomp_motorista": "ACOMPANHAMENTO DE MOTORISTA",
+            "controle_combustivel": "CONTROLE DE COMBUSTIVEL",
+            "controle_pedagio": "CONTROLE DE PEDAGIO",
+            "fech_jornada": "FECHAMENTO JORNADA DO MOTORISTA",
+            "fech_mensal_frota": "FECHAMENTO MENSAL FROTA",
+            "fech_clientes_frota": "FECHAMENTO MENSAL CLIENTES/FROTA",
+            "gestao_eficiencia": "GESTÃO DE EFICIÊNCIA E PROCESSO",
+            "licenciamento": "LICENCIAMENTO E ADEQUAÇÕES FROTA",
+            "adeq_admin": "OBRIGAÇÕES ADMINISTRATIVAS",
+            "gestao_sinistro": "GESTÃO DE SINISTROS"
+        };
+
+        // Descobre, para um bloco do fluxograma, qual filtro do Checklist ele deve acionar
+        // (indicador, subprocesso ou processo-chave — nessa ordem de prioridade).
+        function obterFiltroChecklistDoNode(nodeId) {
+            if (NODE_TO_INDICADOR[nodeId]) return { tipo: "indicador", valor: NODE_TO_INDICADOR[nodeId] };
+            if (NODE_TO_SUBPROCESSO[nodeId]) return { tipo: "subprocesso", valor: NODE_TO_SUBPROCESSO[nodeId] };
+            if (NODE_TO_PROCESSO[nodeId]) return { tipo: "processo", valor: NODE_TO_PROCESSO[nodeId] };
+            return null;
+        }
+
+        // Leva o usuário para a aba Checklist já filtrada pelo processo-chave, subprocesso
+        // ou indicador do bloco clicado (o que for aplicável a esse bloco).
+        function irParaChecklistFiltrado(nodeId) {
+            const filtro = obterFiltroChecklistDoNode(nodeId);
+            if (!filtro) return;
             switchTab('checklist-view');
             closePreviewBubble();
             setTimeout(() => {
                 popularFiltrosChecklist();
                 document.getElementById("filter-frequencia").value = "todos";
                 document.getElementById("filter-funcao").value = "todos";
-                document.getElementById("filter-processo").value = "todos";
-                document.getElementById("filter-subprocesso").value = "todos";
-                document.getElementById("filter-indicador").value = indicador;
+                document.getElementById("filter-processo").value = filtro.tipo === "processo" ? filtro.valor : "todos";
+                document.getElementById("filter-subprocesso").value = filtro.tipo === "subprocesso" ? filtro.valor : "todos";
+                document.getElementById("filter-indicador").value = filtro.tipo === "indicador" ? filtro.valor : "todos";
                 aplicarFiltrosChecklist();
             }, 80);
         }
@@ -1450,10 +1489,10 @@
             const btnChecklist = document.getElementById("bubble-btn-checklist");
             const tableContainer = document.getElementById("bubble-preview-table-container");
 
-            if (NODE_TO_INDICADOR[nodeId]) {
+            if (obterFiltroChecklistDoNode(nodeId)) {
                 btnChecklist.classList.remove('hidden');
                 btnChecklist.classList.add('inline-flex');
-                btnChecklist.onclick = () => irParaChecklistComIndicador(nodeId);
+                btnChecklist.onclick = () => irParaChecklistFiltrado(nodeId);
             } else {
                 btnChecklist.classList.add('hidden');
                 btnChecklist.classList.remove('inline-flex');
@@ -1975,7 +2014,7 @@
         window.limparFiltrosChecklist = limparFiltrosChecklist;
         window.renderChecklist = renderChecklist;
         window.popularFiltrosChecklist = popularFiltrosChecklist;
-        window.irParaChecklistComIndicador = irParaChecklistComIndicador;
+        window.irParaChecklistFiltrado = irParaChecklistFiltrado;
         window.renderMasterSpreadsheet = renderMasterSpreadsheet;
 
         initAuth();
