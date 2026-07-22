@@ -1876,7 +1876,7 @@
         // mapeamento "quem liga com o quê" for corrigido no código, incrementar este número
         // força uma realinhagem automática nos dados já salvos (localStorage/nuvem) de cada
         // usuário, sem depender de reset manual. Título e notas personalizados não são afetados.
-        const NODE_LINKS_VERSION = 2;
+        const NODE_LINKS_VERSION = 3;
 
         // Garante que dados antigos (localStorage/nuvem) continuem tendo todos os nós
         // e que a planilha master nunca fique vazia, mesmo após updates no código.
@@ -1912,6 +1912,20 @@
             if (!Array.isArray(systemData.masterSheet) || systemData.masterSheet.length === 0) {
                 systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
             }
+
+            // Sincroniza os campos meta e type da planilha master com os valores mais
+            // recentes do código, forçando atualização quando os defaults mudam.
+            if (!systemData.version || systemData.version < NODE_LINKS_VERSION) {
+                DEFAULT_MASTER_SHEET_DATA.forEach(defRow => {
+                    const savedRow = systemData.masterSheet.find(r => r.id === defRow.id);
+                    if (savedRow) {
+                        savedRow.meta = defRow.meta;
+                        savedRow.type = defRow.type;
+                    }
+                });
+                systemData.version = NODE_LINKS_VERSION;
+            }
+
             return houveMigracao;
         }
 
