@@ -1901,9 +1901,20 @@
                         atual.url = def.url;
                         atual.tabId = def.tabId;
                         atual.type = def.type;
-                        // "name" e "desc" continuam preservados, caso tenham sido personalizados.
                     }
                 });
+
+                // Sincroniza meta e type da planilha master com os valores atuais do código
+                if (Array.isArray(systemData.masterSheet)) {
+                    DEFAULT_MASTER_SHEET_DATA.forEach(defRow => {
+                        const savedRow = systemData.masterSheet.find(r => r.id === defRow.id);
+                        if (savedRow) {
+                            savedRow.meta = defRow.meta;
+                            savedRow.type = defRow.type;
+                        }
+                    });
+                }
+
                 systemData.version = NODE_LINKS_VERSION;
                 houveMigracao = true;
             }
@@ -1911,19 +1922,6 @@
             if (!Array.isArray(systemData.tabs)) systemData.tabs = [];
             if (!Array.isArray(systemData.masterSheet) || systemData.masterSheet.length === 0) {
                 systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
-            }
-
-            // Sincroniza os campos meta e type da planilha master com os valores mais
-            // recentes do código, forçando atualização quando os defaults mudam.
-            if (!systemData.version || systemData.version < NODE_LINKS_VERSION) {
-                DEFAULT_MASTER_SHEET_DATA.forEach(defRow => {
-                    const savedRow = systemData.masterSheet.find(r => r.id === defRow.id);
-                    if (savedRow) {
-                        savedRow.meta = defRow.meta;
-                        savedRow.type = defRow.type;
-                    }
-                });
-                systemData.version = NODE_LINKS_VERSION;
             }
 
             return houveMigracao;
