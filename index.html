@@ -679,7 +679,7 @@
                         </div>
                         <div>
                             <h2 class="text-sm font-bold text-slate-800">📋 Checklist Geral de Operações</h2>
-                            <p class="text-[10px] text-slate-500">Filtragem rápida por função, processos-chave, subprocessos ou indicadores definidos. Duplo clique no nº de P.O. para editar; clique no ícone de pasta para copiar o caminho de rede das P.O.'s.</p>
+                            <p class="text-[10px] text-slate-500">Filtragem rápida por função, processos-chave, subprocessos ou indicadores definidos. Duplo clique no nº de P.O. para editar; clique no ícone de pasta para abrir as P.O.'s no Google Drive.</p>
                         </div>
                     </div>
                     <button onclick="switchTab('diagram-view')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 shadow-2xs">
@@ -1234,7 +1234,7 @@
                 const celulaPO = `
                     <div class="flex items-center justify-center gap-1">
                         <span ondblclick="editPOCell(${row.id}, this.parentElement)" class="cursor-text text-[10px] font-extrabold text-slate-700 min-w-[16px] hover:bg-slate-100 rounded px-1" title="Duplo clique para editar">${valorPO || '<span class="text-slate-300 font-normal">—</span>'}</span>
-                        <button onclick="abrirPastaPO()" class="text-emerald-600 hover:text-emerald-800 shrink-0" title="Copiar caminho da pasta das P.O.'s"><i class="fa-solid fa-folder-open text-[11px]"></i></button>
+                        <button onclick="abrirPastaPO()" class="text-emerald-600 hover:text-emerald-800 shrink-0" title="Abrir pasta das P.O.'s no Google Drive"><i class="fa-solid fa-folder-open text-[11px]"></i></button>
                     </div>
                 `;
 
@@ -1323,13 +1323,13 @@
         // local) vindo de uma página https, mesmo com o drive de rede já mapeado no PC.
         // Por isso, em vez de tentar abrir a pasta diretamente (o que sempre vai falhar),
         // copiamos o caminho de rede para a área de transferência, pra colar no Explorer.
+        // Link da pasta compartilhada no Google Drive com os PDFs das P.O.'s. Por ser um
+        // link https (não um caminho de rede local), o navegador abre normalmente, em
+        // qualquer computador, sem a trava de segurança do file://.
+        const LINK_PASTA_PO = "https://drive.google.com/drive/folders/16OMUxnuDluHkTPtlNa6ToQav9StDHDki?usp=sharing";
+
         function abrirPastaPO() {
-            const caminho = "\\\\10.1.5.179\\docfrota\\GESTAO FROTA\\P.O's";
-            navigator.clipboard.writeText(caminho).then(() => {
-                showToast("Caminho da pasta copiado! Cole (Ctrl+V) na barra de endereços do Explorer do Windows.");
-            }).catch(() => {
-                showToast("Não foi possível copiar automaticamente. Caminho: " + caminho);
-            });
+            window.open(LINK_PASTA_PO, "_blank");
         }
 
         // Permite digitar/editar manualmente o número de P.O. de uma linha do Checklist.
