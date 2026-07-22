@@ -946,7 +946,7 @@
             { id: "row-res_liquido", category: "INDICADORES", name: "RESULTADO LÍQUIDO", responsible: "JAQUELINE", meta: "110%", type: "percentage", data: [5.73, 5.68, 6.70, 7.14, 6.80, 6.70, null, null, null, null, null, null], formula: "avg" },
             { id: "row-eficiencia_gestores", category: "INDICADORES", name: "EFICIÊNCIA RESULTADO GESTORES", responsible: "JAQUELINE", meta: "0", type: "decimal", data: [1.85, 1.83, 1.82, 1.86, 1.84, 1.83, null, null, null, null, null, null], formula: "avg" },
             { id: "row-capitacao_sub", category: "INDICADORES", name: "CAPTAÇÃO DE SUBCONTRATADO", responsible: "JAQUELINE", meta: "1", type: "percentage", data: [115, 116, 81, 131, 115, 123, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-perc_combustivel", category: "INDICADORES", name: "PORCENTAGEM COMBUSTIVEL/RESULTADO LIQUIDO", responsible: "PABLO", meta: "<35%", type: "percentage", data: [65, 62, 85, 61, 61, 54, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-perc_combustivel", category: "INDICADORES", name: "PORCENTAGEM COMBUSTIVEL X FATURAMENTO LIQUIDO", responsible: "PABLO", meta: "<35%", type: "percentage", data: [65, 62, 85, 61, 61, 54, null, null, null, null, null, null], formula: "avg" },
             { id: "row-analise_rotas", category: "INDICADORES", name: "ANÁLISE DE ROTAS SUBCONTRATADAS", responsible: "PABLO", meta: "70%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-manutencao_folga", category: "INDICADORES", name: "MANUTENÇÃO PÓS FOLGA SEM ADIAR RETORNO", responsible: "LEONARDO", meta: "0", type: "number", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
             
@@ -1884,7 +1884,7 @@
         // Versão do conteúdo (nome/meta/categoria) das linhas da Planilha Master de
         // Indicadores. Incrementar força a correção automática de linhas já salvas
         // (localStorage/nuvem) que ficaram com texto/meta desatualizados.
-        const MASTER_SHEET_VERSION = 2;
+        const MASTER_SHEET_VERSION = 3;
 
         // Garante que dados antigos (localStorage/nuvem) continuem tendo todos os nós
         // e que a planilha master nunca fique vazia, mesmo após updates no código.
