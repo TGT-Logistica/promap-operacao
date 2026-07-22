@@ -1881,6 +1881,11 @@
         // usuário, sem depender de reset manual. Título e notas personalizados não são afetados.
         const NODE_LINKS_VERSION = 2;
 
+        // Versão do conteúdo (nome/meta/categoria) das linhas da Planilha Master de
+        // Indicadores. Incrementar força a correção automática de linhas já salvas
+        // (localStorage/nuvem) que ficaram com texto/meta desatualizados.
+        const MASTER_SHEET_VERSION = 1;
+
         // Garante que dados antigos (localStorage/nuvem) continuem tendo todos os nós
         // e que a planilha master nunca fique vazia, mesmo após updates no código.
         function forceDataIntegrity() {
@@ -1915,6 +1920,30 @@
             if (!Array.isArray(systemData.masterSheet) || systemData.masterSheet.length === 0) {
                 systemData.masterSheet = JSON.parse(JSON.stringify(DEFAULT_MASTER_SHEET_DATA));
             }
+
+            // Corrige, uma única vez por versão, o texto/meta das linhas da Planilha Master
+            // que ficaram desatualizados por causa de dados salvos antes de uma correção no
+            // código (ex: "Eficiência de Programação dos Gestores" com meta antiga "90%").
+            // Os valores mensais já preenchidos ("data") NUNCA são apagados nessa correção.
+            if (!systemData.masterSheetVersion || systemData.masterSheetVersion < MASTER_SHEET_VERSION) {
+                const defaultsPorId = {};
+                DEFAULT_MASTER_SHEET_DATA.forEach(d => { defaultsPorId[d.id] = d; });
+                systemData.masterSheet.forEach(row => {
+                    const def = defaultsPorId[row.id];
+                    if (def) {
+                        row.name = def.name;
+                        row.category = def.category;
+                        row.responsible = def.responsible;
+                        row.meta = def.meta;
+                        row.type = def.type;
+                        row.formula = def.formula;
+                        // "data" (os valores mensais já lançados) é preservado, não é sobrescrito.
+                    }
+                });
+                systemData.masterSheetVersion = MASTER_SHEET_VERSION;
+                houveMigracao = true;
+            }
+
             return houveMigracao;
         }
 
