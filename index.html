@@ -965,19 +965,19 @@
             { id: "row-analise_rotas", category: "INDICADORES", name: "ANÁLISE DE ROTAS SUBCONTRATADAS", responsible: "PABLO", meta: "70%", type: "percentage", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-manutencao_folga", category: "INDICADORES", name: "MANUTENÇÃO PÓS FOLGA SEM ADIAR RETORNO", responsible: "LEONARDO", meta: "0", type: "number", data: [null, null, null, null, null, null, null, null, null, null, null, null], formula: "avg" },
             
-            { id: "row-sat-camila", category: "SATISFAÇÃO DO MOTORISTA", name: "CAMILA", responsible: "", meta: "9,00", type: "decimal", data: [9.90, 9.83, 9.83, null, 9.66, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-sat-camila", obs: "iniciou Maio", category: "SATISFAÇÃO DO MOTORISTA", name: "CAMILA", responsible: "", meta: "9,00", type: "decimal", data: [9.90, 9.83, 9.83, null, 9.66, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-sat-fabio", category: "SATISFAÇÃO DO MOTORISTA", name: "FABIO", responsible: "", meta: "9,00", type: "decimal", data: [9.04, 9.48, 9.48, 8.93, 9.50, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-sat-guilherme", category: "SATISFAÇÃO DO MOTORISTA", name: "GUILHERME", responsible: "", meta: "9,00", type: "decimal", data: [9.60, 9.77, 9.77, 9.05, 9.63, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-sat-guilherme", obs: "iniciou Abril", category: "SATISFAÇÃO DO MOTORISTA", name: "GUILHERME", responsible: "", meta: "9,00", type: "decimal", data: [9.60, 9.77, 9.77, 9.05, 9.63, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-sat-lorena", category: "SATISFAÇÃO DO MOTORISTA", name: "LORENA", responsible: "", meta: "9,00", type: "decimal", data: [9.75, 9.61, 9.61, 9.67, 9.76, null, null, null, null, null, null, null], formula: "avg" },
             
-            { id: "row-perf-camila", category: "PERFORMANCE MOTORISTA", name: "CAMILA", responsible: "", meta: "80%", type: "percentage", data: [60, 77, 72, null, 75, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-perf-camila", obs: "iniciou Maio", category: "PERFORMANCE MOTORISTA", name: "CAMILA", responsible: "", meta: "80%", type: "percentage", data: [60, 77, 72, null, 75, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-perf-fabio", category: "PERFORMANCE MOTORISTA", name: "FABIO", responsible: "", meta: "80%", type: "percentage", data: [63, 47, 16, 50, 67, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-perf-guilherme", category: "PERFORMANCE MOTORISTA", name: "GUILHERME", responsible: "", meta: "80%", type: "percentage", data: [100, 90, 92, 77, 80, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-perf-guilherme", obs: "iniciou Abril", category: "PERFORMANCE MOTORISTA", name: "GUILHERME", responsible: "", meta: "80%", type: "percentage", data: [100, 90, 92, 77, 80, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-perf-lorena", category: "PERFORMANCE MOTORISTA", name: "LORENA", responsible: "", meta: "80%", type: "percentage", data: [77, 75, 67, 43, 63, null, null, null, null, null, null, null], formula: "avg" },
             
-            { id: "row-res-camila", category: "RESULTADO LÍQUIDO OPERACIONAL", name: "CAMILA", responsible: "", meta: "100%", type: "percentage", data: [85, 83, 69, null, 106, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-res-camila", obs: "iniciou Maio", category: "RESULTADO LÍQUIDO OPERACIONAL", name: "CAMILA", responsible: "", meta: "100%", type: "percentage", data: [85, 83, 69, null, 106, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-res-fabio", category: "RESULTADO LÍQUIDO OPERACIONAL", name: "FABIO", responsible: "", meta: "100%", type: "percentage", data: [93, 81, 98, 118, 121, null, null, null, null, null, null, null], formula: "avg" },
-            { id: "row-res-guilherme", category: "RESULTADO LÍQUIDO OPERACIONAL", name: "GUILHERME", responsible: "", meta: "100%", type: "percentage", data: [103, 117, 80, 93, 92, null, null, null, null, null, null, null], formula: "avg" },
+            { id: "row-res-guilherme", obs: "iniciou Abril", category: "RESULTADO LÍQUIDO OPERACIONAL", name: "GUILHERME", responsible: "", meta: "100%", type: "percentage", data: [103, 117, 80, 93, 92, null, null, null, null, null, null, null], formula: "avg" },
             { id: "row-res-lorena", category: "RESULTADO LÍQUIDO OPERACIONAL", name: "LORENA", responsible: "", meta: "100%", type: "percentage", data: [92, 99, 83, 124, 101, null, null, null, null, null, null, null], formula: "avg" }
         ];
 
@@ -1413,9 +1413,9 @@
         function formatCellValue(val, type) {
             if (val === null || val === undefined || isNaN(val)) return "";
             if (type === "currency") return "R$ " + val.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            if (type === "percentage") return val.toLocaleString('pt-BR') + "%";
+            if (type === "percentage") return val.toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + "%";
             if (type === "decimal") return val.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            return val.toLocaleString('pt-BR');
+            return val.toLocaleString('pt-BR', { maximumFractionDigits: 2 });
         }
 
         function calcularAcumuladoRaw(row) {
@@ -1489,6 +1489,7 @@
                         <td class="p-2.5 border-r border-slate-200 font-semibold text-slate-700">
                             ${row.name}
                             ${row.responsible ? `<div class="text-[9px] text-slate-400 font-normal uppercase">${row.responsible}</div>` : ""}
+                            ${row.obs ? `<div class="text-[9px] text-amber-600 font-semibold italic normal-case">${row.obs}</div>` : ""}
                         </td>
                         <td class="p-2.5 border-r border-slate-200 text-center font-extrabold text-emerald-700">${row.meta}</td>
                         ${monthCells}
@@ -2001,7 +2002,7 @@
         // Versão do conteúdo (nome/meta/categoria) das linhas da Planilha Master de
         // Indicadores. Incrementar força a correção automática de linhas já salvas
         // (localStorage/nuvem) que ficaram com texto/meta desatualizados.
-        const MASTER_SHEET_VERSION = 3;
+        const MASTER_SHEET_VERSION = 4;
 
         // Garante que dados antigos (localStorage/nuvem) continuem tendo todos os nós
         // e que a planilha master nunca fique vazia, mesmo após updates no código.
@@ -2055,6 +2056,7 @@
                         row.meta = def.meta;
                         row.type = def.type;
                         row.formula = def.formula;
+                        row.obs = def.obs;
                         // "data" (os valores mensais já lançados) é preservado, não é sobrescrito.
                     }
                 });
