@@ -244,8 +244,8 @@
             </div>
 
             <div class="flex-grow bg-slate-50 rounded-xl border border-slate-200 overflow-auto relative p-6">
-                <div id="diagram-scale-container" class="origin-top-left transition-transform duration-100 ease-out min-w-[2450px] py-6 px-16">
-                    <div class="tree">
+                <div id="diagram-scale-container" class="origin-top-left transition-transform duration-100 ease-out min-w-[2450px] py-6 px-24">
+                    <div class="tree" style="margin-left: 80px;">
                         <ul>
                             <li>
                                 <div class="tree-node-wrapper has-children">
@@ -363,20 +363,30 @@
                                                         </div>
                                                         <ul>
                                                             <li>
-                                                                <div class="tree-node-wrapper">
+                                                                <div class="tree-node-wrapper has-children">
                                                                     <div id="node-perc_combustivel" onclick="handleNodeClick('perc_combustivel', event)" class="w-[140px] text-center p-1.5 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
                                                                         <span class="node-text">Porcentagem Combustível x Faturamento líquido</span>
                                                                         <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
                                                                     </div>
                                                                 </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="tree-node-wrapper">
-                                                                    <div id="node-preco_litro" onclick="handleNodeClick('preco_litro', event)" class="w-[140px] text-center p-1.5 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
-                                                                        <span class="node-text">Preço/Litro</span>
-                                                                        <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
-                                                                    </div>
-                                                                </div>
+                                                                <ul>
+                                                                    <li>
+                                                                        <div class="tree-node-wrapper">
+                                                                            <div id="node-preco_litro" onclick="handleNodeClick('preco_litro', event)" class="w-[125px] text-center p-1.5 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                                <span class="node-text">Preço/Litro</span>
+                                                                                <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li>
+                                                                        <div class="tree-node-wrapper">
+                                                                            <div id="node-consumo_medio" onclick="handleNodeClick('consumo_medio', event)" class="w-[125px] text-center p-1.5 text-[9px] font-semibold rounded color-indicator shadow-sm hover:brightness-95 cursor-pointer min-h-[48px] flex items-center justify-center relative node-card leading-tight">
+                                                                                <span class="node-text">Consumo Médio</span>
+                                                                                <span class="link-badge absolute right-1 top-1 hidden text-white bg-slate-900/40 p-0.5 rounded text-[8px]"><i class="fa-solid fa-link"></i></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                </ul>
                                                             </li>
                                                         </ul>
                                                     </li>
@@ -961,6 +971,7 @@
             "controle_combustivel": { name: "CONTROLE DE COMBUSTÍVEL", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "perc_combustivel": { name: "Percentual Combustível x Faturamento líquido", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-perc_combustivel", desc: "Combustível face ao faturamento líquido." },
             "preco_litro": { name: "Preço/Litro", type: "color-indicator", linkType: "manual-indicator", url: "", tabId: "", metaManual: "", resultadoManual: "", mesManual: "", desc: "Preço médio do combustível por litro." },
+            "consumo_medio": { name: "Consumo Médio", type: "color-indicator", linkType: "manual-indicator", url: "", tabId: "", metaManual: "", resultadoManual: "", mesManual: "", desc: "Consumo médio de combustível da frota (km/l)." },
             "controle_pedagio": { name: "CONTROLE DE PEDÁGIO", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "Subprocesso de monitoramento de despesas de pedágios." },
             "conferencia_pedagio": { name: "Conferência de pedágio", type: "color-indicator", linkType: "none", url: "", tabId: "", desc: "Mapeamento da conferência periódica de pedágio." },
             "fech_resultados": { name: "FECHAMENTO DE RESULTADOS", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
@@ -2091,7 +2102,7 @@
         // mapeamento "quem liga com o quê" for corrigido no código, incrementar este número
         // força uma realinhagem automática nos dados já salvos (localStorage/nuvem) de cada
         // usuário, sem depender de reset manual. Título e notas personalizados não são afetados.
-        const NODE_LINKS_VERSION = 8;
+        const NODE_LINKS_VERSION = 9;
 
         // Versão do conteúdo (nome/meta/categoria) das linhas da Planilha Master de
         // Indicadores. Incrementar força a correção automática de linhas já salvas
