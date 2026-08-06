@@ -192,7 +192,7 @@
             <button onclick="switchTab('diagram-view')" id="btn-diagram-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all">
                 <i class="fa-solid fa-network-wired mr-1.5"></i>Fluxograma do Processo
             </button>
-            <button onclick="switchTab('organograma-view')" id="btn-organograma-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all">
+            <button onclick="switchTab('organograma-view')" id="btn-organograma-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold transition-all bg-green-600 text-white shadow-sm">
                 <i class="fa-solid fa-users mr-1.5"></i>👥 Organograma Frota
             </button>
             <button onclick="switchTab('master-sheet-view')" id="btn-master-sheet-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all">
@@ -201,7 +201,7 @@
             <button onclick="switchTab('checklist-view')" id="btn-checklist-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all">
                 <i class="fa-solid fa-list-check mr-1.5"></i>📋 Checklist Operação
             </button>
-            <button onclick="switchTab('mvv-view')" id="btn-mvv-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold transition-all bg-green-600 text-white shadow-sm">
+            <button onclick="switchTab('mvv-view')" id="btn-mvv-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all">
                 <i class="fa-solid fa-bullseye mr-1.5"></i>Missão, Visão e Valores
             </button>
             <button onclick="switchTab('backup-view')" id="btn-backup-view" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:bg-slate-900 hover:text-white transition-all">
@@ -566,6 +566,9 @@
                     <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
                         <span class="text-[9px] text-slate-400 italic font-medium">Clique no bloco para gerir anotações</span>
                         <div class="flex items-center gap-1.5 shrink-0">
+                            <button id="bubble-btn-powerbi" class="hidden bg-amber-500 hover:bg-amber-600 text-white text-[10px] font-bold px-2.5 py-1 rounded transition-colors items-center gap-1" title="Ver painel no Power BI">
+                                <i class="fa-solid fa-chart-column text-[8px]"></i> Power BI
+                            </button>
                             <button id="bubble-btn-checklist" class="hidden bg-green-600 hover:bg-green-700 text-white text-[10px] font-bold px-2.5 py-1 rounded transition-colors items-center gap-1" title="Ver tarefas deste indicador no Checklist">
                                 <i class="fa-solid fa-list-check text-[8px]"></i> Checklist
                             </button>
@@ -578,7 +581,7 @@
             </div>
         </div>
 
-        <div id="tab-organograma-view" class="tab-content flex-grow hidden flex-col overflow-auto p-6 w-full h-full">
+        <div id="tab-organograma-view" class="tab-content flex-grow flex flex-col overflow-auto p-6 w-full h-full">
             <div class="bg-white p-8 rounded-xl shadow-sm border border-slate-200 flex flex-col items-center gap-0 max-w-4xl mx-auto w-full select-none relative min-h-[580px]">
                 
                 <h2 class="text-xl font-extrabold text-slate-800 tracking-widest uppercase border-b border-slate-100 pb-3 mb-8 w-full text-center">
@@ -809,7 +812,7 @@
             </div>
         </div>
 
-        <div id="tab-mvv-view" class="tab-content flex-grow flex flex-col overflow-auto p-6">
+        <div id="tab-mvv-view" class="tab-content hidden flex-col overflow-auto p-6">
             <div class="max-w-4xl mx-auto w-full flex flex-col gap-6">
 
                 <div class="flex items-center justify-between border-b border-slate-200 pb-4">
@@ -985,7 +988,7 @@
             "objetivos_rotas": { name: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES.", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-analise_rota_ost", desc: "" },
             "acomp_jornada": { name: "ACOMPANHAMENTO DE JORNADA", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
             "acomp_motorista": { name: "ACOMPANHAMENTO DE MOTORISTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
-            "sat_motorista": { name: "Satisfação do motorista", type: "color-indicator", linkType: "internal-master", url: "section-sat_motorista", tabId: "", desc: "Satisfação dos motoristas." },
+            "sat_motorista": { name: "Satisfação do motorista", type: "color-indicator", linkType: "internal-master", url: "", tabId: "section-sat_motorista", desc: "Satisfação dos motoristas." },
             "controle_combustivel": { name: "CONTROLE DE COMBUSTÍVEL", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "perc_combustivel": { name: "Percentual Combustível x Faturamento líquido", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-perc_combustivel", desc: "Combustível face ao faturamento líquido." },
             "preco_litro": { name: "Preço/Litro", type: "color-indicator", linkType: "manual-indicator", url: "", tabId: "", metaManual: "", resultadoManual: "", mesManual: "", desc: "Preço médio do combustível por litro." },
@@ -995,7 +998,7 @@
             "fech_resultados": { name: "FECHAMENTO DE RESULTADOS", type: "color-process-key", linkType: "none", url: "", tabId: "", desc: "" },
             "fech_jornada": { name: "FECHAMENTO JORNADA MOTORISTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "fech_mensal_frota": { name: "FECHAMENTO MENSAL FROTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
-            "perf_motorista": { name: "Performance motorista", type: "color-indicator", linkType: "internal-master", url: "section-perf_motorista", tabId: "", desc: "Performance operacional." },
+            "perf_motorista": { name: "Performance motorista", type: "color-indicator", linkType: "internal-master", url: "", tabId: "section-perf_motorista", desc: "Performance operacional." },
             "res_liquido": { name: "Resultado líquido", type: "color-indicator", linkType: "internal-master", url: "", tabId: "row-res_liquido", desc: "Resultado líquido operacional acumulado." },
             "fech_clientes_frota": { name: "FECHAMENTO MENSAL CLIENTES/FROTA", type: "color-sub-process", linkType: "none", url: "", tabId: "", desc: "" },
             "ineficiencias_carga": { name: "Ineficiências de carga e descarga e diárias", type: "color-to-develop", linkType: "none", url: "", tabId: "", desc: "" },
@@ -1077,7 +1080,7 @@
             { id: 29, freq: "Eventualmente", funcao: "GERENTE", atividade: "Programação de férias", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
             { id: 30, po: "25", freq: "Diária", funcao: "CONTROLADOR", atividade: "Lançar notas de saida de Três Rios", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
             { id: 31, po: "9", freq: "Diária", funcao: "CONTROLADOR", atividade: "Integração de combustivel", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
-            { id: 32, freq: "Semanal", funcao: "CONTROLADOR", atividade: "Reunião com a operadora de cartão de abastecimento", seg: "X", ter: "", qua: "X", qui: "X", sex: "X", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PERCENTUAL COMBUSTÍVEL X FATURAMENTO LÍQUIDO" },
+            { id: 32, po: "38", freq: "Semanal", funcao: "CONTROLADOR", atividade: "Reunião com a operadora de cartão de abastecimento", seg: "X", ter: "", qua: "X", qui: "X", sex: "X", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PERCENTUAL COMBUSTÍVEL X FATURAMENTO LÍQUIDO" },
             { id: 33, po: "1", freq: "Semanal", funcao: "CONTROLADOR", atividade: "Lançar NF de entrada de combustivel de Três Rios", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PERCENTUAL COMBUSTÍVEL X FATURAMENTO LÍQUIDO" },
             { id: 34, po: "26", freq: "Semanal", funcao: "CONTROLADOR", atividade: "Verificar todos os fretes de sucata disponiveis e colocar na planilha", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
             { id: 35, po: "27", freq: "Semanal", funcao: "CONTROLADOR", atividade: "Conferencia de KM dos veiculos no Datapar", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PERCENTUAL COMBUSTÍVEL X FATURAMENTO LÍQUIDO" },
@@ -1085,14 +1088,14 @@
             { id: 37, po: "28", freq: "Quinzenal", funcao: "CONTROLADOR", atividade: "Conferência dos vinculos motorista x veiculos no gobrax", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PERCENTUAL COMBUSTÍVEL X FATURAMENTO LÍQUIDO" },
             { id: 38, po: "29", freq: "Quinzenal", funcao: "CONTROLADOR", atividade: "Conciliação de combustível", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
             { id: 39, po: "8 / 6", freq: "Quinzenal", funcao: "CONTROLADOR", atividade: "Lançamento dos cupons ficais dos postos de Petrópolis e conferência para CPG", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
-            { id: 40, freq: "Quinzenal", funcao: "CONTROLADOR", atividade: "Conferência dos abastecimentos com fatura truckpag", seg: "", ter: "X", qua: "X", qui: "X", sex: "X", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
-            { id: 41, freq: "Mensal", funcao: "CONTROLADOR", atividade: "Atualizar dados no fechamento frota", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
+            { id: 40, po: "39", freq: "Quinzenal", funcao: "CONTROLADOR", atividade: "Conferência dos abastecimentos com fatura truckpag", seg: "", ter: "X", qua: "X", qui: "X", sex: "X", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
+            { id: 41, po: "40", freq: "Mensal", funcao: "CONTROLADOR", atividade: "Atualizar dados no fechamento frota", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
             { id: 42, po: "30", freq: "Mensal", funcao: "CONTROLADOR", atividade: "Solicitar aos motoristas as notas dos gestores", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
             { id: 43, po: "33", freq: "Mensal", funcao: "CONTROLADOR", atividade: "Atualizar planilha de subcontratado", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
             { id: 44, po: "7", freq: "Mensal", funcao: "CONTROLADOR", atividade: "Fechamento Gobrax", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PERCENTUAL COMBUSTÍVEL X FATURAMENTO LÍQUIDO" },
             { id: 45, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Realizar treinamento de novos motoristas: Rastreador e Gobrax", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
             { id: 46, po: "31", freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Cadastro de veiculos e/ou solicitação de segunda via do cartão de abastecimento", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PERCENTUAL COMBUSTÍVEL X FATURAMENTO LÍQUIDO" },
-            { id: 47, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Auxiliar motoristas com erros de abastecimentos", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
+            { id: 47, po: "41", freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Auxiliar motoristas com erros de abastecimentos", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
             { id: 48, po: "32", freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Realizar agendamento de manutenção do rastreador", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
             { id: 49, po: "23", freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Realizar analise de rotas avulsas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
             { id: 50, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Atualizar ranking de rotas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIÊNCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
@@ -1103,7 +1106,7 @@
             { id: 55, po: "9", freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Cadastros de postos no datapar", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
             { id: 56, po: "08 / 16", freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Realizar abertura e registro de sinistros", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "GESTÃO DE SINISTROS", ind: "" },
             { id: 57, po: "17", freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Controle de chips de telefonia", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "OBRIGAÇÕES ADMINISTRATIVAS", ind: "" },
-            { id: 58, freq: "Diária", funcao: "CONTROLADOR", atividade: "Verificação e atualização da planilha de carros parados.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
+            { id: 58, po: "42", freq: "Diária", funcao: "CONTROLADOR", atividade: "Verificação e atualização da planilha de carros parados.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
             { id: 59, po: "35", freq: "Diária", funcao: "CONTROLADOR", atividade: "Atualização planilha de carregamento que necessitam controle", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
             { id: 60, freq: "Diária", funcao: "CONTROLADOR", atividade: "Contato diário com os gestores e o resp manutençao sobre os veículos em manutenção.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
             { id: 61, freq: "Diária", funcao: "CONTROLADOR", atividade: "Atualização da planilha de infrações (manual).", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
@@ -1119,7 +1122,7 @@
             { id: 71, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Fechamentos de motoristas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
             { id: 72, po: "19", freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Atualização do ranking de motoristas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO JORNADA DO MOTORISTA", ind: "PERFORMANCE MOTORISTA" },
             { id: 73, po: "16", freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Recebimento e arquivamento de discos de tacógrafo.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "OBRIGAÇÕES ADMINISTRATIVAS", ind: "" },
-            { id: 74, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Análises de rotas avulsas e novas rotas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
+            { id: 74, po: "36", freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Análises de rotas avulsas e novas rotas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
             { id: 75, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Desenvolvimento de novos dashboards pelo Power BI.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "FECHAMENTO MENSAL CLIENTES/FROTA", ind: "INEFICIÊNCIAS DE CARGA E DESCARGA E DIÁRIAS" },
             { id: 76, po: "22", freq: "Diária", funcao: "GESTORES", atividade: "Atualização da Grid / Deslocamento Vazio", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
             { id: 77, freq: "Diária", funcao: "GESTORES", atividade: "Destinar veiculos (contato com motorista)", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
@@ -1153,6 +1156,14 @@
 
         // Mapeia cada bloco do fluxograma (indicador) para o texto exato do indicador
         // usado no filtro do Checklist, permitindo ir direto do bloco para as tarefas dele.
+        // Mapeia blocos do fluxograma para um link extra opcional (Power BI ou Drive).
+        const NODE_TO_EXTRA_LINK = {
+            "disp_frota": { url: "https://app.powerbi.com/groups/me/reports/fe666f03-322a-4a31-9691-ca32409aa379/e6b7cf06528d0fa3010a?experience=power-bi", tipo: "powerbi" },
+            "sat_motorista": { url: "https://drive.google.com/file/d/1_mUbMGwxuWsDmNlYCCEFiECAIos3wbPq/view?usp=drive_link", tipo: "drive" },
+            "perf_motorista": { url: "https://drive.google.com/file/d/1ChR38_YfRQwk9cpANLgA-RT0oDxFSheg/view?usp=drive_link", tipo: "drive" },
+            "res_liquido": { url: "https://app.powerbi.com/groups/me/reports/5f3f6179-2108-4f66-94d8-00dc81bce97c/e6b7cf06528d0fa3010a?experience=power-bi", tipo: "powerbi" }
+        };
+
         const NODE_TO_INDICADOR = {
             "disp_frota": "DISPONIBILIDADE DA FROTA",
             "alinhamento_folgas": "ALINHAMENTO DE INÍCIO E RETORNO DAS FOLGAS X MANUTENÇÃO NO PERÍODO",
@@ -1389,6 +1400,13 @@
         // Links diretos para o PDF de cada P.O. específica (quando disponível). Quando o
         // número clicado não estiver aqui, cai para o link geral da pasta no Drive.
         const LINKS_PO_ESPECIFICOS = {
+            "36": "https://drive.google.com/file/d/1_xCCq_LBFRhdjUihu2oynPnFIcsN5i4P/view?usp=drive_link",
+            "37": "https://drive.google.com/file/d/1QFoqpZGevBA0NWR9eBgzIE550JRKJjOJ/view?usp=drive_link",
+            "38": "https://drive.google.com/file/d/1yEIzAEFne7ir3SW5W-W1n_58nJXVOqvx/view?usp=drive_link",
+            "39": "https://drive.google.com/file/d/1nnaLWG6FJkTs-BBBS--XbHoiytMdlqfL/view?usp=drive_link",
+            "40": "https://drive.google.com/file/d/1Ncm9tROCkpyxcdOje_slDq-oydkX3eY0/view?usp=drive_link",
+            "41": "https://drive.google.com/file/d/10QglnyHwqrtKM47x6ixjyc_8w_GS1V-2/view?usp=drive_link",
+            "42": "https://drive.google.com/file/d/1d8BTaaFDMDR0dMBcVbstoEenzEiG5JY-/view?usp=drive_link",
             "1": "https://drive.google.com/file/d/17X7qF-UNUjyfCqbwmgKbk92WdgNOA5fl/view?usp=drive_link",
             "2": "https://drive.google.com/file/d/1DRmetCFKQktxthfie-9l53k9GntItzgK/view?usp=drive_link",
             "3": "https://drive.google.com/file/d/1gZo6vuY-tBqdJHsqPu3ICqHoMWhYSmXx/view?usp=drive_link",
@@ -1686,7 +1704,28 @@
             const subTypeEl = document.getElementById("bubble-sub-type");
             const btnAction = document.getElementById("bubble-btn-action");
             const btnChecklist = document.getElementById("bubble-btn-checklist");
+            const btnPowerbi = document.getElementById("bubble-btn-powerbi");
             const tableContainer = document.getElementById("bubble-preview-table-container");
+
+            if (NODE_TO_EXTRA_LINK[nodeId]) {
+                const extra = NODE_TO_EXTRA_LINK[nodeId];
+                btnPowerbi.classList.remove('hidden');
+                btnPowerbi.classList.add('inline-flex');
+                btnPowerbi.onclick = () => window.open(extra.url, '_blank');
+                if (extra.tipo === "drive") {
+                    btnPowerbi.className = "bg-blue-500 hover:bg-blue-600 text-white text-[10px] font-bold px-2.5 py-1 rounded transition-colors inline-flex items-center gap-1";
+                    btnPowerbi.innerHTML = `<i class="fa-brands fa-google-drive text-[8px]"></i> Drive`;
+                    btnPowerbi.title = "Ver arquivo no Google Drive";
+                } else {
+                    btnPowerbi.className = "bg-amber-500 hover:bg-amber-600 text-white text-[10px] font-bold px-2.5 py-1 rounded transition-colors inline-flex items-center gap-1";
+                    btnPowerbi.innerHTML = `<i class="fa-solid fa-chart-column text-[8px]"></i> Power BI`;
+                    btnPowerbi.title = "Ver painel no Power BI";
+                }
+            } else {
+                btnPowerbi.classList.add('hidden');
+                btnPowerbi.classList.remove('inline-flex');
+                btnPowerbi.onclick = null;
+            }
 
             if (obterFiltroChecklistDoNode(nodeId)) {
                 btnChecklist.classList.remove('hidden');
@@ -1795,7 +1834,7 @@
                 return;
             }
 
-            rowsToPreview.slice(0, 3).forEach(row => {
+            rowsToPreview.slice(0, 6).forEach(row => {
                 let activeValues = row.data.filter(v => v !== null && v !== undefined && !isNaN(v));
                 let valorRecente = activeValues.length ? formatCellValue(activeValues[activeValues.length - 1], row.type) : "Sem dados";
                 tbody.innerHTML += `
@@ -1832,7 +1871,10 @@
             switchTab('master-sheet-view');
             closePreviewBubble();
             setTimeout(() => {
-                let targetElement = targetId.startsWith("row-") ? document.getElementById(targetId) : (targetId === "section-sat_motorista" ? document.getElementById("row-sat-camila") : document.getElementById("row-perf-camila"));
+                let targetElement = null;
+                if (targetId.startsWith("row-")) targetElement = document.getElementById(targetId);
+                else if (targetId === "section-sat_motorista") targetElement = document.getElementById("row-sat-camila");
+                else if (targetId === "section-perf_motorista") targetElement = document.getElementById("row-perf-camila");
                 if (targetElement) {
                     targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     targetElement.classList.add('row-highlight');
@@ -2129,7 +2171,7 @@
         // mapeamento "quem liga com o quê" for corrigido no código, incrementar este número
         // força uma realinhagem automática nos dados já salvos (localStorage/nuvem) de cada
         // usuário, sem depender de reset manual. Título e notas personalizados não são afetados.
-        const NODE_LINKS_VERSION = 9;
+        const NODE_LINKS_VERSION = 10;
 
         // Versão do conteúdo (nome/meta/categoria) das linhas da Planilha Master de
         // Indicadores. Incrementar força a correção automática de linhas já salvas
