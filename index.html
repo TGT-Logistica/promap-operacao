@@ -713,7 +713,13 @@
                 </div>
 
                 <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl shrink-0">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 items-end">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-3 items-end">
+                        <div class="flex flex-col gap-1">
+                            <label class="text-[9px] font-extrabold uppercase tracking-wider text-slate-500"><i class="fa-solid fa-hashtag mr-1"></i>Nº P.O.</label>
+                            <select id="filter-po" onchange="aplicarFiltrosChecklist()" class="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold uppercase cursor-pointer">
+                                <option value="todos">Todos</option>
+                            </select>
+                        </div>
                         <div class="flex flex-col gap-1">
                             <label class="text-[9px] font-extrabold uppercase tracking-wider text-slate-500"><i class="fa-solid fa-calendar-days mr-1"></i>Frequência</label>
                             <select id="filter-frequencia" onchange="aplicarFiltrosChecklist()" class="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold uppercase cursor-pointer">
@@ -1104,7 +1110,7 @@
             { id: 53, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Desenvolvimento de sistema", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIÊNCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
             { id: 54, freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Criação e atualização do dashboard lookerstudio", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PLANEJAMENTO FROTA", sub: "GESTÃO DE EFICIÊNCIA E PROCESSO", ind: "DEFINIR CRONOGRAMA DE ATUALIZAÇÃO E ORGANIZAR PASTAS E OBJETIVO..." },
             { id: 55, po: "9", freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Cadastros de postos no datapar", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "CONTROLE DE COMBUSTIVEL", ind: "PREÇO/LITRO" },
-            { id: 56, po: "08 / 16", freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Realizar abertura e registro de sinistros", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "GESTÃO DE SINISTROS", ind: "" },
+            { id: 56, po: "8 / 16", freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Realizar abertura e registro de sinistros", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "GESTÃO DE SINISTROS", ind: "" },
             { id: 57, po: "17", freq: "Eventualmente", funcao: "CONTROLADOR", atividade: "Controle de chips de telefonia", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "GESTÃO ADMINISTRATIVA DA FROTA", sub: "OBRIGAÇÕES ADMINISTRATIVAS", ind: "" },
             { id: 58, po: "42", freq: "Diária", funcao: "CONTROLADOR", atividade: "Verificação e atualização da planilha de carros parados.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
             { id: 59, po: "35", freq: "Diária", funcao: "CONTROLADOR", atividade: "Atualização planilha de carregamento que necessitam controle", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE CLIENTES", ind: "OBJETIVOS DE ANÁLISE DAS ROTAS DE SUBCONTRATADOS E RESULTADO POR CLIENTES." },
@@ -1224,6 +1230,7 @@
             closePreviewBubble();
             setTimeout(() => {
                 popularFiltrosChecklist();
+                document.getElementById("filter-po").value = "todos";
                 document.getElementById("filter-frequencia").value = "todos";
                 document.getElementById("filter-funcao").value = "todos";
                 document.getElementById("filter-processo").value = filtro.tipo === "processo" ? filtro.valor : "todos";
@@ -1260,19 +1267,22 @@
         }
 
         // --- SEÇÃO DO CHECKLIST OPERACIONAL TOTALMENTE LOCAL E PROTEGIDA ---
-        function renderChecklist(filtroFrequencia = "todos", filtroFuncao = "todos", filtroProcesso = "todos", filtroSubprocesso = "todos", filtroIndicador = "todos") {
+        function renderChecklist(filtroPO = "todos", filtroFrequencia = "todos", filtroFuncao = "todos", filtroProcesso = "todos", filtroSubprocesso = "todos", filtroIndicador = "todos") {
             const tbody = document.getElementById("checklist-sheet-tbody");
             if (!tbody) return;
             tbody.innerHTML = "";
 
             const norm = (txt) => (txt || "").trim().replace(/\s+/g, ' ').toUpperCase();
             const dadosFiltrados = CHECKLIST_DATASET.filter(row => {
+                const valorPOAtual = (systemData.checklistPO && systemData.checklistPO[row.id] !== undefined) ? systemData.checklistPO[row.id] : (row.po || "");
+                const numerosPO = valorPOAtual ? valorPOAtual.split("/").map(n => n.trim()) : [];
+                const matchPO = (filtroPO === "todos" || numerosPO.includes(filtroPO.trim()));
                 const matchFrequencia = (filtroFrequencia === "todos" || row.freq.toUpperCase() === filtroFrequencia.toUpperCase());
                 const matchFuncao = (filtroFuncao === "todos" || norm(row.funcao) === norm(filtroFuncao));
                 const matchProcesso = (filtroProcesso === "todos" || norm(row.proc) === norm(filtroProcesso));
                 const matchSubprocesso = (filtroSubprocesso === "todos" || norm(row.sub) === norm(filtroSubprocesso));
                 const matchIndicador = (filtroIndicador === "todos" || norm(row.ind) === norm(filtroIndicador));
-                return matchFrequencia && matchFuncao && matchProcesso && matchSubprocesso && matchIndicador;
+                return matchPO && matchFrequencia && matchFuncao && matchProcesso && matchSubprocesso && matchIndicador;
             });
 
             if (dadosFiltrados.length === 0) {
@@ -1327,6 +1337,7 @@
         }
 
         function popularFiltrosChecklist() {
+            const selectPO = document.getElementById("filter-po");
             const selectFrequencia = document.getElementById("filter-frequencia");
             const selectFuncao = document.getElementById("filter-funcao");
             const selectProcesso = document.getElementById("filter-processo");
@@ -1337,6 +1348,16 @@
 
             const ORDEM_FREQUENCIA = ["Diária", "Semanal", "Quinzenal", "Mensal", "Trimestral", "Eventualmente"];
             const normalizar = (txt) => txt.trim().replace(/\s+/g, ' ').toUpperCase();
+            const numerosPOPresentes = new Set();
+            CHECKLIST_DATASET.forEach(r => {
+                const valorPOAtual = (systemData.checklistPO && systemData.checklistPO[r.id] !== undefined) ? systemData.checklistPO[r.id] : (r.po || "");
+                valorPOAtual.split("/").map(n => n.trim()).filter(Boolean).forEach(n => numerosPOPresentes.add(n));
+            });
+            const numerosPO = [...numerosPOPresentes].sort((a, b) => {
+                const numA = parseFloat(a), numB = parseFloat(b);
+                if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
+                return a.localeCompare(b);
+            });
             const frequenciasPresentes = new Set(CHECKLIST_DATASET.map(r => r.freq.trim()).filter(Boolean));
             const frequencias = ORDEM_FREQUENCIA.filter(f => frequenciasPresentes.has(f))
                 .concat([...frequenciasPresentes].filter(f => !ORDEM_FREQUENCIA.includes(f)).sort());
@@ -1345,18 +1366,21 @@
             const subprocessos = [...new Set(CHECKLIST_DATASET.map(r => normalizar(r.sub)).filter(Boolean))].sort();
             const indicadores = [...new Set(CHECKLIST_DATASET.map(r => normalizar(r.ind)).filter(Boolean))].sort();
 
+            const valPO = selectPO.value || "todos";
             const valFrequencia = selectFrequencia.value || "todos";
             const valFuncao = selectFuncao.value || "todos";
             const valProcesso = selectProcesso.value || "todos";
             const valSubprocesso = selectSubprocesso.value || "todos";
             const valIndicador = selectIndicador.value || "todos";
 
+            selectPO.innerHTML = '<option value="todos">Todos</option>' + numerosPO.map(n => `<option value="${n}">${n}</option>`).join('');
             selectFrequencia.innerHTML = '<option value="todos">Todos</option>' + frequencias.map(f => `<option value="${f}">${f}</option>`).join('');
             selectFuncao.innerHTML = '<option value="todos">Todos</option>' + funcoes.map(f => `<option value="${f}">${f}</option>`).join('');
             selectProcesso.innerHTML = '<option value="todos">Todos</option>' + processos.map(p => `<option value="${p}">${p}</option>`).join('');
             selectSubprocesso.innerHTML = '<option value="todos">Todos</option>' + subprocessos.map(s => `<option value="${s}">${s}</option>`).join('');
             selectIndicador.innerHTML = '<option value="todos">Todos</option>' + indicadores.map(i => `<option value="${i}">${i}</option>`).join('');
 
+            selectPO.value = valPO;
             selectFrequencia.value = valFrequencia;
             selectFuncao.value = valFuncao;
             selectProcesso.value = valProcesso;
@@ -1365,15 +1389,17 @@
         }
 
         function aplicarFiltrosChecklist() {
+            const fPO = document.getElementById("filter-po").value;
             const fFrequencia = document.getElementById("filter-frequencia").value;
             const fFuncao = document.getElementById("filter-funcao").value;
             const fProcesso = document.getElementById("filter-processo").value;
             const fSubprocesso = document.getElementById("filter-subprocesso").value;
             const fIndicador = document.getElementById("filter-indicador").value;
-            renderChecklist(fFrequencia, fFuncao, fProcesso, fSubprocesso, fIndicador);
+            renderChecklist(fPO, fFrequencia, fFuncao, fProcesso, fSubprocesso, fIndicador);
         }
 
         function limparFiltrosChecklist() {
+            document.getElementById("filter-po").value = "todos";
             document.getElementById("filter-frequencia").value = "todos";
             document.getElementById("filter-funcao").value = "todos";
             document.getElementById("filter-processo").value = "todos";
@@ -1472,6 +1498,7 @@
             function salvar() {
                 systemData.checklistPO[rowId] = input.value.trim();
                 saveAllData();
+                popularFiltrosChecklist();
                 aplicarFiltrosChecklist();
                 showToast("Número de P.O. atualizado!");
             }
