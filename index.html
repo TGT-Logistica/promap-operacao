@@ -180,6 +180,22 @@
         </div>
     </div>
 
+    <div id="po-choice-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl w-full max-w-xs shadow-2xl overflow-hidden border border-slate-100 p-5 flex flex-col gap-3">
+            <div class="flex items-start gap-3">
+                <div class="bg-emerald-100 text-emerald-700 p-2 rounded-lg shrink-0">
+                    <i class="fa-solid fa-folder-open text-lg"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-slate-800">Qual P.O. deseja abrir?</h3>
+                    <p class="text-[11px] text-slate-500 mt-0.5">Essa tarefa tem mais de um número de P.O. vinculado.</p>
+                </div>
+            </div>
+            <div id="po-choice-buttons" class="flex flex-col gap-2"></div>
+            <button onclick="document.getElementById('po-choice-modal').classList.add('hidden')" class="text-xs text-slate-500 hover:text-slate-700 font-semibold mt-1">Cancelar</button>
+        </div>
+    </div>
+
     <!-- Header atualizado com a logomarca Targets -->
     <header class="bg-slate-900 text-white px-6 py-3 flex items-center justify-between shadow-md shrink-0 border-b border-slate-800">
         <div class="flex items-center gap-4">
@@ -1141,7 +1157,7 @@
             { id: 76, po: "22", freq: "Diária", funcao: "GESTORES", atividade: "Atualização da Grid / Deslocamento Vazio", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
             { id: 77, freq: "Diária", funcao: "GESTORES", atividade: "Destinar veiculos (contato com motorista)", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
             { id: 78, freq: "Diária", funcao: "GESTORES", atividade: "Rastrear entregas WR", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
-            { id: 79, po: "20", freq: "Diária", funcao: "GESTORES", atividade: "Reembolsos (diárias e despesas)", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
+            { id: 79, po: "22 / 44", freq: "Diária", funcao: "GESTORES", atividade: "Reembolsos (diárias e despesas)", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
             { id: 80, po: "3", freq: "Diária", funcao: "GESTORES", atividade: "Dispersão dos veiculos", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "GESTÃO DE DISPONIBILIDADE DE RECURSOS", ind: "DISPONIBILIDADE DA FROTA" },
             { id: 81, freq: "Diária", funcao: "GESTORES", atividade: "Controle de jornadas", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "PROGRAMAÇÃO DE FOLGA", ind: "ALINHAMENTO DE INÍCIO E RETORNO DAS FOLGAS X MANUTENÇÃO NO PERÍODO" },
             { id: 82, freq: "Diária", funcao: "GESTORES", atividade: "Análise de jornada WR", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
@@ -1441,6 +1457,8 @@
         // Links diretos para o PDF de cada P.O. específica (quando disponível). Quando o
         // número clicado não estiver aqui, cai para o link geral da pasta no Drive.
         const LINKS_PO_ESPECIFICOS = {
+            "43": "https://drive.google.com/file/d/1vwYyaeETfnhyvlHgslRXi3T6tcVdMbxK/view?usp=drive_link",
+            "44": "https://drive.google.com/file/d/1OWnmX3eJbY44lNDRatfvBKFkOHXKViiW/view?usp=drive_link",
             "36": "https://drive.google.com/file/d/1_xCCq_LBFRhdjUihu2oynPnFIcsN5i4P/view?usp=drive_link",
             "37": "https://drive.google.com/file/d/1QFoqpZGevBA0NWR9eBgzIE550JRKJjOJ/view?usp=drive_link",
             "38": "https://drive.google.com/file/d/1yEIzAEFne7ir3SW5W-W1n_58nJXVOqvx/view?usp=drive_link",
@@ -1449,8 +1467,6 @@
             "41": "https://drive.google.com/file/d/10QglnyHwqrtKM47x6ixjyc_8w_GS1V-2/view?usp=drive_link",
             "42": "https://drive.google.com/file/d/1d8BTaaFDMDR0dMBcVbstoEenzEiG5JY-/view?usp=drive_link",
             "1": "https://drive.google.com/file/d/17X7qF-UNUjyfCqbwmgKbk92WdgNOA5fl/view?usp=drive_link",
-            "43":"https://drive.google.com/file/d/1vwYyaeETfnhyvlHgslRXi3T6tcVdMbxK/view?usp=drive_link",
-            "44":"https://drive.google.com/file/d/1OWnmX3eJbY44lNDRatfvBKFkOHXKViiW/view?usp=drive_link",
             "2": "https://drive.google.com/file/d/1DRmetCFKQktxthfie-9l53k9GntItzgK/view?usp=drive_link",
             "3": "https://drive.google.com/file/d/1gZo6vuY-tBqdJHsqPu3ICqHoMWhYSmXx/view?usp=drive_link",
             "4": "https://drive.google.com/file/d/1WUIDsWZL5Ppl-WtAqgreBFKFkUniszuZ/view?usp=drive_link",
@@ -1488,16 +1504,37 @@
         };
 
         function abrirPastaPO(valorPO) {
-            if (valorPO) {
-                const numeros = String(valorPO).split("/").map(n => n.trim()).filter(Boolean);
-                for (const n of numeros) {
-                    if (LINKS_PO_ESPECIFICOS[n]) {
-                        window.open(LINKS_PO_ESPECIFICOS[n], "_blank");
-                        return;
-                    }
-                }
+            const numeros = valorPO ? String(valorPO).split("/").map(n => n.trim()).filter(Boolean) : [];
+            if (numeros.length > 1) {
+                mostrarEscolhaPO(numeros);
+                return;
+            }
+            if (numeros.length === 1 && LINKS_PO_ESPECIFICOS[numeros[0]]) {
+                window.open(LINKS_PO_ESPECIFICOS[numeros[0]], "_blank");
+                return;
             }
             window.open(LINK_PASTA_PO, "_blank");
+        }
+
+        // Mostra um pequeno seletor pedindo qual número de P.O. abrir, quando a linha
+        // do Checklist tem mais de um número vinculado (ex: "22 / 44").
+        function mostrarEscolhaPO(numeros) {
+            const container = document.getElementById("po-choice-buttons");
+            container.innerHTML = numeros.map(n => `
+                <button onclick="abrirPOEspecifica('${n}')" class="w-full bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-800 font-bold text-sm py-2 rounded-lg transition-colors">
+                    P.O. ${n}
+                </button>
+            `).join("");
+            document.getElementById("po-choice-modal").classList.remove("hidden");
+        }
+
+        function abrirPOEspecifica(numero) {
+            document.getElementById("po-choice-modal").classList.add("hidden");
+            if (LINKS_PO_ESPECIFICOS[numero]) {
+                window.open(LINKS_PO_ESPECIFICOS[numero], "_blank");
+            } else {
+                window.open(LINK_PASTA_PO, "_blank");
+            }
         }
 
         // Permite digitar/editar manualmente o número de P.O. de uma linha do Checklist.
@@ -2184,7 +2221,7 @@
             reader.readAsText(file);
         }
 
-        function closeAllModals() { closeConfigModal(); closeConfirmModal(); }
+        function closeAllModals() { closeConfigModal(); closeConfirmModal(); document.getElementById("po-choice-modal").classList.add("hidden"); }
 
         function obterUltimoMesComDados(row) {
             const mesesNomes = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
@@ -2438,6 +2475,8 @@
         window.renderChecklist = renderChecklist;
         window.popularFiltrosChecklist = popularFiltrosChecklist;
         window.abrirPastaPO = abrirPastaPO;
+        window.abrirPOEspecifica = abrirPOEspecifica;
+        window.mostrarEscolhaPO = mostrarEscolhaPO;
         window.editPOCell = editPOCell;
         window.irParaChecklistFiltrado = irParaChecklistFiltrado;
         window.renderMasterSpreadsheet = renderMasterSpreadsheet;
