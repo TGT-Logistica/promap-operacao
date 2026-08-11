@@ -712,7 +712,11 @@
                     </button>
                 </div>
 
-                <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl shrink-0">
+                <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl shrink-0 flex flex-col gap-3">
+                    <div class="relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                        <input type="text" id="filter-busca" oninput="aplicarFiltrosChecklist()" placeholder="Buscar qualquer palavra (atividade, processo, indicador, etc.)..." class="w-full bg-white border border-slate-200 rounded-lg pl-9 pr-3 py-2.5 text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-3 items-end">
                         <div class="flex flex-col gap-1">
                             <label class="text-[9px] font-extrabold uppercase tracking-wider text-slate-500"><i class="fa-solid fa-hashtag mr-1"></i>Nº P.O.</label>
@@ -1169,8 +1173,8 @@
         // Mapeia blocos do fluxograma para um link extra opcional (Power BI ou Drive).
         const NODE_TO_EXTRA_LINK = {
             "disp_frota": { url: "https://app.powerbi.com/groups/me/reports/fe666f03-322a-4a31-9691-ca32409aa379/e6b7cf06528d0fa3010a?experience=power-bi", tipo: "powerbi" },
-            "sat_motorista": { url: "https://drive.google.com/file/d/1RcYy3JbwXfUg6JUQ3bxPVx4efncfdE9a/view?usp=drive_link", tipo: "drive" },
-            "perf_motorista": { url: "https://drive.google.com/file/d/1MNo2y3B7hwudL4BPcNshMASDl_gjXC93/view?usp=drive_link", tipo: "drive" },
+            "sat_motorista": { url: "https://drive.google.com/file/d/1_mUbMGwxuWsDmNlYCCEFiECAIos3wbPq/view?usp=drive_link", tipo: "drive" },
+            "perf_motorista": { url: "https://drive.google.com/file/d/1ChR38_YfRQwk9cpANLgA-RT0oDxFSheg/view?usp=drive_link", tipo: "drive" },
             "res_liquido": { url: "https://app.powerbi.com/groups/me/reports/5f3f6179-2108-4f66-94d8-00dc81bce97c/e6b7cf06528d0fa3010a?experience=power-bi", tipo: "powerbi" }
         };
 
@@ -1234,6 +1238,7 @@
             closePreviewBubble();
             setTimeout(() => {
                 popularFiltrosChecklist();
+                document.getElementById("filter-busca").value = "";
                 document.getElementById("filter-po").value = "todos";
                 document.getElementById("filter-frequencia").value = "todos";
                 document.getElementById("filter-funcao").value = "todos";
@@ -1271,12 +1276,14 @@
         }
 
         // --- SEÇÃO DO CHECKLIST OPERACIONAL TOTALMENTE LOCAL E PROTEGIDA ---
-        function renderChecklist(filtroPO = "todos", filtroFrequencia = "todos", filtroFuncao = "todos", filtroProcesso = "todos", filtroSubprocesso = "todos", filtroIndicador = "todos") {
+        function renderChecklist(busca = "", filtroPO = "todos", filtroFrequencia = "todos", filtroFuncao = "todos", filtroProcesso = "todos", filtroSubprocesso = "todos", filtroIndicador = "todos") {
             const tbody = document.getElementById("checklist-sheet-tbody");
             if (!tbody) return;
             tbody.innerHTML = "";
 
             const norm = (txt) => (txt || "").trim().replace(/\s+/g, ' ').toUpperCase();
+            const semAcento = (txt) => norm(txt).normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            const termoBusca = semAcento(busca);
             const dadosFiltrados = CHECKLIST_DATASET.filter(row => {
                 const valorPOAtual = (systemData.checklistPO && systemData.checklistPO[row.id] !== undefined) ? systemData.checklistPO[row.id] : (row.po || "");
                 const numerosPO = valorPOAtual ? valorPOAtual.split("/").map(n => n.trim()) : [];
@@ -1286,7 +1293,9 @@
                 const matchProcesso = (filtroProcesso === "todos" || norm(row.proc) === norm(filtroProcesso));
                 const matchSubprocesso = (filtroSubprocesso === "todos" || norm(row.sub) === norm(filtroSubprocesso));
                 const matchIndicador = (filtroIndicador === "todos" || norm(row.ind) === norm(filtroIndicador));
-                return matchPO && matchFrequencia && matchFuncao && matchProcesso && matchSubprocesso && matchIndicador;
+                const matchBusca = !termoBusca || [row.atividade, row.freq, row.funcao, row.proc, row.sub, row.ind, valorPOAtual]
+                    .some(campo => semAcento(campo).includes(termoBusca));
+                return matchBusca && matchPO && matchFrequencia && matchFuncao && matchProcesso && matchSubprocesso && matchIndicador;
             });
 
             if (dadosFiltrados.length === 0) {
@@ -1393,16 +1402,18 @@
         }
 
         function aplicarFiltrosChecklist() {
+            const busca = document.getElementById("filter-busca").value;
             const fPO = document.getElementById("filter-po").value;
             const fFrequencia = document.getElementById("filter-frequencia").value;
             const fFuncao = document.getElementById("filter-funcao").value;
             const fProcesso = document.getElementById("filter-processo").value;
             const fSubprocesso = document.getElementById("filter-subprocesso").value;
             const fIndicador = document.getElementById("filter-indicador").value;
-            renderChecklist(fPO, fFrequencia, fFuncao, fProcesso, fSubprocesso, fIndicador);
+            renderChecklist(busca, fPO, fFrequencia, fFuncao, fProcesso, fSubprocesso, fIndicador);
         }
 
         function limparFiltrosChecklist() {
+            document.getElementById("filter-busca").value = "";
             document.getElementById("filter-po").value = "todos";
             document.getElementById("filter-frequencia").value = "todos";
             document.getElementById("filter-funcao").value = "todos";
@@ -1438,6 +1449,8 @@
             "41": "https://drive.google.com/file/d/10QglnyHwqrtKM47x6ixjyc_8w_GS1V-2/view?usp=drive_link",
             "42": "https://drive.google.com/file/d/1d8BTaaFDMDR0dMBcVbstoEenzEiG5JY-/view?usp=drive_link",
             "1": "https://drive.google.com/file/d/17X7qF-UNUjyfCqbwmgKbk92WdgNOA5fl/view?usp=drive_link",
+            "43":"https://drive.google.com/file/d/1vwYyaeETfnhyvlHgslRXi3T6tcVdMbxK/view?usp=drive_link",
+            "44":"https://drive.google.com/file/d/1OWnmX3eJbY44lNDRatfvBKFkOHXKViiW/view?usp=drive_link",
             "2": "https://drive.google.com/file/d/1DRmetCFKQktxthfie-9l53k9GntItzgK/view?usp=drive_link",
             "3": "https://drive.google.com/file/d/1gZo6vuY-tBqdJHsqPu3ICqHoMWhYSmXx/view?usp=drive_link",
             "4": "https://drive.google.com/file/d/1WUIDsWZL5Ppl-WtAqgreBFKFkUniszuZ/view?usp=drive_link",
@@ -1446,7 +1459,7 @@
             "7": "https://drive.google.com/file/d/1LiLrIX43zoNokLtsFzAvM9fi0mJh47l2/view?usp=drive_link",
             "8": "https://drive.google.com/file/d/1jKKtY-YHiuqZoA4t64TrThVyR7pi7WKq/view?usp=drive_link",
             "9": "https://drive.google.com/file/d/1Xa6mR-Cb7kPyn3H6SgmTIl9Yv9q7kPqE/view?usp=drive_link",
-            "10": "https://drive.google.com/file/d/1ysk9qkKOXuBMJvWFyM_Lu33tNFBckD7F/view?usp=drive_link",
+            "10": "https://drive.google.com/file/d/12VbEB8sbq5KtWe9_G16FlSNs_i4Yrkaa/view?usp=drive_link",
             "11": "https://drive.google.com/file/d/1m7M73CykuHe_l1kFdb22b5CAyW20vMnb/view?usp=drive_link",
             "12": "https://drive.google.com/file/d/169_FmCU_2nLB-xt9gMJKJ1ErNUKjWKVn/view?usp=drive_link",
             "13": "https://drive.google.com/file/d/1yVBVg_wqXkSsIIHh-5DmMwE87ZQE5KNx/view?usp=drive_link",
