@@ -981,6 +981,10 @@
         let activeNodeId = null;
         let selectedLinkType = 'none';
         let confirmCallback = null;
+        // Guarda o carimbo de hora da última gravação feita neste navegador, para evitar
+        // que um "eco" atrasado da nuvem sobrescreva uma edição mais recente feita localmente
+        // (condição de corrida quando duas edições acontecem em sequência rápida).
+        let ultimoTimestampAplicado = 0;
 
         const DEFAULT_NODES_DATA = {
             "operacao": { name: "OPERAÇÃO", type: "color-macro-top", linkType: "none", url: "", tabId: "", desc: "Fluxo Geral de Processos e Indicadores de Operação." },
@@ -2279,6 +2283,8 @@
 
         // Salva os dados no navegador (localStorage) e sincroniza com o Firebase quando online.
         function saveAllData() {
+            const agora = Date.now();
+            ultimoTimestampAplicado = agora;
             try {
                 localStorage.setItem("ProMap_Indicadores_DB_v12", JSON.stringify(systemData));
             } catch (e) {
@@ -2287,7 +2293,7 @@
             if (!isOfflineMode && currentUser) {
                 try {
                     const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'promap_store', 'systemData');
-                    setDoc(docRef, { payload: JSON.stringify(systemData) });
+                    setDoc(docRef, { payload: JSON.stringify(systemData), timestamp: agora });
                 } catch (e) {
                     console.log("Sincronização com a nuvem indisponível no momento.");
                 }
@@ -2302,10 +2308,16 @@
                 if (docSnap.exists()) {
                     const cloudData = docSnap.data();
                     if (cloudData && cloudData.payload) {
+                        // Se esse snapshot é mais antigo que a última edição feita neste
+                        // navegador, ignora — é um "eco" atrasado que reverteria a edição mais nova.
+                        if (cloudData.timestamp && cloudData.timestamp < ultimoTimestampAplicado) {
+                            return;
+                        }
                         try {
                             const parsed = JSON.parse(cloudData.payload);
                             if (parsed && parsed.masterSheet && Array.isArray(parsed.masterSheet)) {
                                 systemData = parsed;
+                                if (cloudData.timestamp) ultimoTimestampAplicado = cloudData.timestamp;
                                 const migrou = forceDataIntegrity();
                                 if (migrou) saveAllData();
                             }
