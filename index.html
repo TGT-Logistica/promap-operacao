@@ -1639,10 +1639,13 @@
                 let newVal;
                 if (texto === "") {
                     newVal = null;
-                } else if (!isNaN(texto)) {
-                    newVal = parseFloat(texto.replace(',', '.'));
                 } else {
-                    newVal = texto;
+                    const textoNormalizado = texto.replace(',', '.');
+                    if (textoNormalizado !== "" && !isNaN(textoNormalizado)) {
+                        newVal = parseFloat(textoNormalizado);
+                    } else {
+                        newVal = texto;
+                    }
                 }
                 row.data[monthIndex] = newVal;
                 saveAllData();
@@ -2260,6 +2263,28 @@
             // que ficaram desatualizados por causa de dados salvos antes de uma correção no
             // código (ex: "Eficiência de Programação dos Gestores" com meta antiga "90%").
             // Os valores mensais já preenchidos ("data") NUNCA são apagados nessa correção.
+            // Repara células que foram salvas por engano como texto por causa do bug da
+            // vírgula (ex: "9,51" virou o texto "9,51" em vez do número 9.51). Isso fazia
+            // esses valores sumirem dos cálculos de "último mês" e do Acumulado, mesmo
+            // aparecendo certos na tabela. Roda sempre; é seguro repetir (idempotente).
+            let houveReparoNumerico = false;
+            if (Array.isArray(systemData.masterSheet)) {
+                systemData.masterSheet.forEach(row => {
+                    if (!Array.isArray(row.data)) return;
+                    row.data = row.data.map(v => {
+                        if (typeof v === "string") {
+                            const normalizado = v.trim().replace(',', '.');
+                            if (normalizado !== "" && !isNaN(normalizado)) {
+                                houveReparoNumerico = true;
+                                return parseFloat(normalizado);
+                            }
+                        }
+                        return v;
+                    });
+                });
+            }
+            if (houveReparoNumerico) houveMigracao = true;
+
             if (!systemData.masterSheetVersion || systemData.masterSheetVersion < MASTER_SHEET_VERSION) {
                 // Reconstrói a planilha inteira seguindo a ordem e o conteúdo atual do
                 // código (nome/categoria/meta/tipo/etc.), mas preservando os valores
