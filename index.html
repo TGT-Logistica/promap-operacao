@@ -1302,8 +1302,8 @@
             const termoBusca = semAcento(busca);
             const dadosFiltrados = CHECKLIST_DATASET.filter(row => {
                 const valorPOAtual = (systemData.checklistPO && systemData.checklistPO[row.id] !== undefined) ? systemData.checklistPO[row.id] : (row.po || "");
-                const numerosPO = valorPOAtual ? valorPOAtual.split("/").map(n => n.trim()) : [];
-                const matchPO = (filtroPO === "todos" || numerosPO.includes(filtroPO.trim()));
+                const numerosPO = valorPOAtual ? valorPOAtual.split("/").map(n => n.trim()).filter(Boolean) : [];
+                const matchPO = (filtroPO === "todos" || (filtroPO === "__vazio__" ? numerosPO.length === 0 : numerosPO.includes(filtroPO.trim())));
                 const matchFrequencia = (filtroFrequencia === "todos" || row.freq.toUpperCase() === filtroFrequencia.toUpperCase());
                 const matchFuncao = (filtroFuncao === "todos" || norm(row.funcao) === norm(filtroFuncao));
                 const matchProcesso = (filtroProcesso === "todos" || norm(row.proc) === norm(filtroProcesso));
@@ -1402,7 +1402,7 @@
             const valSubprocesso = selectSubprocesso.value || "todos";
             const valIndicador = selectIndicador.value || "todos";
 
-            selectPO.innerHTML = '<option value="todos">Todos</option>' + numerosPO.map(n => `<option value="${n}">${n}</option>`).join('');
+            selectPO.innerHTML = '<option value="todos">Todos</option><option value="__vazio__">— Sem P.O. —</option>' + numerosPO.map(n => `<option value="${n}">${n}</option>`).join('');
             selectFrequencia.innerHTML = '<option value="todos">Todos</option>' + frequencias.map(f => `<option value="${f}">${f}</option>`).join('');
             selectFuncao.innerHTML = '<option value="todos">Todos</option>' + funcoes.map(f => `<option value="${f}">${f}</option>`).join('');
             selectProcesso.innerHTML = '<option value="todos">Todos</option>' + processos.map(p => `<option value="${p}">${p}</option>`).join('');
@@ -1469,18 +1469,18 @@
             "1": "https://drive.google.com/file/d/17X7qF-UNUjyfCqbwmgKbk92WdgNOA5fl/view?usp=drive_link",
             "2": "https://drive.google.com/file/d/1DRmetCFKQktxthfie-9l53k9GntItzgK/view?usp=drive_link",
             "3": "https://drive.google.com/file/d/1gZo6vuY-tBqdJHsqPu3ICqHoMWhYSmXx/view?usp=drive_link",
-            "4": "https://drive.google.com/file/d/1WUIDsWZL5Ppl-WtAqgreBFKFkUniszuZ/view?usp=drive_link",
+            "4": "https://drive.google.com/file/d/1LVl53-MtOpBSo2djq5Gjhv24AuD8Ovyi/view?usp=drive_link",
             "5": "https://drive.google.com/file/d/1Z9wegr_21wVNyuMGnF4SQLQN7NSxrBrq/view?usp=drive_link",
             "6": "https://drive.google.com/file/d/1lDcmHZzEP3zutUnaodIrd1zxN8KNT2DT/view?usp=drive_link",
             "7": "https://drive.google.com/file/d/1LiLrIX43zoNokLtsFzAvM9fi0mJh47l2/view?usp=drive_link",
             "8": "https://drive.google.com/file/d/1jKKtY-YHiuqZoA4t64TrThVyR7pi7WKq/view?usp=drive_link",
             "9": "https://drive.google.com/file/d/1Xa6mR-Cb7kPyn3H6SgmTIl9Yv9q7kPqE/view?usp=drive_link",
-            "10": "https://drive.google.com/file/d/12VbEB8sbq5KtWe9_G16FlSNs_i4Yrkaa/view?usp=drive_link",
+            "10": "https://drive.google.com/file/d/1OVWGx1KUNiTPCOTf8bDMgwuqA4m_UPRh/view?usp=drive_link",
             "11": "https://drive.google.com/file/d/1m7M73CykuHe_l1kFdb22b5CAyW20vMnb/view?usp=drive_link",
             "12": "https://drive.google.com/file/d/169_FmCU_2nLB-xt9gMJKJ1ErNUKjWKVn/view?usp=drive_link",
             "13": "https://drive.google.com/file/d/1yVBVg_wqXkSsIIHh-5DmMwE87ZQE5KNx/view?usp=drive_link",
             "14": "https://drive.google.com/file/d/1QNGrMsVCkTMQSTmm3aeOU9UPunpPPQ0n/view?usp=drive_link",
-            "15": "https://drive.google.com/file/d/1VZ_hSsodRiRmKXz7ot54CaG-jLvGVowu/view?usp=drive_link",
+            "15": "https://drive.google.com/file/d/1lLCDCJ0VzrboluYsEdzixQ6xzbgbkP6y/view?usp=drive_link",
             "16": "https://drive.google.com/file/d/1YXpCxT0d7HcWJLupvmxSNRhdBze3IY_o/view?usp=drive_link",
             "17": "https://drive.google.com/file/d/1yKZLAyY2FRaaAuVi5tqbw1Y8U7aiDrZc/view?usp=drive_link",
             "18": "https://drive.google.com/file/d/1Crn_U0d_EAi_ZXMq4Qx14kWXrmvjrz7-/view?usp=drive_link",
