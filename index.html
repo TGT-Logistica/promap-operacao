@@ -1143,7 +1143,7 @@
             { id: 62, freq: "Diária", funcao: "CONTROLADOR", atividade: "Atualização de dashboards: FECHAMENTO; DISPERSÃO; ORÇAMENTO.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
             { id: 63, freq: "Diária", funcao: "CONTROLADOR", atividade: "Análise do relatório de dispersão e lançamento dos ajustes necessários.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "ACOMPANHAMENTO DE JORNADA", sub: "ACOMPANHAMENTO DE MOTORISTA", ind: "SATISFAÇÃO DO MOTORISTA" },
             { id: 64, po: "21", freq: "Diária", funcao: "CONTROLADOR", atividade: "Atualização/envio da planilha de jornada/folgas da próxima semana", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "PROGRAMAÇÃO DE FOLGA", ind: "ALINHAMENTO DE INÍCIO E RETORNO DAS FOLGAS X MANUTENÇÃO NO PERÍODO" },
-            { id: 65, freq: "Semanal", funcao: "CONTROLADOR", atividade: "Envio de e-mail de retorno de folga", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "PROGRAMAÇÃO DE FOLGA", ind: "ALINHAMENTO DE INÍCIO E RETORNO DAS FOLGAS X MANUTENÇÃO NO PERÍODO" },
+            { id: 65, po: "45", freq: "Semanal", funcao: "CONTROLADOR", atividade: "Envio de e-mail de previsão de folga", seg: "X", ter: "X", qua: "X", qui: "X", sex: "", proc: "PROGRAMAÇÃO DE VEÍCULOS", sub: "PROGRAMAÇÃO DE FOLGA", ind: "ALINHAMENTO DE INÍCIO E RETORNO DAS FOLGAS X MANUTENÇÃO NO PERÍODO" },
             { id: 66, freq: "Mensal", funcao: "CONTROLADOR", atividade: "Fechar indicadores de manutenção: Manutenção pós folga, quantidade de veículos sem previsão.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
             { id: 67, freq: "Mensal", funcao: "CONTROLADOR", atividade: "Fechamento e validação do tempo de manutenção dos veículos e tempo Sem Motorista, no dashboard de Dispersão.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
             { id: 68, freq: "Mensal", funcao: "CONTROLADOR", atividade: "Fechamento e validação da disponibilidade da frota.", seg: "", ter: "", qua: "", qui: "", sex: "", proc: "FECHAMENTO DE RESULTADOS", sub: "FECHAMENTO MENSAL FROTA", ind: "RESULTADO LIQUIDO" },
@@ -1457,6 +1457,7 @@
         // Links diretos para o PDF de cada P.O. específica (quando disponível). Quando o
         // número clicado não estiver aqui, cai para o link geral da pasta no Drive.
         const LINKS_PO_ESPECIFICOS = {
+            "45": "https://drive.google.com/file/d/1sYvfce57gDy56bpHaBH1Twqy1skDW0d5/view?usp=drive_link",
             "43": "https://drive.google.com/file/d/1vwYyaeETfnhyvlHgslRXi3T6tcVdMbxK/view?usp=drive_link",
             "44": "https://drive.google.com/file/d/1OWnmX3eJbY44lNDRatfvBKFkOHXKViiW/view?usp=drive_link",
             "36": "https://drive.google.com/file/d/1_xCCq_LBFRhdjUihu2oynPnFIcsN5i4P/view?usp=drive_link",
