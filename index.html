@@ -2484,5 +2484,41 @@
 
         initAuth();
     </script>
+    <script>
+    // Executa o código assim que a página carregar
+    document.addEventListener("DOMContentLoaded", () => {
+        
+        // 1. Defina a data do aviso (Formato: ANO-MES-DIA)
+        const dataAviso = new Date("2026-09-04"); 
+        
+        // Data de hoje
+        const hoje = new Date();
+        
+        // Zerando as horas para comparar apenas os dias exatos
+        hoje.setHours(0,0,0,0);
+        dataAviso.setHours(0,0,0,0);
+
+        // Verifica se o dia de hoje é igual ou maior que a data do aviso
+        if (hoje >= dataAviso) {
+            
+            // 1. Dispara um alerta na tela
+            alert("⏰ ATENÇÃO: O indicador 'Definir Cronograma de Atualização' passou do prazo e precisa ser revisado!");
+
+            // 2. Destaca o bloco visualmente no fluxograma
+            const indicador = document.getElementById("node-definir_cronograma");
+            
+            if(indicador) {
+                // Remove a cor verde original
+                indicador.classList.remove("color-indicator");
+                
+                // Adiciona cores de alerta (laranja/vermelho) e um efeito piscante (animate-pulse) do Tailwind
+                indicador.classList.add("bg-amber-500", "text-white", "border-2", "border-red-600", "animate-pulse");
+                
+                // Insere uma bolinha vermelha de alerta no canto do bloco
+                indicador.innerHTML += '<span class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] shadow-lg z-20"><i class="fa-solid fa-exclamation"></i></span>';
+            }
+        }
+    });
+</script>
 </body>
 </html>
