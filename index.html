@@ -160,6 +160,34 @@
 </head>
 <body class="h-screen flex flex-col overflow-hidden select-none">
 
+    <!-- COLOQUE A TELA DE LOGIN AQUI -->
+    <div id="login-screen" class="fixed inset-0 bg-slate-900 z-[9999] flex items-center justify-center">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-96 max-w-[90%] text-center border border-slate-200">
+            <h2 class="text-lg font-black text-slate-800 tracking-widest uppercase mb-1">Acesso Restrito</h2>
+            <p class="text-[11px] text-slate-500 mb-6 font-medium">Insira as suas credenciais para aceder à Operação</p>
+            
+            <div class="text-left mb-3">
+                <label class="text-[10px] font-bold text-slate-500 uppercase ml-1">Utilizador</label>
+                <input type="text" id="login-user" placeholder="Ex: frota" class="w-full mt-1 px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-600 transition-all">
+            </div>
+            
+            <div class="text-left mb-5">
+                <label class="text-[10px] font-bold text-slate-500 uppercase ml-1">Palavra-passe</label>
+                <input type="password" id="login-pass" placeholder="••••••••" class="w-full mt-1 px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-600 transition-all" onkeypress="if(event.key === 'Enter') verificarLogin()">
+            </div>
+            
+            <p id="login-error" class="text-red-500 text-[11px] font-bold mb-4 hidden bg-red-50 p-2 rounded border border-red-100">
+                <i class="fa-solid fa-circle-exclamation mr-1"></i> Utilizador ou palavra-passe incorretos.
+            </p>
+            
+            <button onclick="verificarLogin()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-lg transition-colors shadow-md">
+                Entrar no Sistema <i class="fa-solid fa-arrow-right-to-bracket ml-1"></i>
+            </button>
+        </div>
+    </div>
+    <!-- FIM DA TELA DE LOGIN -->
+
+    <div id="main-content" class="hidden h-screen w-full flex-col">
     <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
     <div id="confirm-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
@@ -2521,5 +2549,6 @@
         }
     });
 </script>
+        
 </body>
 </html>
