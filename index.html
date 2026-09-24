@@ -165,20 +165,20 @@
     <div id="login-screen" class="fixed inset-0 z-[9999] flex items-center justify-center bg-cover bg-center bg-no-repeat bg-slate-900/70 bg-blend-overlay" style="background-image: url('caminhao.jpeg');">
         <div class="bg-white p-8 rounded-2xl shadow-2xl w-96 max-w-[90%] text-center border border-slate-200">
             <h2 class="text-lg font-black text-slate-800 tracking-widest uppercase mb-1">Acesso Restrito</h2>
-            <p class="text-[11px] text-slate-500 mb-6 font-medium">Insira as suas credenciais para aceder à Operação</p>
+            <p class="text-[11px] text-slate-500 mb-6 font-medium">Insira as suas credenciais para acessar ao site</p>
             
             <div class="text-left mb-3">
-                <label class="text-[10px] font-bold text-slate-500 uppercase ml-1">Utilizador</label>
+                <label class="text-[10px] font-bold text-slate-500 uppercase ml-1">Login</label>
                 <input type="text" id="login-user" placeholder="Ex: frota" class="w-full mt-1 px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-600 transition-all">
             </div>
             
             <div class="text-left mb-5">
-                <label class="text-[10px] font-bold text-slate-500 uppercase ml-1">Palavra-passe</label>
+                <label class="text-[10px] font-bold text-slate-500 uppercase ml-1">Senha</label>
                 <input type="password" id="login-pass" placeholder="••••••••" class="w-full mt-1 px-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-600 transition-all" onkeypress="if(event.key === 'Enter') verificarLogin()">
             </div>
             
             <p id="login-error" class="text-red-500 text-[11px] font-bold mb-4 hidden bg-red-50 p-2 rounded border border-red-100">
-                <i class="fa-solid fa-circle-exclamation mr-1"></i> Utilizador ou palavra-passe incorretos.
+                <i class="fa-solid fa-circle-exclamation mr-1"></i> Login ou senha incorretos.
             </p>
             
             <button onclick="verificarLogin()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-lg transition-colors shadow-md">
