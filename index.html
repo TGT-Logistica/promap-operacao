@@ -2574,10 +2574,17 @@
         const pass = passInput.value.trim();
 
         // DEFINA AQUI O SEU USUÁRIO E A SUA SENHA
-        const usuarioCorreto = "frota";
-        const senhaCorreta = "targets2026";
+       // DEFINA AQUI A SUA LISTA DE UTILIZADORES E PALAVRAS-PASSE
+        const utilizadoresPermitidos = [
+            { usuario: "frota", senha: "targets2026" },
+            { usuario: "admin", senha: "senhaAdmin123" },
+            { usuario: "diretoria", senha: "senhaDiretoria456" }
+        ];
 
-        if (user === usuarioCorreto && pass === senhaCorreta) {
+        // Verifica se o que foi digitado existe na lista acima
+        const loginValido = utilizadoresPermitidos.some(credencial => credencial.usuario === user && credencial.senha === pass);
+
+        if (loginValido) {
             // Se acertar: Esconde a tela de login
             loginScreen.classList.add("hidden");
             
