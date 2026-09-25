@@ -1342,7 +1342,26 @@
                     .some(campo => semAcento(campo).includes(termoBusca));
                 return matchBusca && matchPO && matchFrequencia && matchFuncao && matchProcesso && matchSubprocesso && matchIndicador;
             });
+            // ORDENAÇÃO POR NÚMERO DE P.O.
+    dadosFiltrados.sort((a, b) => {
+        // Busca o valor atualizado do P.O. para cada linha
+        const poA = (systemData.checklistPO && systemData.checklistPO[a.id] !== undefined) 
+                    ? String(systemData.checklistPO[a.id]) : String(a.po || "");
+        const poB = (systemData.checklistPO && systemData.checklistPO[b.id] !== undefined) 
+                    ? String(systemData.checklistPO[b.id]) : String(b.po || "");
 
+        const poAVazio = !poA || poA.trim() === "" || poA === "undefined";
+        const poBVazio = !poB || poB.trim() === "" || poB === "undefined";
+
+        // Se ambos não têm P.O., mantêm a ordem original
+        if (poAVazio && poBVazio) return 0;
+        // Joga os que estão em branco para o final da tabela
+        if (poAVazio) return 1;
+        if (poBVazio) return -1;
+
+        // Compara de forma inteligente (ex: "PO 2" vem antes de "PO 10")
+        return poA.localeCompare(poB, undefined, { numeric: true, sensitivity: 'base' });
+    });
             if (dadosFiltrados.length === 0) {
                 tbody.innerHTML = `
                     <tr>
